@@ -75,10 +75,14 @@
                             <i class="ph-duotone ph-lock-key"></i>
                             <span>Lock Screen</span>
                         </a>
-                        <a href="#!" class="dropdown-item">
-                            <i class="ph-duotone ph-power"></i>
-                            <span>Logout</span>
-                        </a>
+                        <form action="/logout" method="POST">
+                            @csrf
+                        <button type="submit" class="dropdown-item">
+                            <span class="d-flex align-items-center">
+                                <i class="ph-duotone ph-power"></i>
+                                <span>Logout</span>
+                            </span>
+                        </button>
                     </div>
                 </li>
                 <li class="dropdown pc-h-item">
@@ -412,12 +416,15 @@
                                                 <span>Add account</span>
                                             </span>
                                         </a>
-                                        <a href="#" class="dropdown-item">
+                                        <form action="/logout" method="POST">
+                                            @csrf
+                                        <button type="submit" class="dropdown-item">
                                             <span class="d-flex align-items-center">
                                                 <i class="ph-duotone ph-power"></i>
                                                 <span>Logout</span>
                                             </span>
-                                        </a>
+                                        </button>
+                                    </form>
                                     </li>
                                 </ul>
                             </div>

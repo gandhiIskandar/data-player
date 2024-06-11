@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Rule;
@@ -22,11 +23,13 @@ class LoginForm extends Form
 
             session()->regenerate();
 
-            return redirect()->intended('/dashboard');
+            return redirect()->intended();
         }
         throw ValidationException::withMessages([
             'email' => 'Email atau Password Anda Salah',
         ]);
 
     }
+
+    
 }
