@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,15 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
+
+        // Definisikan gate untuk tindakan 'view-dashboard'
+        Gate::define('customerService', function ($user) {
+            return $user->role_id == '1' || $user->role_id == '4';
+        });
+
+        Gate::define('marketingOrAdmin', function ($user) {
+            return $user->role_id == '2' || $user->role_id == '4' || $user->role_id == '3';
+        });
     }
 }

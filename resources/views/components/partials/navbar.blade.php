@@ -49,46 +49,8 @@
       </div>
       <div class="navbar-content">
         <ul class="pc-navbar">
-          {{-- <li class="pc-item pc-caption">
-            <label>Navigation</label>
-          </li>
-          <li class="pc-item pc-hasmenu">
-            <a href="#!" class="pc-link">
-              <span class="pc-micon">
-                <i class="ph-duotone ph-gauge"></i>
-              </span>
-              <span class="pc-mtext">Dashboard</span>
-              <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-            </a>
-            <ul class="pc-submenu">
-              <li class="pc-item"><a class="pc-link" href="../dashboard/index.html">Default</a></li>
-              <li class="pc-item"><a class="pc-link" href="../dashboard/affiliate.html">Affiliate</a></li>
-              <li class="pc-item"><a class="pc-link" href="../dashboard/analytics.html">Analytics</a></li>
-              <li class="pc-item"><a class="pc-link" href="../dashboard/ecommerce.html">E-commerce</a></li>
-              <li class="pc-item"><a class="pc-link" href="../dashboard/finance.html">Finance</a></li>
-              <li class="pc-item"><a class="pc-link" href="../dashboard/project.html">Project</a></li>
-            </ul>
-          </li>
-          <li class="pc-item pc-hasmenu">
-            <a href="#!" class="pc-link">
-              <span class="pc-micon">
-                <i class="ph-duotone ph-layout"></i>
-              </span>
-              <span class="pc-mtext">Layouts</span>
-              <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-            </a>
-            <ul class="pc-submenu">
-              <li class="pc-item"><a class="pc-link" href="../demo/layout-compact.html">Compact</a></li>
-              <li class="pc-item"><a class="pc-link" href="../demo/layout-horizontal.html">Horizontal</a></li>
-              <li class="pc-item"><a class="pc-link" href="../demo/layout-tab.html">Tab</a></li>
-              <li class="pc-item"><a class="pc-link" href="../demo/layout-vertical.html">Vertical</a></li>
-            </ul>
-          </li>
-          <li class="pc-item pc-caption">
-            <label>Widget</label>
-            <i class="ph-duotone ph-chart-pie"></i>
-            <span>Advance Card</span>
-          </li> --}}
+
+          @can('customerService')
           <li class="pc-item {{ request()->is('dashboard') ? 'active' : ''  }}">
             <a  href="/dashboard" class="pc-link">
               <span class="pc-micon">
@@ -121,14 +83,20 @@
               <span class="pc-mtext">Kas</span>
             </a>
           </li>
-          {{-- <li class="pc-item {{ request()->is('tugas') ? 'active' : ''  }}">
-            <a href="../widget/w_statistics.html" class="pc-link">
+          @endcan
+
+          @can('marketingOrAdmin')
+          <li class="pc-item {{ request()->is('expenditures') ? 'active' : ''  }}">
+            <a  href="/expenditures" class="pc-link">
               <span class="pc-micon">
-                <i class="ph-duotone ph-check-fat"></i>
+                <i class="ph-duotone ph-book"></i>
               </span>
-              <span class="pc-mtext">Tugas</span>
+              <span class="pc-mtext">Pengeluaran</span>
             </a>
-          </li> --}}
+          </li>
+
+          @endcan
+     
         </ul>
         {{-- <div class="card nav-action-card">
           <div class="card-body">

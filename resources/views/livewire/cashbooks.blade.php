@@ -19,12 +19,7 @@
                         <button wire:click='$dispatch("showModalNonEditStateCashBook")' type="button" class="btn btn-primary"
                             style="width: 200px;" type="button">Tambah Catatan Kas</button>
                     </div>
-                    {{-- <div class="d-flex align-items-center">
-
-                <p style="margin: 0px !important">Range tanggal: </p>
-                <input type="text" class="form-control w-auto ms-2" name="dates" />
-
-            </div> --}}
+                
                 </div>
                 <div class="card-body">
 

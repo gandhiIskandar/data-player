@@ -23,3 +23,5 @@ Route::middleware(['customer.service'])->group(function () {
     Route::get('/members', \App\Livewire\MemberLiveWire::class)->name('members');
     Route::get('/cashbooks', \App\Livewire\Cashbooks::class)->name('cashbooks');
 });
+
+Route::get('/expenditures', \App\Livewire\Expenditures::class)->name('expenditures')->middleware(['admin.or.marketing']);
