@@ -17,7 +17,6 @@ Route::get('/', \App\Livewire\Login::class)->name('login');
 
 Route::middleware(['customer.service'])->group(function () {
 
-
     Route::get('/dashboard', \App\Livewire\Dashboard::class)->name('dashboard');
     Route::get('/transactions', \App\Livewire\Transactions::class)->name('transactions');
     Route::get('/members', \App\Livewire\MemberLiveWire::class)->name('members');

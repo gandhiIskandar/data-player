@@ -2,31 +2,30 @@
 
 namespace App\Livewire\Forms;
 
-use Livewire\Attributes\Validate;
+use App\Models\CashBook;
 use Livewire\Attributes\Rule;
 use Livewire\Form;
-use App\Models\CashBook;
 
 class CashBookForm extends Form
 {
     #[Rule(['required', 'numeric'])]
     public $type_id = '';
 
-    #[Rule(['required','numeric'])]
+    #[Rule(['required', 'numeric'])]
     public $amount = 0;
+
     #[Rule(['required'])]
-    public $detail = "";
+    public $detail = '';
 
+    public function create()
+    {
+        if ($this->validate()) {
 
-    public function create(){
-        if($this->validate()){
-
-        
-            $cashbook=CashBook::create([
+            $cashbook = CashBook::create([
                 'user_id' => 1, //untuk dummy data saja
                 'detail' => $this->detail,
                 'amount' => $this->amount,
-                'type_id' => $this->type_id
+                'type_id' => $this->type_id,
             ]);
             $this->reset();
 
@@ -35,14 +34,14 @@ class CashBookForm extends Form
             return $cashbook;
         }
 
-    
     }
 
-    public function update($cashBook){
+    public function update($cashBook)
+    {
 
         //TODO nanti buatkan pengecekan bahwa yang berhak mengedit adalah user yang membuat kas itu sendiri
 
-        if($this->validate()){
+        if ($this->validate()) {
             //user id akan tetap sama dan tidak bisa diubah
 
             $cashBook->detail = $this->detail;
@@ -53,5 +52,4 @@ class CashBookForm extends Form
         }
 
     }
-
 }

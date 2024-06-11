@@ -19,7 +19,7 @@ class CustomerService
 
         $user = Auth::user();
 
-        if (!$user) {
+        if (! $user) {
             return redirect('/');
         }
 

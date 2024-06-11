@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class Cashbooks extends Component
 {
-    public $jenisTabel =1;
+    public $jenisTabel = 1;
 
     public function render()
     {

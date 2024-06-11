@@ -15,7 +15,7 @@ class Member extends Model
         'username',
         'total_wd',
         'phone_number',
-        'total_depo'
+        'total_depo',
     ];
 
     public function transactions()

@@ -3,13 +3,12 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\CashBookForm;
-use Livewire\Component;
 use App\Models\CashBook;
 use Carbon\Carbon;
+use Livewire\Component;
 
 class ModalInputKas extends Component
 {
-
     public CashBookForm $form;
 
     public $edit;
@@ -21,15 +20,15 @@ class ModalInputKas extends Component
         return view('livewire.modal-input-kas');
     }
 
-    public function proceedCashBook(){
-        if(!$this->edit){
-           $this->insertCashBook();
-        }else{
+    public function proceedCashBook()
+    {
+        if (! $this->edit) {
+            $this->insertCashBook();
+        } else {
             $this->updateCashBook();
         }
     }
 
-    
     //fungsi inisiasi data member untuk edit transaksi
     #[\Livewire\Attributes\On('showModalCashBookEdit')]
     public function showModalInputEditState($cashbook_id)
@@ -39,10 +38,7 @@ class ModalInputKas extends Component
 
         $this->cashBook = CashBook::find($cashbook_id);
 
-
-
         //inisiasi nilai form agar sesuai dengan data yang mau diedit
-
 
         $this->form->detail = $this->cashBook->detail;
         $this->form->amount = $this->cashBook->amount;
@@ -52,7 +48,8 @@ class ModalInputKas extends Component
         $this->dispatch('showModalCashBookJS');
     }
 
-    public function updateCashBook(){
+    public function updateCashBook()
+    {
 
         $this->form->update($this->cashBook);
 
@@ -62,12 +59,10 @@ class ModalInputKas extends Component
 
     }
 
-
     public function insertCashBook()
     {
 
         $cashbook = $this->form->create();
-
 
         $cashbook->date = Carbon::parse($cashbook->created_at)->translatedFormat('d F Y');
 
@@ -76,7 +71,8 @@ class ModalInputKas extends Component
     }
 
     #[\Livewire\Attributes\On('showModalNonEditStateCashBook')]
-    public function showModalNonEditState(){
+    public function showModalNonEditState()
+    {
         $this->form->reset();
 
         $this->edit = false;
@@ -85,25 +81,21 @@ class ModalInputKas extends Component
     }
 
     #[\Livewire\Attributes\On('removeConfirmCashBook')]
-    public function removeConfirm($cashbook_id){
-        
+    public function removeConfirm($cashbook_id)
+    {
+
         $this->dispatch('removeConfirmCashBookJS', cashbook_id: $cashbook_id);
     }
 
-
-    
     #[\Livewire\Attributes\On('removeCashBook')]
-    public function removeCashBook($cashbook_id){
+    public function removeCashBook($cashbook_id)
+    {
 
-    
+        $cashBook = CashBook::where('id', $cashbook_id)->first();
 
-        $cashBook = CashBook::where('id',$cashbook_id)->first();
-        
         $cashBook->delete();
 
         $this->dispatch('reloadPowerGridCashBooks');
-        
 
-     
     }
 }

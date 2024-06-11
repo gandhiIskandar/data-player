@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\Type;
 
 class CashBook extends Model
 {
@@ -25,6 +23,6 @@ class CashBook extends Model
 
     public function type()
     {
-      return $this->belongsTo(Type::class);
+        return $this->belongsTo(Type::class);
     }
 }

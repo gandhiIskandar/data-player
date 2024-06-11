@@ -14,6 +14,7 @@ class TransactionForm extends Form
 
     #[Rule(['required', 'numeric'])]
     public $amount = 0;
+
     #[Rule(['numeric'])]
     public $phone_number = 0;
 
@@ -73,7 +74,6 @@ class TransactionForm extends Form
         ]);
     }
 
-
     public function updateTransaction($transaction)
     {
         if ($this->amount != 0 && $this->type != 0) {
@@ -84,9 +84,7 @@ class TransactionForm extends Form
             $new_amount = $this->amount;
             $new_type = $this->type;
 
-
-            if ($new_type != $old_type) //cek jika ada perubahan jenis transaksi
-            {
+            if ($new_type != $old_type) { //cek jika ada perubahan jenis transaksi
                 //jika ada maka lakukan perubahan sum transaksi di data member terlebih dahulu
                 $this->updateMemberTransactionSumDiffrentType(
                     $transaction->member,
@@ -96,7 +94,7 @@ class TransactionForm extends Form
                     $new_amount
                 );
 
-            }else{
+            } else {
                 $this->updateMemberTransactionSumSameType(
                     $transaction->member,
                     $transaction->type_id,
@@ -113,27 +111,25 @@ class TransactionForm extends Form
         }
     }
 
-    public function updateMemberTransactionSumSameType($member, $type_id, $new_amount, $old_amount){
-         //kurangi dulu amount kesalahan di tipe yang sama  sesuai dengan old_amount lalu tambah dengan amount baru
+    public function updateMemberTransactionSumSameType($member, $type_id, $new_amount, $old_amount)
+    {
+        //kurangi dulu amount kesalahan di tipe yang sama  sesuai dengan old_amount lalu tambah dengan amount baru
 
-         switch($type_id){
-            case  1 :
+        switch ($type_id) {
+            case 1:
                 $member->total_wd -= $old_amount;
                 $member->total_wd += $new_amount;
                 break;
 
+            case 2:
 
-
-            case 2 :
-
-               
                 $member->total_depo -= $old_amount;
                 $member->total_depo += $new_amount;
                 break;
 
-         }
+        }
 
-         $member->save();
+        $member->save();
 
         // type 1 = total_wd
         // type 2 = total_depo
@@ -160,15 +156,15 @@ class TransactionForm extends Form
 
         //tambah amount di type yang baru
 
-        switch($new_type){
+        switch ($new_type) {
             case 1:
                 $member->total_wd += $new_amount;
                 break;
-            
+
             case 2:
                 $member->total_depo += $new_amount;
                 break;
-            
+
         }
 
         $member->save();

@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->generateType();
 
         Member::factory(20)->create();
-         Transaction::factory(30)->create();
+        Transaction::factory(30)->create();
         Expenditure::factory(15)->create();
         Task::factory(10)->create();
     }
@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
 
             User::factory()->create([
                 'name' => $role,
-                'email' => str_replace(' ','',$role).'@gmail.com',
+                'email' => str_replace(' ', '', $role).'@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => $iteration,
             ]);

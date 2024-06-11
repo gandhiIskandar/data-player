@@ -3,17 +3,15 @@
 namespace App\Livewire;
 
 use App\Models\Member;
-
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
-use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
 final class PGMemberTable extends PowerGridComponent
@@ -35,8 +33,6 @@ final class PGMemberTable extends PowerGridComponent
         ];
     }
 
-
-   
     public function datasource(): Builder
     {
         return Member::query();
@@ -52,11 +48,11 @@ final class PGMemberTable extends PowerGridComponent
         return PowerGrid::fields()
             ->add('id')
             ->add('username')
-            ->add('total_wd', fn($member)=> $this->toRupiah($member->total_wd))
+            ->add('total_wd', fn ($member) => $this->toRupiah($member->total_wd))
             ->add('phone_number')
-            ->add('total_depo',fn($member)=> $this->toRupiah($member->total_depo))
-            ->add('depo_wd', fn($member)=>$this->toRupiah($member->total_depo - $member->total_wd ));
-           
+            ->add('total_depo', fn ($member) => $this->toRupiah($member->total_depo))
+            ->add('depo_wd', fn ($member) => $this->toRupiah($member->total_depo - $member->total_wd));
+
     }
 
     public function columns(): array
@@ -79,13 +75,9 @@ final class PGMemberTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-                Column::make('Depo - Withdraw', 'depo_wd')
-                
-                ,
+            Column::make('Depo - Withdraw', 'depo_wd'),
 
-           
-
-            Column::action('Action')
+            Column::action('Action'),
         ];
     }
 
@@ -101,47 +93,47 @@ final class PGMemberTable extends PowerGridComponent
     //     $this->js('alert('.$rowId.')');
     // }
 
-
-    public function removeConfirmation(){
+    public function removeConfirmation()
+    {
 
         $this->js('connfirmation("Yakin ingin hapus member ini?")');
 
     }
 
     #[\Livewire\Attributes\On('reloadPowerGridMember')]
-    public function reloadData(){
+    public function reloadData()
+    {
 
         //untuk refresh data
         $this->fillData();
 
     }
+
     #[\Livewire\Attributes\On('removeMember')]
-    public function removeMember($member_id){
+    public function removeMember($member_id)
+    {
 
         $member = Member::find($member_id);
         $member->delete();
 
-     
     }
-
 
     public function actions(Member $row): array
     {
         return [
             Button::add('edit')
-                ->slot("Edit")
+                ->slot('Edit')
                 ->id()
                 ->class('btn btn-primary')
                 ->dispatch('showEditModal', ['member_id' => $row->id]),
 
-                Button::add('remove')
+            Button::add('remove')
                 ->slot('Hapus')
                 ->id()
                 ->class('btn btn-danger')
-                ->dispatch('confirmRemoveMember', ['member' => $row])
+                ->dispatch('confirmRemoveMember', ['member' => $row]),
         ];
     }
-
 
     public function toRupiah($amount)
     {
@@ -149,7 +141,6 @@ final class PGMemberTable extends PowerGridComponent
         return 'Rp '.number_format($amount, 0, ',', '.');
     }
 
-   
     /*
     public function actionRules($row): array
     {

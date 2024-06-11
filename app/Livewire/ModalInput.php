@@ -2,13 +2,10 @@
 
 namespace App\Livewire;
 
-
 use App\Livewire\Forms\TransactionForm;
 use App\Models\Member;
 use App\Models\Transaction;
-use Carbon\Carbon;
 use Livewire\Component;
-
 
 class ModalInput extends Component
 {
@@ -25,21 +22,17 @@ class ModalInput extends Component
     //nilai member akan diisi hanya jika edit false
     public $member;
 
-
-    //nilai transaksi ini berguna untuk menyimpan data transaksi lama dan diisi ketika state edit aktif, kemudian akan melakukan save() 
-    public $transaction;    
-
+    //nilai transaksi ini berguna untuk menyimpan data transaksi lama dan diisi ketika state edit aktif, kemudian akan melakukan save()
+    public $transaction;
 
     public function render()
     {
 
-       if(!$this->edit){
+        if (! $this->edit) {
 
-        $this->checkUserExist();
-        
-       }
-            
+            $this->checkUserExist();
 
+        }
 
         return view('livewire.modal-input');
     }
@@ -59,15 +52,14 @@ class ModalInput extends Component
         }
     }
 
-    public function procedTransaction(){
-        if(!$this->edit){
-           $this->insertTransaction();
-        }else{
+    public function procedTransaction()
+    {
+        if (! $this->edit) {
+            $this->insertTransaction();
+        } else {
             $this->updateTransaction();
         }
     }
-
-   
 
     //fungsi inisiasi data member untuk edit transaksi
     #[\Livewire\Attributes\On('showModalTransactionEdit')]
@@ -80,11 +72,9 @@ class ModalInput extends Component
 
         $this->exist = 1; //set 1 karena member sudah ada
 
-
         //inisiasi nilai form agar sesuai dengan data yang mau diedit
 
-
-        $this->form->username = $this->transaction->member->username ?? "Member Tidak Ada";
+        $this->form->username = $this->transaction->member->username ?? 'Member Tidak Ada';
         $this->form->amount = $this->transaction->amount;
         $this->form->type = $this->transaction->type_id;
         //end inisiasi
@@ -92,8 +82,8 @@ class ModalInput extends Component
         $this->dispatch('showModalTransactionJS');
     }
 
-
-    public function updateTransaction(){
+    public function updateTransaction()
+    {
 
         $this->form->updateTransaction($this->transaction);
 
@@ -103,9 +93,9 @@ class ModalInput extends Component
 
     }
 
-
- #[\Livewire\Attributes\On('showModalNonEditState')]
-    public function showModalNonEditState(){
+    #[\Livewire\Attributes\On('showModalNonEditState')]
+    public function showModalNonEditState()
+    {
         $this->form->reset();
 
         $this->edit = false;
@@ -114,37 +104,37 @@ class ModalInput extends Component
     }
 
     #[\Livewire\Attributes\On('deleteTransactionConfirm')]
-    public function confirmDeleteTransaction($transaction){
+    public function confirmDeleteTransaction($transaction)
+    {
 
         $this->dispatch('deleteTransactionConfirmJS', transaction: $transaction);
 
     }
 
     #[\Livewire\Attributes\On('removeTransaction')]
-    public function removeTransaction($transaction){
+    public function removeTransaction($transaction)
+    {
 
         $transaction = (object) $transaction;
 
-        $transaction = Transaction::where('id',$transaction->id)->with(['member'])->first();
-        
+        $transaction = Transaction::where('id', $transaction->id)->with(['member'])->first();
+
         $transaction->delete();
 
         $this->reduceSumMember($transaction->member, $transaction->type_id, $transaction->amount);
 
         $this->dispatch('reloadPowerGridTransaction');
-        
 
-     
     }
 
-
-    public function reduceSumMember($member, $type_id, $amount){
+    public function reduceSumMember($member, $type_id, $amount)
+    {
 
         //type 1 = wd
         //type 2 = depo
-        
-        switch($type_id){
-            case 1 :
+
+        switch ($type_id) {
+            case 1:
                 $member->total_wd -= $amount;
                 break;
             case 2:
@@ -155,8 +145,6 @@ class ModalInput extends Component
         $member->save();
 
     }
-
-
 
     public function insertTransaction()
     {

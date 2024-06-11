@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Member;
 
 class MemberLiveWire extends Component
 {
@@ -11,7 +10,4 @@ class MemberLiveWire extends Component
     {
         return view('livewire.member-livewire');
     }
-
-  
-
 }

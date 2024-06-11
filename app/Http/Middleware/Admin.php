@@ -18,11 +18,11 @@ class Admin
     {
         $user = Auth::user();
 
-        if (!$user) {
+        if (! $user) {
             return redirect('/');
         }
 
-        if ($user->role_id != 3 && $user->role_id != 4 && $user->role_id !=2) {
+        if ($user->role_id != 3 && $user->role_id != 4 && $user->role_id != 2) {
 
             abort(404);
 

@@ -20,7 +20,6 @@ class LoginForm extends Form
 
         if (Auth::attempt($this->validate())) {
 
-          
             session()->regenerate();
 
             return redirect()->intended('/dashboard');

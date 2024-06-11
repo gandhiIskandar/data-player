@@ -12,8 +12,8 @@ use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
 final class PGTransactionTable extends PowerGridComponent
@@ -46,7 +46,8 @@ final class PGTransactionTable extends PowerGridComponent
     }
 
     #[\Livewire\Attributes\On('reloadPowerGridTransaction')]
-    public function reloadData(){
+    public function reloadData()
+    {
 
         //untuk refresh data
         $this->fillData();
@@ -60,7 +61,7 @@ final class PGTransactionTable extends PowerGridComponent
             ->add('type_id', fn ($transaction) => $transaction->type->name)
             ->add('amount', fn ($transaction) => $this->toRupiah($transaction->amount))
             ->add('member_id', fn ($transaction) => $transaction->member->username ?? 'Member tidak ada')
-            ->add('new', fn ($transaction) => $transaction->new == 1 ? "Ya" : "Tidak")
+            ->add('new', fn ($transaction) => $transaction->new == 1 ? 'Ya' : 'Tidak')
             ->add('created_at_formatted', fn ($transaction) => Carbon::parse($transaction->created_at)->translatedFormat('d F Y'));
     }
 
@@ -73,19 +74,18 @@ final class PGTransactionTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-
             Column::make('Baru', 'new')
                 ->sortable()
                 ->searchable(),
 
-             Column::make('Tanggal', 'created_at_formatted', 'created_at')
+            Column::make('Tanggal', 'created_at_formatted', 'created_at')
                 ->sortable(),
 
             // Column::make('Created at', 'created_at')
             //     ->sortable()
             //     ->searchable(),
 
-            Column::action('Action')
+            Column::action('Action'),
         ];
     }
 
@@ -93,17 +93,14 @@ final class PGTransactionTable extends PowerGridComponent
     {
         return [
 
-            Filter::datetimepicker('created_at_formatted','created_at')
+            Filter::datetimepicker('created_at_formatted', 'created_at')
                 ->params([
 
                     'timezone' => 'Asia/Jakarta',
 
-
                 ]),
         ];
     }
-
-   
 
     public function actions(Transaction $row): array
     {
@@ -114,21 +111,19 @@ final class PGTransactionTable extends PowerGridComponent
                 ->class('btn btn-primary')
                 ->dispatch('showModalTransactionEdit', ['transaction_id' => $row->id]),
 
-                Button::add('remove')
+            Button::add('remove')
                 ->slot('Hapus')
                 ->id()
                 ->class('btn btn-danger')
-                ->dispatch('deleteTransactionConfirm', ['transaction' => $row])
+                ->dispatch('deleteTransactionConfirm', ['transaction' => $row]),
         ];
     }
 
     public function toRupiah($amount)
     {
 
-        return 'Rp ' . number_format($amount, 0, ',', '.');
+        return 'Rp '.number_format($amount, 0, ',', '.');
     }
-
-
 
     /*
     public function actionRules($row): array

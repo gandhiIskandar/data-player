@@ -28,8 +28,7 @@ class RecapTable extends Component
 
     //rekap_type = 1 -> Harian
     //rekap_type = 2 -> Bulanan
-  
-   
+
     public function render()
     {
 
@@ -124,8 +123,6 @@ class RecapTable extends Component
 
         // $this->remapTransactions();
     }
-
-  
 
     #[On('filterRange')]
     public function getDataByRange($start, $end = null) // end diset null jika type_range ==3 / tahunan

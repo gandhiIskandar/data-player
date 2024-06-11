@@ -14,7 +14,7 @@ class Transaction extends Model
         'amount',
         'member_id',
         'new',
-        'created_at'
+        'created_at',
     ];
 
     public function type()

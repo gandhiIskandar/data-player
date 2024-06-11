@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\CashBook;
-
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
@@ -12,10 +12,9 @@ use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
-use Carbon\Carbon;
 
 final class PGCashBookTable extends PowerGridComponent
 {
@@ -23,7 +22,7 @@ final class PGCashBookTable extends PowerGridComponent
 
     public function setUp(): array
     {
-       // $this->showCheckBox();
+        // $this->showCheckBox();
 
         return [
             Exportable::make('export')
@@ -38,29 +37,32 @@ final class PGCashBookTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return CashBook::query()->with(['type','user']);
+        return CashBook::query()->with(['type', 'user']);
     }
 
     public function relationSearch(): array
     {
         return [];
     }
+
     #[\Livewire\Attributes\On('reloadPowerGridCashBooks')]
-    public function reloadData(){
+    public function reloadData()
+    {
 
         //untuk refresh data
         $this->fillData();
 
     }
+
     public function fields(): PowerGridFields
     {
         return PowerGrid::fields()
             ->add('id')
-            ->add('type_id', fn($cashBook) => $cashBook->type->name)
-            ->add('amount', fn($cashBook) => $this->toRupiah($cashBook->amount))
+            ->add('type_id', fn ($cashBook) => $cashBook->type->name)
+            ->add('amount', fn ($cashBook) => $this->toRupiah($cashBook->amount))
             ->add('detail')
-            ->add('user_id', fn($cashBook) => $cashBook->user->name )
-            ->add('created_at_formatted', fn($cashBook) => Carbon::parse($cashBook->created_at)->translatedFormat('d F Y'));
+            ->add('user_id', fn ($cashBook) => $cashBook->user->name)
+            ->add('created_at_formatted', fn ($cashBook) => Carbon::parse($cashBook->created_at)->translatedFormat('d F Y'));
     }
 
     public function columns(): array
@@ -84,7 +86,7 @@ final class PGCashBookTable extends PowerGridComponent
             //     ->sortable()
             //     ->searchable(),
 
-            Column::action('Action')
+            Column::action('Action'),
         ];
     }
 
@@ -92,11 +94,10 @@ final class PGCashBookTable extends PowerGridComponent
     {
         return [
 
-            Filter::datetimepicker('created_at_formatted','created_at')
+            Filter::datetimepicker('created_at_formatted', 'created_at')
                 ->params([
 
                     'timezone' => 'Asia/Jakarta',
-
 
                 ]),
         ];
@@ -117,21 +118,19 @@ final class PGCashBookTable extends PowerGridComponent
                 ->class('btn btn-primary')
                 ->dispatch('showModalCashBookEdit', ['cashbook_id' => $row->id]),
 
-                Button::add('remove')
+            Button::add('remove')
                 ->slot('Hapus')
                 ->id()
                 ->class('btn btn-danger')
-                ->dispatch('removeConfirmCashBook', ['cashbook_id' => $row->id])
+                ->dispatch('removeConfirmCashBook', ['cashbook_id' => $row->id]),
         ];
     }
 
     public function toRupiah($amount)
     {
 
-        return 'Rp ' . number_format($amount, 0, ',', '.');
+        return 'Rp '.number_format($amount, 0, ',', '.');
     }
-
-
 
     /*
     public function actionRules($row): array

@@ -3,8 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Expenditure;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
@@ -13,8 +13,8 @@ use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
 final class PGExpenditureTable extends PowerGridComponent
@@ -23,7 +23,6 @@ final class PGExpenditureTable extends PowerGridComponent
 
     public function setUp(): array
     {
-     
 
         return [
             Exportable::make('export')
@@ -41,8 +40,8 @@ final class PGExpenditureTable extends PowerGridComponent
 
         $user = Auth::user();
 
-        return Expenditure::query()->with(['user.role', 'account'])->whereHas('user', function($query) use($user) {
-            $query->whereHas('role', function($query) use($user) {
+        return Expenditure::query()->with(['user.role', 'account'])->whereHas('user', function ($query) use ($user) {
+            $query->whereHas('role', function ($query) use ($user) {
                 $query->where('role_id', $user->role_id);
             });
         });
@@ -55,14 +54,23 @@ final class PGExpenditureTable extends PowerGridComponent
         return [];
     }
 
+    #[\Livewire\Attributes\On('reloadPowerGridExp')]
+    public function reloadData()
+    {
+
+        //untuk refresh data
+        $this->fillData();
+
+    }
+
     public function fields(): PowerGridFields
     {
         return PowerGrid::fields()
             ->add('id')
-            ->add('user_id', fn($expenditure) => $expenditure->user->name)
-            ->add('amount', fn($expenditure) => $this->toRupiah($expenditure->amount) )
+            ->add('user_id', fn ($expenditure) => $expenditure->user->name)
+            ->add('amount', fn ($expenditure) => $this->toRupiah($expenditure->amount))
             ->add('detail')
-            ->add('account_id', fn($expenditure)=> $expenditure->account->name)
+            ->add('account_id', fn ($expenditure) => $expenditure->account->name)
             ->add('created_at_formatted', fn ($expenditure) => Carbon::parse($expenditure->created_at)->translatedFormat('d F Y'));
     }
 
@@ -87,14 +95,23 @@ final class PGExpenditureTable extends PowerGridComponent
             //     ->sortable()
             //     ->searchable(),
 
-            Column::action('Action')
+            Column::action('Action'),
         ];
     }
 
     public function filters(): array
     {
-        return [
-        ];
+        
+            return [
+
+                Filter::datetimepicker('created_at_formatted', 'created_at')
+                    ->params([
+    
+                        'timezone' => 'Asia/Jakarta',
+    
+                    ]),
+            ];
+        
     }
 
     // #[\Livewire\Attributes\On('edit')]
@@ -110,13 +127,13 @@ final class PGExpenditureTable extends PowerGridComponent
                 ->slot('Edit')
                 ->id()
                 ->class('btn btn-primary')
-                ->dispatch('edit', ['rowId' => $row->id]),
+                ->dispatch('showModalExpEdit', ['expenditure_id' => $row->id]),
 
-                Button::add('remove')
+            Button::add('remove')
                 ->slot('Hapus')
                 ->id()
                 ->class('btn btn-danger')
-                ->dispatch('confirmRemoveExp', ['rowId' => $row->id])
+                ->dispatch('confirmRemoveExp', ['expenditure_id' => $row->id]),
         ];
     }
 
@@ -125,7 +142,6 @@ final class PGExpenditureTable extends PowerGridComponent
 
         return 'Rp '.number_format($amount, 0, ',', '.');
     }
-
 
     /*
     public function actionRules($row): array

@@ -2,15 +2,17 @@
 
 namespace App\Livewire;
 
-use App\Models\CashBook;
+use Livewire\Component;
+use App\Models\Expenditure;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
-use Livewire\Component;
 
-class RecapCashbookTable extends Component
+class RecapExpTable extends Component
 {
-    public $cashBooks;
+
+    public $expenditures;
 
     public $rekap_type = 1;
 
@@ -32,24 +34,26 @@ class RecapCashbookTable extends Component
     public function render()
     {
         $this->getData();
+      //  dd($this->expenditures);
 
-        return view('livewire.recap-cashbook-table');
+
+        return view('livewire.recap-exp-table');
     }
 
     public function toRupiah($amount)
     {
 
-        return 'Rp '.number_format($amount, 0, ',', '.');
+        return 'Rp ' . number_format($amount, 0, ',', '.');
     }
 
-    #[On('cashBookCreated')]
+    #[On('expCreated')]
     public function refreshTable()
     {
         $this->getData();
-        $this->dispatch('returnDataCashBooks', cashBooks: $this->cashBooks);
+        $this->dispatch('returnDataExp', expenditures: $this->expenditures);
     }
 
-    #[On('changeTypeRecapCashbook')]
+    #[On('changeTypeRecapExp')]
     public function changeType($type)
     {
 
@@ -57,20 +61,28 @@ class RecapCashbookTable extends Component
 
         $this->getData();
 
-        $this->dispatch('returnDataCashBooks', cashBooks: $this->cashBooks);
+
+
+        $this->dispatch('returnDataExp', expenditures: $this->expenditures);
     }
 
     public function getDataQuery($timeCostum)
     {
 
-        return CashBook::select(
+        $user = Auth::user();
 
-            //type_id 3 = pengeluaran
-            //type_id 4 = pemasukan
+        return Expenditure::whereHas('user', function ($query) use ($user) {
+            $query->whereHas('role', function ($query) use ($user) {
+                $query->where('role_id', $user->role_id);
+            });
+        })->select(
 
             DB::raw($timeCostum),
-            DB::raw('CAST(SUM(CASE WHEN type_id = 4 THEN amount ELSE 0 END) AS SIGNED) as total_pemasukan'),
-            DB::raw('CAST(SUM(CASE WHEN type_id = 3 THEN amount ELSE 0 END) AS SIGNED) as total_pengeluaran'),
+            DB::raw('CAST(SUM(amount) AS SIGNED) as total_amount'),
+
+            //jika role_id = 2 maka akan masukan Marketing di column role(column role adalah column buatan sendiri dan tidak ada di tabel) selain dari itu maka akan cetak admin 
+            $user->role_id == 2 ? DB::raw('"Marketing" as role') : DB::raw('"Admin" as role ')
+
 
         )
             ->groupBy('date');
@@ -84,33 +96,29 @@ class RecapCashbookTable extends Component
 
             if ($this->default_day) {
 
-                $this->cashBooks = $this->getDataQuery('DATE(created_at) as date')->whereDate('created_at', $currentDate)->latest()->get();
-                $this->remapCashbookDaily();
+                $this->expenditures = $this->getDataQuery('DATE(created_at) as date')->whereDate('created_at', $currentDate)->latest()->get();
+                $this->remapExpDaily();
             } else {
 
                 $query = 'DATE(created_at) as date';
-                $this->cashBooks = $this->getDataQuery($query)->whereBetween('created_at', [$this->start_daily, $this->end_daily])->latest()->get();
-                $this->remapCashbookDaily();
-
+                $this->expenditures = $this->getDataQuery($query)->whereBetween('created_at', [$this->start_daily, $this->end_daily])->latest()->get();
+                $this->remapExpDaily();
             }
-
         } elseif ($this->rekap_type == 2) {
             if ($this->default_month) {
 
                 $startObj = Carbon::now()->startOfMonth();
                 $endObj = Carbon::now()->endOfMonth();
-
             } else {
 
                 $startObj = Carbon::createFromFormat('m-Y', $this->start_month)->startOfMonth();
                 $endObj = Carbon::createFromFormat('m-Y', $this->end_month)->endOfMonth();
-
             }
 
             $query = "DATE_FORMAT(created_at, '%m-%Y') AS date";
-            $this->cashBooks = $this->getDataQuery($query)->whereBetween('created_at', [$startObj, $endObj])->latest()->get();
+            $this->expenditures = $this->getDataQuery($query)->whereBetween('created_at', [$startObj, $endObj])->latest()->get();
 
-            $this->remapCashbookMonth();
+            $this->remapExpMonth();
 
             //  TODO tentukan dulu tanggal default awalnya;
 
@@ -119,7 +127,7 @@ class RecapCashbookTable extends Component
         // $this->remapTransactions();
     }
 
-    #[On('filterRangeCashBooks')]
+    #[On('filterRangeExp')]
     public function getDataByRange($start, $end = null) // end diset null jika type_range ==3 / tahunan
     {
 
@@ -138,9 +146,9 @@ class RecapCashbookTable extends Component
 
             $this->start_daily = Carbon::parse($start_onlyDate)->startOfDay();
             $this->end_daily = Carbon::parse($end_onlyDate)->endOfDay();
-            $this->cashBooks = $this->getDataQuery('DATE(created_at) as date')->whereBetween('created_at', [$this->start_daily, $this->end_daily])->latest()->get();
+            $this->expenditures = $this->getDataQuery('DATE(created_at) as date')->whereBetween('created_at', [$this->start_daily, $this->end_daily])->latest()->get();
 
-            $this->remapCashbookDaily();
+            $this->remapExpDaily();
         } elseif ($this->rekap_type == 2) {
 
             $this->default_month = false;
@@ -152,41 +160,35 @@ class RecapCashbookTable extends Component
             $endObj = Carbon::createFromFormat('m-Y', $this->end_month)->endOfMonth();
 
             $query = "DATE_FORMAT(created_at, '%m-%Y') AS date";
-            $this->cashBooks = $this->getDataQuery($query)->whereBetween('created_at', [$startObj, $endObj])->latest()->get();
+            $this->expenditures = $this->getDataQuery($query)->whereBetween('created_at', [$startObj, $endObj])->latest()->get();
 
-            $this->remapCashbookMonth();
+            $this->remapExpMonth();
         }
 
-        $this->dispatch('returnDataCashBooks', cashBooks: $this->cashBooks);
+        $this->dispatch('returnDataExp', expenditures: $this->expenditures);
     }
 
-    public function remapCashbookMonth()
+    public function remapExpMonth()
     {
 
-        $this->cashBooks->map(function ($value) {
+        $this->expenditures->map(function ($value) {
 
-            $parsed = Carbon::parse('1-'.$value->date);
+            $parsed = Carbon::parse('1-' . $value->date);
             $formatBulanTahun = $parsed->translatedFormat('F Y');
 
             $value->date = $formatBulanTahun;
 
-            $value->pkp = $this->toRupiah($value->total_pemasukan - $value->total_pengeluaran);
-            $value->total_pemasukan = $this->toRupiah($value->total_pemasukan);
-            $value->total_pengeluaran = $this->toRupiah($value->total_pengeluaran);
-
+            $value->total_amount = $this->toRupiah($value->total_amount);
         });
     }
 
-    public function remapCashbookDaily()
+    public function remapExpDaily()
     {
 
-        $this->cashBooks->map(function ($value) {
+        $this->expenditures->map(function ($value) {
 
             $value->date = Carbon::parse($value->date)->timezone('Asia/Jakarta')->translatedFormat('d F Y');
-
-            $value->pkp = $this->toRupiah($value->total_pemasukan - $value->total_pengeluaran);
-            $value->total_pemasukan = $this->toRupiah($value->total_pemasukan);
-            $value->total_pengeluaran = $this->toRupiah($value->total_pengeluaran);
+            $value->total_amount = $this->toRupiah($value->total_amount);
         });
     }
 }
