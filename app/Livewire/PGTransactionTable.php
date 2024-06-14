@@ -2,19 +2,20 @@
 
 namespace App\Livewire;
 
-use App\Models\Transaction;
 use Carbon\Carbon;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
-use PowerComponents\LivewirePowerGrid\Exportable;
-use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\Exportable;
+use PowerComponents\LivewirePowerGrid\Facades\Rule;
+use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 
 final class PGTransactionTable extends PowerGridComponent
 {
@@ -35,9 +36,21 @@ final class PGTransactionTable extends PowerGridComponent
         ];
     }
 
-    public function datasource(): Builder
+    public function datasource(): ?Builder
     {
-        return Transaction::query()->with(['type', 'member']);
+        if (in_array(8, session('privileges'))) // jika ada privileges untuk lihat wd
+        {
+            return Transaction::query()->with(['type', 'member'])->where('type_id', 1); // 1 adalah type_id dari withdraw
+
+        } elseif (in_array(4, session('privileges'))) {
+            return Transaction::query()->with(['type', 'member'])->where('type_id', 2); // 1 adalah type_id dari withdraw
+
+        } elseif (in_array(4, session('privileges')) && in_array(8, session('privileges'))) {
+
+            return Transaction::query()->with(['type', 'member']);
+        } else{
+            return null;
+        }
     }
 
     public function relationSearch(): array
@@ -51,7 +64,6 @@ final class PGTransactionTable extends PowerGridComponent
 
         //untuk refresh data
         $this->fillData();
-
     }
 
     public function fields(): PowerGridFields
@@ -85,7 +97,7 @@ final class PGTransactionTable extends PowerGridComponent
             //     ->sortable()
             //     ->searchable(),
 
-            Column::action('Action'),
+         Column::action('Action'),
         ];
     }
 
@@ -104,6 +116,9 @@ final class PGTransactionTable extends PowerGridComponent
 
     public function actions(Transaction $row): array
     {
+
+      
+
         return [
             Button::add('edit')
                 ->slot('Edit')
@@ -115,25 +130,38 @@ final class PGTransactionTable extends PowerGridComponent
                 ->slot('Hapus')
                 ->id()
                 ->class('btn btn-danger')
-                ->dispatch('deleteTransactionConfirm', ['transaction' => $row]),
+                ->dispatch('deleteTransactionConfirm', ['transaction' => $row])
+                ,
         ];
     }
 
     public function toRupiah($amount)
     {
 
-        return 'Rp '.number_format($amount, 0, ',', '.');
+        return 'Rp ' . number_format($amount, 0, ',', '.');
     }
-
-    /*
+    
     public function actionRules($row): array
     {
+
+      
        return [
             // Hide button edit for ID 1
-            Rule::button('edit')
-                ->when(fn($row) => $row->id === 1)
-                ->hide(),
+            Rule::button('remove')
+            ->when(
+                fn() => !in_array(11, session('privileges')) && !in_array(7, session('privileges')) 
+               )
+                ->disable(),
+
+
+                Rule::button('edit')
+                ->when(
+                    fn() => !in_array(6, session('privileges')) && !in_array(10, session('privileges')) 
+                    )
+                     ->disable(),
+
+                     
         ];
     }
-    */
+    
 }

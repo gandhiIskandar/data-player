@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         //middleware buatan
         'customer.service' => \App\Http\Middleware\CustomerService::class,
         'admin.or.marketing' => \App\Http\Middleware\Admin::class,
+        'super.admin' => \App\Http\Middleware\SuperAdmin::class,
     ];
 }

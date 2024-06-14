@@ -1,10 +1,10 @@
-<div>
+<div class="row">
 
     <div class="col-lg-6">
        
         <div class="card">
           <div class="card-header">
-            <h5>Input Label Alignment</h5>
+            <h5>Edit Data Profile</h5>
           </div>
           <div class="card-body">
             <x-partials.flash-message />
@@ -13,14 +13,14 @@
               <div class="mb-3 row">
                 <label class="col-lg-4 col-form-label text-lg-end">Name:</label>
                 <div class="col-lg-6">
-                  <input type="text" class="form-control" wire:model='name' placeholder="Enter full name" />
+                  <input type="text" class="form-control" wire:model='name' placeholder="Enter full name" {{ in_array(2,session('privileges')) ? "" : "disabled" }}/>
                   {{-- <small class="form-text text-muted">Please enter your full name</small> --}}
                 </div>
               </div>
               <div class="mb-3 row">
                 <label class="col-lg-4 col-form-label text-lg-end">Email:</label>
                 <div class="col-lg-6">
-                  <input type="email" class="form-control" wire:model='email' placeholder="Enter email" />
+                  <input type="email" class="form-control" wire:model='email' placeholder="Enter email" {{ in_array(2,session('privileges')) ? "" : "disabled" }}/>
                   {{-- <small class="form-text text-muted">Please enter your Email</small> --}}
                 </div>
               </div>
@@ -33,28 +33,25 @@
                   {{-- <small class="form-text text-muted">Please enter your Final Degree</small> --}}
                 </div>
               </div>
-              {{-- <div class="mb-3 row">
-                <label class="col-lg-4 col-form-label text-lg-end">Passing Year</label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" placeholder="Enter Passing Year" />
-                </div>
-              </div>
-             --}}
+
+          
               <div class="row mt-3">
+            
                 <div class="col-6 text-center">
                     <button 
                     data-pc-animate="fade-in-scale"
                     type="button"
                     class="btn btn-info"
                     data-bs-toggle="modal"
-                    data-bs-target="#changePassword" style="width: 200px;" type="button">Ganti Password</button>
+                    data-bs-target="#changePassword" style="width: 200px;" type="button" {{ in_array(1,session('privileges')) ? "" : "disabled" }}>Ganti Password</button>
                 
                 </div>
+               
                 <div class="col-6 text-center">
                     <button 
                     data-pc-animate="fade-in-scale"
                     type="submit"
-                    class="btn btn-primary" style="width: 200px;" type="button">Update Data</button>
+                    class="btn btn-primary" style="width: 200px;" type="button" {{ in_array(2,session('privileges')) ? "" : "disabled" }}>Update Data</button>
                 
                 </div>
               </div>

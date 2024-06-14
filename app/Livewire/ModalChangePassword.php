@@ -2,35 +2,35 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Rule;
+use Livewire\Component;
 
 class ModalChangePassword extends Component
 {
-
     #[Rule(['required'])]
-    public string $password='';
+    public string $password = '';
 
     #[Rule(['required', 'email'])]
     public string $email = '';
 
     #[Rule(['required'])]
-    public $newPassword='';
+    public $newPassword = '';
 
     #[Rule(['required'])]
-    public $confirmPassword='';
+    public $confirmPassword = '';
 
     public function render()
     {
         return view('livewire.modal-change-password');
     }
 
-    public function changePassword(){
+    public function changePassword()
+    {
 
-        if($this->newPassword != $this->confirmPassword){
-            flash("Password tidak sama, mohon periksa kembali", 'alert-danger');
+        if ($this->newPassword != $this->confirmPassword) {
+            flash('Password tidak sama, mohon periksa kembali', 'alert-danger');
 
             return null;
         }
@@ -38,13 +38,12 @@ class ModalChangePassword extends Component
 
         $this->email = $user->email; // ambil email dari data user agar digunakan untuk Auth attempt, karena wajib menggunakan email dan password
 
+        if (Auth::attempt([
+            'email' => $this->email,
+            'password' => $this->password,
+        ])) {
 
-        if(Auth::attempt([
-            'email'  => $this->email,
-            'password' =>$this->password
-        ])){
-
-           $user = User::find($user->id);
+            $user = User::find($user->id);
 
             $user->password = bcrypt($this->newPassword);
 
@@ -52,11 +51,11 @@ class ModalChangePassword extends Component
 
             $this->reset();
 
-            flash("Berhasil ganti password", "alert-success");
+            flash('Berhasil ganti password', 'alert-success');
 
-        }else{
+        } else {
 
-            flash("Mohon periksa kembali password lama", "alert-danger");
+            flash('Mohon periksa kembali password lama', 'alert-danger');
 
         }
     }

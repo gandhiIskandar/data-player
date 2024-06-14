@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     @stack('css')
-    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
@@ -56,6 +56,14 @@
         </div>
     </div> --}}
     <!-- [ Pre-loader ] End -->
+
+    @php
+
+        $priv = session('privileges') ?? [];
+
+        //solusi sementara privilege
+
+    @endphp
     <!-- [ Sidebar Menu ] start -->
     @include('components.partials.navbar')
 
@@ -65,7 +73,7 @@
     <!-- [ Header ] end -->
 
     <!-- [ Main Content ] start -->
-    <div class="pc-container" >
+    <div class="pc-container">
         <div class="pc-content">
             <!-- [ breadcrumb ] start -->
             <div class="page-header">
@@ -157,7 +165,7 @@
         preset_change('preset-1');
     </script>
 
-@livewireScripts
+    @livewireScripts
 
 </body>
 <!-- [Body] end -->

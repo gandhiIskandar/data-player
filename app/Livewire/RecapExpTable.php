@@ -2,16 +2,15 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\Expenditure;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class RecapExpTable extends Component
 {
-
     public $expenditures;
 
     public $rekap_type = 1;
@@ -34,8 +33,7 @@ class RecapExpTable extends Component
     public function render()
     {
         $this->getData();
-      //  dd($this->expenditures);
-
+        //  dd($this->expenditures);
 
         return view('livewire.recap-exp-table');
     }
@@ -43,7 +41,7 @@ class RecapExpTable extends Component
     public function toRupiah($amount)
     {
 
-        return 'Rp ' . number_format($amount, 0, ',', '.');
+        return 'Rp '.number_format($amount, 0, ',', '.');
     }
 
     #[On('expCreated')]
@@ -60,8 +58,6 @@ class RecapExpTable extends Component
         $this->rekap_type = $type;
 
         $this->getData();
-
-
 
         $this->dispatch('returnDataExp', expenditures: $this->expenditures);
     }
@@ -80,9 +76,8 @@ class RecapExpTable extends Component
             DB::raw($timeCostum),
             DB::raw('CAST(SUM(amount) AS SIGNED) as total_amount'),
 
-            //jika role_id = 2 maka akan masukan Marketing di column role(column role adalah column buatan sendiri dan tidak ada di tabel) selain dari itu maka akan cetak admin 
+            //jika role_id = 2 maka akan masukan Marketing di column role(column role adalah column buatan sendiri dan tidak ada di tabel) selain dari itu maka akan cetak admin
             $user->role_id == 2 ? DB::raw('"Marketing" as role') : DB::raw('"Admin" as role ')
-
 
         )
             ->groupBy('date');
@@ -173,7 +168,7 @@ class RecapExpTable extends Component
 
         $this->expenditures->map(function ($value) {
 
-            $parsed = Carbon::parse('1-' . $value->date);
+            $parsed = Carbon::parse('1-'.$value->date);
             $formatBulanTahun = $parsed->translatedFormat('F Y');
 
             $value->date = $formatBulanTahun;

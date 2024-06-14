@@ -17,7 +17,9 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5>Log Transaksi</h5>
+                    @if (in_array(5, session('privileges')) || in_array(9, session('privileges')))
                     <button wire:click='$dispatch("showModalNonEditState")' type="button" class="btn btn-primary"  style="width: 200px;" type="button">Tambah Transaksi</button>
+                    @endif
                 </div>
                 {{-- <div class="d-flex align-items-center">
     

@@ -69,7 +69,10 @@ class Dashboard extends Component
 
     public function getTodoList()
     {
-        $this->tasks = Task::all();
+
+        $user = session('user_data');
+
+        $this->tasks = Task::where('user_id', $user->id)->get();
     }
 
     public function updateTask()

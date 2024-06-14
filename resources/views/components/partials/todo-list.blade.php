@@ -1,6 +1,6 @@
 @props(['tasks'])
 
-<div class="col-xl-4 col-md-12">
+<div class="col-sm-4">
     <div class="card">
       <div class="card-header">
         <h5>To Do List</h5>

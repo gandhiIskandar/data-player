@@ -16,10 +16,13 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5>Log Transaksi</h5>
-                        <button wire:click='$dispatch("showModalNonEditStateCashBook")' type="button" class="btn btn-primary"
-                            style="width: 200px;" type="button">Tambah Catatan Kas</button>
+
+                        @if (in_array(17, session('privileges')))
+                            <button wire:click='$dispatch("showModalNonEditStateCashBook")' type="button"
+                                class="btn btn-primary" style="width: 200px;" type="button">Tambah Catatan Kas</button>
+                        @endif
                     </div>
-                
+
                 </div>
                 <div class="card-body">
 
@@ -29,7 +32,7 @@
             </div>
         </div>
     @else
-    <livewire:recap-cashbook-table />
+        <livewire:recap-cashbook-table />
     @endif
     <livewire:modal-input-kas />
 </div>

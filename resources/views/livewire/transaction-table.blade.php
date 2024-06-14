@@ -4,8 +4,11 @@
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5>Log Transaksi</h5>
-                <button data-pc-animate="fade-in-scale" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#animateModal" style="width: 200px;" type="button">Tambah Transaksi</button>
+
+                @if (in_array(5, session('privileges')) || in_array(9, session('privileges')))
+                    <button data-pc-animate="fade-in-scale" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#animateModal" style="width: 200px;" type="button">Tambah Transaksi</button>
+                @endif
             </div>
             <div class="d-flex align-items-center">
 
@@ -15,9 +18,9 @@
             </div>
         </div>
         <div class="card-body">
-            
-            
-           
+
+
+
         </div>
     </div>
 </div>
@@ -29,7 +32,7 @@
         <script>
             $(function() {
                 var table = $('#dom-jqry').DataTable({
-                    responsive:true,
+                    responsive: true,
                     "order": [],
                     "columnDefs": [{
                         className: 'dt-center',
@@ -53,7 +56,7 @@
                     ]
                 });
 
-                
+
 
 
                 $('input[name="dates"]').daterangepicker({
@@ -68,7 +71,7 @@
 
                 $wire.on('filterTable', (data) => {
 
-                 
+
 
                     table.clear().draw();
 
@@ -99,7 +102,7 @@
 
                 $wire.on('localan', (data) => {
 
-                  
+
 
 
                     table.clear().draw();

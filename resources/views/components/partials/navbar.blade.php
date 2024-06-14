@@ -1,3 +1,6 @@
+
+
+
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
         <div class="m-header">
@@ -44,62 +47,80 @@
         <div class="navbar-content">
             <ul class="pc-navbar">
 
-                @can('customerService')
-                    <li class="pc-item {{ request()->is('dashboard') ? 'active' : '' }}">
-                        <a href="/dashboard" class="pc-link">
-                            <span class="pc-micon">
-                                <i class="ph-duotone ph-gauge"></i>
-                            </span>
-                            <span class="pc-mtext">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="pc-item {{ request()->is('transactions') ? 'active' : '' }}">
-                        <a href="/transactions" class="pc-link">
-                            <span class="pc-micon">
-                                <i class="ph-duotone ph-money"></i>
-                            </span>
-                            <span class="pc-mtext">Transaksi</span>
-                        </a>
-                    </li>
-                    <li class="pc-item {{ request()->is('members') ? 'active' : '' }}">
-                        <a href="/members" class="pc-link">
-                            <span class="pc-micon">
-                                <i class="ph-duotone ph-user"></i>
-                            </span>
-                            <span class="pc-mtext">Member</span>
-                        </a>
-                    </li>
-                    <li class="pc-item {{ request()->is('cashbooks') ? 'active' : '' }}">
-                        <a href="/cashbooks" class="pc-link">
-                            <span class="pc-micon">
-                                <i class="ph-duotone ph-book"></i>
-                            </span>
-                            <span class="pc-mtext">Kas</span>
-                        </a>
-                    </li>
+
+               @if(in_array(3,$priv))
+                <li class="pc-item {{ request()->is('dashboard') ? 'active' : '' }}">
+                    <a href="/dashboard" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-gauge"></i>
+                        </span>
+                        <span class="pc-mtext">Dashboard</span>
+                    </a>
+                </li>
+                @endif
+                @if(in_array(4,$priv)||in_array(9,$priv))
+                <li class="pc-item {{ request()->is('transactions') ? 'active' : '' }}">
+                    <a href="/transactions" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-money"></i>
+                        </span>
+                        <span class="pc-mtext">Transaksi</span>
+                    </a>
+                </li>
+                @endif
+                @if(in_array(13,$priv))
+                <li class="pc-item {{ request()->is('members') ? 'active' : '' }}">
+                    <a href="/members" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-user"></i>
+                        </span>
+                        <span class="pc-mtext">Member</span>
+                    </a>
+                </li>
+                @endif
+                @if(in_array(16,$priv))
+                <li class="pc-item {{ request()->is('cashbooks') ? 'active' : '' }}">
+                    <a href="/cashbooks" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-book"></i>
+                        </span>
+                        <span class="pc-mtext">Kas</span>
+                    </a>
+                </li>
+                @endif
+
+                @if(in_array(20,$priv))
+                <li class="pc-item {{ request()->is('expenditures') ? 'active' : '' }}">
+                    <a href="/expenditures" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-book"></i>
+                        </span>
+                        <span class="pc-mtext">Pengeluaran</span>
+                    </a>
+                </li>
+                @endif
+
+                @can('superAdmin')
+                <li class="pc-item {{ request()->is('users') ? 'active' : '' }}">
+                    <a href="/users" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-users"></i>
+                        </span>
+                        <span class="pc-mtext">Users</span>
+                    </a>
+                </li>
                 @endcan
 
-
-                @can('marketingOrAdmin')
-                    <li class="pc-item {{ request()->is('expenditures') ? 'active' : '' }}">
-                        <a href="/expenditures" class="pc-link">
-                            <span class="pc-micon">
-                                <i class="ph-duotone ph-book"></i>
-                            </span>
-                            <span class="pc-mtext">Pengeluaran</span>
-                        </a>
-                    </li>
-                @endcan
-
-                
+                @if(in_array(1,$priv)||in_array(2,$priv))
                 <li class="pc-item {{ request()->is('account-setting') ? 'active' : '' }}">
-                  <a href="/account_setting" class="pc-link">
-                      <span class="pc-micon">
-                          <i class="ph-duotone ph-user-circle-gear"></i>
-                      </span>
-                      <span class="pc-mtext">Setting Akun</span>
-                  </a>
-              </li>
+                    <a href="/account_setting" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-user-circle-gear"></i>
+                        </span>
+                        <span class="pc-mtext">Setting Akun</span>
+                    </a>
+                </li>
+                @endif
 
             </ul>
             {{-- <div class="card nav-action-card">

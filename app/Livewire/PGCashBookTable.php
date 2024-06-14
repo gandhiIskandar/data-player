@@ -15,6 +15,7 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
+use PowerComponents\LivewirePowerGrid\Facades\Rule;
 
 final class PGCashBookTable extends PowerGridComponent
 {
@@ -132,15 +133,19 @@ final class PGCashBookTable extends PowerGridComponent
         return 'Rp '.number_format($amount, 0, ',', '.');
     }
 
-    /*
+    
     public function actionRules($row): array
     {
        return [
             // Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($row) => $row->id === 1)
-                ->hide(),
+                ->when(fn() => !in_array(18,session('privileges')))
+                ->disable(),
+
+                Rule::button('remove')
+                ->when(fn() => !in_array(19,session('privileges')))
+                ->disable()
         ];
     }
-    */
+    
 }

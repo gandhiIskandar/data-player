@@ -4,8 +4,10 @@
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5>Data Rekap Transaksi</h5>
-                <button data-pc-animate="fade-in-scale" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#animateModal" style="width: 200px;" type="button">Tambah Transaksi</button>
+                @if (in_array(5, session('privileges')) || in_array(9, session('privileges')))
+                    <button data-pc-animate="fade-in-scale" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#animateModal" style="width: 200px;" type="button">Tambah Transaksi</button>
+                    @if (in_array(5, session('privileges')) || in_array(9, session('privileges')))
             </div>
             <div class="d-flex align-items-center">
 
@@ -23,69 +25,69 @@
                 <p style="margin: 0px !important" class="{{ $rekap_type != 1 ? 'd-none' : '' }}">Range tanggal</p>
                 <input type="text" class="form-control w-auto ms-3 {{ $rekap_type != 1 ? 'd-none' : '' }}"
                     id="dates" />
-                    <p style="margin: 0px !important" class="{{ $rekap_type != 2 ? 'd-none' : '' }}">Dari</p>
+                <p style="margin: 0px !important" class="{{ $rekap_type != 2 ? 'd-none' : '' }}">Dari</p>
                 <input id="month1" class="form-control w-auto ms-3 me-4 {{ $rekap_type != 2 ? 'd-none' : '' }}"
                     type="text" />
-                    <p style="margin: 0px !important" class="{{ $rekap_type != 2 ? 'd-none' : '' }}">Sampai</p>
+                <p style="margin: 0px !important" class="{{ $rekap_type != 2 ? 'd-none' : '' }}">Sampai</p>
                 <input id="month2" class="form-control w-auto ms-3 {{ $rekap_type != 2 ? 'd-none' : '' }}"
                     type="text" />
 
             </div>
         </div>
         <div class="card-body" wire:ignore>
-           
-                <table id="dom-jqry1" class="table table-striped table-bordered nowrap" style="width: 100%">
-                    <thead>
+
+            <table id="dom-jqry1" class="table table-striped table-bordered nowrap" style="width: 100%">
+                <thead>
+                    <tr>
+
+                        <th rowspan="2" width="5%" style="font-size: 10px;">No</th>
+                        <th rowspan="2" style="font-size: 10px;">Tanggal</th>
+                        <th style="font-size: 10px; text-align:center !important" data-dt-order="disable"
+                            colspan="2">Total Deposit</th>
+                        <th colspan="2" style="font-size: 10px;  text-align:center !important  "
+                            data-dt-order="disable">Total New Deposit</th>
+                        <th colspan="2" style="font-size: 10px;  text-align:center !important"
+                            data-dt-order="disable">Total Re-deposit</th>
+                        <th colspan="2" style="font-size: 10px;  text-align:center !important"
+                            data-dt-order="disable">Total Withdraw</th>
+                        <th style="font-size: 10px;  text-align:center !important" data-dt-order="disable">Deposit -
+                            Withdraw</th>
+                    </tr>
+                    <tr>
+
+                        <th style="font-size: 10px;">Form Deposit</th>
+                        <th style="font-size: 10px;">Jumlah Deposit</th>
+                        <th style="font-size: 10px;">Form New Deposit</th>
+                        <th style="font-size: 10px;">Jumlah New Deposit</th>
+                        <th style="font-size: 10px;">Form Re-deposit</th>
+                        <th style="font-size: 10px;">Jumlah Re-deposit</th>
+                        <th style="font-size: 10px;">Form Withdraw</th>
+                        <th style="font-size: 10px;">Jumlah Withdraw</th>
+                        <th style="font-size: 10px;">Jumlah Deposit-Withdraw</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($transactions as $transaction)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $transaction->date }}</td>
+                            <td>{{ $transaction->forms_deposit }}</td>
+                            <td>{{ $transaction->total_deposit }}</td>
+                            <td>{{ $transaction->forms_new_deposit }}</td>
+                            <td>{{ $transaction->total_new_deposit }}</td>
+                            <td>{{ $transaction->forms_redeposit }}</td>
+                            <td>{{ $transaction->total_redeposit }}</td>
+                            <td>{{ $transaction->forms_withdraw }}</td>
+                            <td>{{ $transaction->total_withdraw }}</td>
+                            <td>{{ $transaction->dkw }}</td>
 
-                            <th rowspan="2" width="5%" style="font-size: 10px;">No</th>
-                            <th rowspan="2" style="font-size: 10px;">Tanggal</th>
-                            <th style="font-size: 10px; text-align:center !important" data-dt-order="disable"
-                                colspan="2">Total Deposit</th>
-                            <th colspan="2" style="font-size: 10px;  text-align:center !important  "
-                                data-dt-order="disable">Total New Deposit</th>
-                            <th colspan="2" style="font-size: 10px;  text-align:center !important"
-                                data-dt-order="disable">Total Re-deposit</th>
-                            <th colspan="2" style="font-size: 10px;  text-align:center !important"
-                                data-dt-order="disable">Total Withdraw</th>
-                            <th style="font-size: 10px;  text-align:center !important" data-dt-order="disable">Deposit -
-                                Withdraw</th>
                         </tr>
-                        <tr>
+                    @endforeach
 
-                            <th style="font-size: 10px;">Form Deposit</th>
-                            <th style="font-size: 10px;">Jumlah Deposit</th>
-                            <th style="font-size: 10px;">Form New Deposit</th>
-                            <th style="font-size: 10px;">Jumlah New Deposit</th>
-                            <th style="font-size: 10px;">Form Re-deposit</th>
-                            <th style="font-size: 10px;">Jumlah Re-deposit</th>
-                            <th style="font-size: 10px;">Form Withdraw</th>
-                            <th style="font-size: 10px;">Jumlah Withdraw</th>
-                            <th style="font-size: 10px;">Jumlah Deposit-Withdraw</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($transactions as $transaction)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $transaction->date }}</td>
-                                <td>{{ $transaction->forms_deposit }}</td>
-                                <td>{{ $transaction->total_deposit }}</td>
-                                <td>{{ $transaction->forms_new_deposit }}</td>
-                                <td>{{ $transaction->total_new_deposit }}</td>
-                                <td>{{ $transaction->forms_redeposit }}</td>
-                                <td>{{ $transaction->total_redeposit }}</td>
-                                <td>{{ $transaction->forms_withdraw }}</td>
-                                <td>{{ $transaction->total_withdraw }}</td>
-                                <td>{{ $transaction->dkw }}</td>
+                </tbody>
 
-                            </tr>
-                        @endforeach
+            </table>
 
-                    </tbody>
-
-                </table>
-            
         </div>
     </div>
 </div>
@@ -117,14 +119,14 @@
 
                 $('#rekap_type').on('change', function() {
 
-                    
+
 
                     var selectedValue = $(this).val();
                     $wire.dispatch('changeType', [selectedValue]);
                 });
 
                 var table = $('#dom-jqry1').DataTable({
-                    "responsive":true,
+                    "responsive": true,
                     "order": [],
                     "columnDefs": [{
                         className: 'dt-center',
@@ -150,7 +152,7 @@
 
                 $wire.on('returnData', (data) => {
 
-                   
+
 
                     table.clear().draw();
 
@@ -232,15 +234,15 @@
 
             }
 
-            function setDefaultMonth(){
-                  // Mendapatkan bulan dan tahun saat ini
-            const now = new Date();
-            const month = String(now.getMonth() + 1).padStart(2, '0'); // Menggunakan padStart untuk memastikan dua digit
-            const year = now.getFullYear();
+            function setDefaultMonth() {
+                // Mendapatkan bulan dan tahun saat ini
+                const now = new Date();
+                const month = String(now.getMonth() + 1).padStart(2, '0'); // Menggunakan padStart untuk memastikan dua digit
+                const year = now.getFullYear();
 
-            // Mengatur nilai input dengan format MM-YYYY
-            $('#month1').val(`${month}-${year}`);
-            $('#month2').val(`${month}-${year}`);
+                // Mengatur nilai input dengan format MM-YYYY
+                $('#month1').val(`${month}-${year}`);
+                $('#month2').val(`${month}-${year}`);
             }
         </script>
     @endscript

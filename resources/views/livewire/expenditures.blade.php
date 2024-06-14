@@ -29,8 +29,11 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5>Log Transaksi</h5>
-                        <button wire:click='$dispatch("showModalNonEditStateExp")' type="button" class="btn btn-primary"
-                            style="width: 200px;" type="button">Tambah Catatan Pengeluaran</button>
+                        @if (in_array(21, session('privileges')))
+                            <button wire:click='$dispatch("showModalNonEditStateExp")' type="button"
+                                class="btn btn-primary" style="width: 200px;" type="button">Tambah Catatan
+                                Pengeluaran</button>
+                        @endif
                     </div>
 
                 </div>
@@ -56,7 +59,7 @@
     @script
         <script>
             $(document).ready(function() {
-               
+
             });
         </script>
     @endscript

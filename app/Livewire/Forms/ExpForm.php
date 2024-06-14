@@ -28,7 +28,7 @@ class ExpForm extends Form
                 'user_id' => $user->id,
                 'detail' => $this->detail,
                 'amount' => $this->amount,
-                'account_id' => $this->account_id
+                'account_id' => $this->account_id,
 
             ]);
             $this->reset();

@@ -1,6 +1,7 @@
 <div class="row">
 
     @php
+
         $totalDepo = $totalTransaksi->total_new_depo + $totalTransaksi->total_re_depo;
         $totalProfit = $totalDepo - $totalTransaksi->total_wd;
     @endphp
@@ -18,21 +19,21 @@
         :currency="true">Total Withdraw</x-partials.data-card>
 
     <x-partials.data-card :data="$totalProfit" date="Hari ini" icon="ph-duotone ph-chart-bar" color="bg-light-success"
-        :currency="true">Total Profit</x-partials.data-card>
+        :currency="true">Total Profit</x-partials.data-card> 
 
     <x-partials.todo-list :tasks="$tasks" />
 
-    <div class="col-xl-8 col-md-12">
+    <div class="col-sm-8" wire:ignore>
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5>Data Transaksi Harian</h5>
-                    <button 
-                    data-pc-animate="fade-in-scale"
-                    type="button"
-                    class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#animateModal" style="width: 200px;" type="button">Tambah Transaksi</button>
+
+                    @if (in_array(5, session('privileges')) || in_array(9, session('privileges')))
+                        <button data-pc-animate="fade-in-scale" type="button" class="btn btn-primary"
+                            data-bs-toggle="modal" data-bs-target="#animateModal" style="width: 200px;"
+                            type="button">Tambah Transaksi</button>
+                    @endif
                 </div>
             </div>
             <div class="card-body">
@@ -78,7 +79,9 @@
 
     <livewire:modal-input />
 
-    
+</div>
+
+
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/dataTables.bootstrap5.min.css') }}" />
     <link href="{{ asset('assets/css/plugins/animate.min.css') }}" rel="stylesheet" type="text/css" />

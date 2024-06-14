@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->foreignId('user_id');
-            $table->boolean('is_completed')->default(false);
-            $table->timestamp('finished_at')->nullable()->default(null);
+        Schema::create('user_privileges', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('privilege_id')->constrained('privileges')->onDelete('cascade');
             $table->timestamps();
+            $table->primary(['user_id', 'privilege_id']);
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        //
     }
 };

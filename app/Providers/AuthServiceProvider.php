@@ -24,9 +24,15 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+    
+
         // Definisikan gate untuk tindakan 'view-dashboard'
         Gate::define('customerService', function ($user) {
             return $user->role_id == '1' || $user->role_id == '4';
+        });
+
+        Gate::define('superAdmin',function($user){
+            return $user->role_id == '4';
         });
 
         Gate::define('marketingOrAdmin', function ($user) {

@@ -8,6 +8,7 @@ use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
 use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Facades\Rule;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
@@ -52,7 +53,6 @@ final class PGMemberTable extends PowerGridComponent
             ->add('phone_number')
             ->add('total_depo', fn ($member) => $this->toRupiah($member->total_depo))
             ->add('depo_wd', fn ($member) => $this->toRupiah($member->total_depo - $member->total_wd));
-
     }
 
     public function columns(): array
@@ -83,8 +83,7 @@ final class PGMemberTable extends PowerGridComponent
 
     public function filters(): array
     {
-        return [
-        ];
+        return [];
     }
 
     // #[\Livewire\Attributes\On('edit')]
@@ -97,7 +96,6 @@ final class PGMemberTable extends PowerGridComponent
     {
 
         $this->js('connfirmation("Yakin ingin hapus member ini?")');
-
     }
 
     #[\Livewire\Attributes\On('reloadPowerGridMember')]
@@ -106,7 +104,6 @@ final class PGMemberTable extends PowerGridComponent
 
         //untuk refresh data
         $this->fillData();
-
     }
 
     #[\Livewire\Attributes\On('removeMember')]
@@ -115,7 +112,6 @@ final class PGMemberTable extends PowerGridComponent
 
         $member = Member::find($member_id);
         $member->delete();
-
     }
 
     public function actions(Member $row): array
@@ -138,18 +134,21 @@ final class PGMemberTable extends PowerGridComponent
     public function toRupiah($amount)
     {
 
-        return 'Rp '.number_format($amount, 0, ',', '.');
+        return 'Rp ' . number_format($amount, 0, ',', '.');
     }
 
-    /*
+
     public function actionRules($row): array
     {
-       return [
+        return [
             // Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($row) => $row->id === 1)
-                ->hide(),
+                ->when(fn () => !in_array(14, session('privileges')))
+                ->disable(),
+
+            Rule::button('remove')
+                ->when(fn () => !in_array(15, session('privileges')))
+                ->disable()
         ];
     }
-    */
 }

@@ -7,6 +7,8 @@ namespace Database\Seeders;
 use App\Models\Account;
 use App\Models\Expenditure;
 use App\Models\Member;
+use App\Models\Privilege;
+use App\Models\PrivilegeType;
 use App\Models\Role;
 use App\Models\Task;
 use App\Models\Transaction;
@@ -27,6 +29,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        $this->generatePrivileges();
         $this->generateUserandRole();
         $this->generateAccount();
         $this->generateType();
@@ -34,7 +37,7 @@ class DatabaseSeeder extends Seeder
         Member::factory(20)->create();
         Transaction::factory(30)->create();
         Expenditure::factory(15)->create();
-        Task::factory(10)->create();
+        Task::factory(25)->create();
     }
 
     public function generateUserandRole()
@@ -52,12 +55,14 @@ class DatabaseSeeder extends Seeder
 
             //factory user
 
-            User::factory()->create([
+         $user =   User::factory()->create([
                 'name' => $role,
-                'email' => str_replace(' ', '', $role).'@gmail.com',
+                'email' => str_replace(' ', '', $role) . '@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => $iteration,
             ]);
+
+            $user->privileges()->sync([2,3,4]);
 
             $iteration = $iteration + 1;
         }
@@ -84,6 +89,75 @@ class DatabaseSeeder extends Seeder
             Type::factory()->create([
                 'name' => $type,
             ]);
+        }
+    }
+
+    public function generatePrivileges()
+    {
+
+        $p_types = ["Account", "Service", "Member", "Pembukuan Kas", "Pengeluaran"];
+
+        //type = 1 id 1-3
+        $privilegeAccount = ["Ganti Password", "Edit User Data", "Lihat Dashboard"];
+        //end type 1
+
+
+
+        //type = 2 id 4-12
+        $privilegeService = ["Lihat Deposit", "Catat Deposit", "Edit Deposit", "Hapus Deposit", "Lihat Withdraw", "Catat Withdraw", "Edit Withdraw", "Hapus Withdraw", "Live Chat"];
+        //end type 2
+
+        //ketika catat deposit atau wd sudah bisa tambah user
+
+        //type = 3 id 13-15
+        $privilegeMember = ["Lihat Member", "Update Data Member", "Hapus Member"];
+        //end type 3
+
+        //type = 4 id 16-19
+        $privilegePembukuanKas = ["Lihat Kas", "Catat Kas", "Edit Kas", "Hapus Kas"];
+        //end type 4
+
+        //type = 5 id 20-23
+        $privilegePengeluaran = ["Lihat Pengeluaran", "Catat Pengeluaran", "Edit Pegeluaran", "Hapus Pengeluaran"];
+        //end type 5
+
+        $iteration = 1;
+
+        foreach ($p_types as $type) {
+            PrivilegeType::create([
+                "name" => $type
+            ]);
+
+            $x = null;
+
+
+            switch ($iteration) {
+                case 1:
+                    $x = $privilegeAccount;
+                    break;
+                case 2:
+                    $x = $privilegeService;
+                    break;
+                case 3:
+                    $x = $privilegeMember;
+                    break;
+                case 4:
+                    $x = $privilegePembukuanKas;
+                    break;
+                case 5:
+                    $x = $privilegePengeluaran;
+                    break;
+            }
+
+
+            foreach ($x as $item) {
+                Privilege::create([
+                    "name" => $item,
+                    "privilege_type_id" => $iteration
+                ]);
+            }
+
+            $iteration++;
         }
     }
 }
