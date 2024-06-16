@@ -7,7 +7,7 @@
                 @if (in_array(5, session('privileges')) || in_array(9, session('privileges')))
                     <button data-pc-animate="fade-in-scale" type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#animateModal" style="width: 200px;" type="button">Tambah Transaksi</button>
-                    @if (in_array(5, session('privileges')) || in_array(9, session('privileges')))
+                   @endif
             </div>
             <div class="d-flex align-items-center">
 
