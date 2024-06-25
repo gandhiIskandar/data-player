@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,5 +31,20 @@ class AppServiceProvider extends ServiceProvider
             return "Rp <?php echo number_format($expression,0,',','.');?>";
         });
 
+
+
+
+        View::composer('*', function ($view) {
+            if(Auth::user()){
+
+                $user = session('user_data');
+            $user = User::with('privileges')->find($user->id);
+
+            session()->put('privileges', $user->privileges->pluck('id')->toArray());
+
+
+            }
+            
+        });
     }
 }

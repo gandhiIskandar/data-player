@@ -89,7 +89,7 @@ class ModalInput extends Component
 
         flash('Data transaksi berhasil diubah', 'alert-success');
 
-        $this->dispatch('reloadPowerGridTransaction');
+        $this->dispatch('reloadTransaction');
 
     }
 
@@ -123,7 +123,7 @@ class ModalInput extends Component
 
         $this->reduceSumMember($transaction->member, $transaction->type_id, $transaction->amount);
 
-        $this->dispatch('reloadPowerGridTransaction');
+        $this->dispatch('reloadTransaction');
 
     }
 
@@ -154,7 +154,7 @@ class ModalInput extends Component
             $transaction = $this->form->create();
         }
 
-        $this->dispatch('reloadPowerGridTransaction');
-        $this->dispatch('transactionCreated');
+        // $this->dispatch('reloadPowerGridTransaction');
+        $this->dispatch('reloadTransaction');
     }
 }

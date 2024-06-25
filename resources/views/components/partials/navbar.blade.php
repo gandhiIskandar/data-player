@@ -1,6 +1,3 @@
-
-
-
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
         <div class="m-header">
@@ -23,22 +20,29 @@
                     <h4 class="mb-0">Jonh Smith</h4>
                     <span>Administrator</span>
                     <ul>
-                        <li><a class="pc-user-links">
+                        <li><a class="pc-user-links" href="/account_setting">
                                 <i class="ph-duotone ph-user"></i>
                                 <span>My Account</span>
                             </a></li>
-                        <li><a class="pc-user-links">
+                        {{-- <li><a class="pc-user-links">
                                 <i class="ph-duotone ph-gear"></i>
                                 <span>Settings</span>
-                            </a></li>
-                        <li><a class="pc-user-links">
+                            </a></li> --}}
+                        {{-- <li><a class="pc-user-links">
                                 <i class="ph-duotone ph-lock-key"></i>
                                 <span>Lock Screen</span>
-                            </a></li>
-                        <li><a class="pc-user-links">
-                                <i class="ph-duotone ph-power"></i>
-                                <span>Logout</span>
-                            </a>
+                            </a></li> --}}
+
+                        <li>
+                            <form action="/logout" method="POST">
+                                @csrf
+                                <button type="submit" class="bg-transparent border-0 m-0 p-0 w-100">
+                                <a class="pc-user-links">
+                                    <i class="ph-duotone ph-power"></i>
+                                    <span>Logout</span>
+                                </a>
+                            </button>
+                            </form>
                         </li>
                     </ul>
                 </div>
@@ -48,78 +52,78 @@
             <ul class="pc-navbar">
 
 
-               @if(in_array(3,$priv))
-                <li class="pc-item {{ request()->is('dashboard') ? 'active' : '' }}">
-                    <a href="/dashboard" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ph-duotone ph-gauge"></i>
-                        </span>
-                        <span class="pc-mtext">Dashboard</span>
-                    </a>
-                </li>
+                @if (privilegeViewDashboard())
+                    <li class="pc-item {{ request()->is('dashboard') ? 'active' : '' }}">
+                        <a href="/dashboard" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ph-duotone ph-gauge"></i>
+                            </span>
+                            <span class="pc-mtext">Dashboard</span>
+                        </a>
+                    </li>
                 @endif
-                @if(in_array(4,$priv)||in_array(9,$priv))
-                <li class="pc-item {{ request()->is('transactions') ? 'active' : '' }}">
-                    <a href="/transactions" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ph-duotone ph-money"></i>
-                        </span>
-                        <span class="pc-mtext">Transaksi</span>
-                    </a>
-                </li>
+                @if (privilegeViewTransaction())
+                    <li class="pc-item {{ request()->is('transactions') ? 'active' : '' }}">
+                        <a href="/transactions" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ph-duotone ph-money"></i>
+                            </span>
+                            <span class="pc-mtext">Transaksi</span>
+                        </a>
+                    </li>
                 @endif
-                @if(in_array(13,$priv))
-                <li class="pc-item {{ request()->is('members') ? 'active' : '' }}">
-                    <a href="/members" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ph-duotone ph-user"></i>
-                        </span>
-                        <span class="pc-mtext">Member</span>
-                    </a>
-                </li>
+                @if (privilegeViewMember())
+                    <li class="pc-item {{ request()->is('members') ? 'active' : '' }}">
+                        <a href="/members" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ph-duotone ph-user"></i>
+                            </span>
+                            <span class="pc-mtext">Member</span>
+                        </a>
+                    </li>
                 @endif
-                @if(in_array(16,$priv))
-                <li class="pc-item {{ request()->is('cashbooks') ? 'active' : '' }}">
-                    <a href="/cashbooks" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ph-duotone ph-book"></i>
-                        </span>
-                        <span class="pc-mtext">Kas</span>
-                    </a>
-                </li>
+                @if (privilegeViewCashBook())
+                    <li class="pc-item {{ request()->is('cashbooks') ? 'active' : '' }}">
+                        <a href="/cashbooks" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ph-duotone ph-book"></i>
+                            </span>
+                            <span class="pc-mtext">Kas</span>
+                        </a>
+                    </li>
                 @endif
 
-                @if(in_array(20,$priv))
-                <li class="pc-item {{ request()->is('expenditures') ? 'active' : '' }}">
-                    <a href="/expenditures" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ph-duotone ph-book"></i>
-                        </span>
-                        <span class="pc-mtext">Pengeluaran</span>
-                    </a>
-                </li>
+                @if (privilegeViewExpenditure())
+                    <li class="pc-item {{ request()->is('expenditures') ? 'active' : '' }}">
+                        <a href="/expenditures" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ph-duotone ph-book"></i>
+                            </span>
+                            <span class="pc-mtext">Pengeluaran</span>
+                        </a>
+                    </li>
                 @endif
 
                 @can('superAdmin')
-                <li class="pc-item {{ request()->is('users') ? 'active' : '' }}">
-                    <a href="/users" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ph-duotone ph-users"></i>
-                        </span>
-                        <span class="pc-mtext">Users</span>
-                    </a>
-                </li>
+                    <li class="pc-item {{ request()->is('users') ? 'active' : '' }}">
+                        <a href="/users" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ph-duotone ph-users"></i>
+                            </span>
+                            <span class="pc-mtext">Users</span>
+                        </a>
+                    </li>
                 @endcan
 
-                @if(in_array(1,$priv)||in_array(2,$priv))
-                <li class="pc-item {{ request()->is('account-setting') ? 'active' : '' }}">
-                    <a href="/account_setting" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ph-duotone ph-user-circle-gear"></i>
-                        </span>
-                        <span class="pc-mtext">Setting Akun</span>
-                    </a>
-                </li>
+                @if (privilegeChangePassword() || privilegeEditUserData())
+                    <li class="pc-item {{ request()->is('account-setting') ? 'active' : '' }}">
+                        <a href="/account_setting" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ph-duotone ph-user-circle-gear"></i>
+                            </span>
+                            <span class="pc-mtext">Setting Akun</span>
+                        </a>
+                    </li>
                 @endif
 
             </ul>

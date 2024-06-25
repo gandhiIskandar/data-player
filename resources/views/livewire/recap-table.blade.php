@@ -4,7 +4,7 @@
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5>Data Rekap Transaksi</h5>
-                @if (in_array(5, session('privileges')) || in_array(9, session('privileges')))
+                @if (privilegeAddTransaction())
                     <button data-pc-animate="fade-in-scale" type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#animateModal" style="width: 200px;" type="button">Tambah Transaksi</button>
                    @endif

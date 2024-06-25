@@ -96,7 +96,7 @@ final class PGExpenditureTable extends PowerGridComponent
             //     ->sortable()
             //     ->searchable(),
 
-            Column::action('Action'),
+            Column::action('Action')->hidden(isHidden: !privilegeEditExpenditure() && !privilegeRemoveExpenditure(), isForceHidden: true),
         ];
     }
 
@@ -150,12 +150,12 @@ final class PGExpenditureTable extends PowerGridComponent
        return [
             // Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn() => !in_array(22, session('privileges')))
-                ->disable(),
+                ->when(fn() => !privilegeEditExpenditure())
+                ->hide(),
 
                 Rule::button('remove')
-                ->when(fn() => !in_array(23, session('privileges')))
-                ->disable()
+                ->when(fn() => !privilegeRemoveExpenditure())
+                ->hide()
         ];
     }
     

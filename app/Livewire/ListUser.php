@@ -7,6 +7,9 @@ use Livewire\Component;
 
 class ListUser extends Component
 {
+
+   
+
     public function render()
     {
 

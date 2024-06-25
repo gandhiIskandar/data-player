@@ -77,7 +77,8 @@ final class PGMemberTable extends PowerGridComponent
 
             Column::make('Depo - Withdraw', 'depo_wd'),
 
-            Column::action('Action'),
+        Column::action('Action')->hidden(isHidden: !privilegeEditMember()&&!privilegeRemoveMember(), isForceHidden: true)
+            
         ];
     }
 
@@ -114,22 +115,27 @@ final class PGMemberTable extends PowerGridComponent
         $member->delete();
     }
 
-    public function actions(Member $row): array
-    {
-        return [
-            Button::add('edit')
-                ->slot('Edit')
-                ->id()
-                ->class('btn btn-primary')
-                ->dispatch('showEditModal', ['member_id' => $row->id]),
+    
 
-            Button::add('remove')
-                ->slot('Hapus')
-                ->id()
-                ->class('btn btn-danger')
-                ->dispatch('confirmRemoveMember', ['member' => $row]),
-        ];
-    }
+   public  function actions(Member $row): array
+        {
+
+
+            return [
+                Button::add('edit')
+                    ->slot('Edit')
+                    ->id()
+                    ->class('btn btn-primary')
+                    ->dispatch('showEditModal', ['member_id' => $row->id]),
+    
+                Button::add('remove')
+                    ->slot('Hapus')
+                    ->id()
+                    ->class('btn btn-danger')
+                    ->dispatch('confirmRemoveMember', ['member' => $row]),
+            ];
+        }
+    
 
     public function toRupiah($amount)
     {
@@ -143,12 +149,12 @@ final class PGMemberTable extends PowerGridComponent
         return [
             // Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn () => !in_array(14, session('privileges')))
-                ->disable(),
+                ->when(fn () => !privilegeEditMember())
+                ->hide(),
 
             Rule::button('remove')
-                ->when(fn () => !in_array(15, session('privileges')))
-                ->disable()
+                ->when(fn () => !privilegeRemoveMember())
+                ->hide()
         ];
     }
 }

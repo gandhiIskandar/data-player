@@ -35,15 +35,16 @@
               </div>
 
           
-              <div class="row mt-3">
+              <div class="row justify-content-center mt-3">
+
             
-                <div class="col-6 text-center">
+                <div class="col-6 text-center {{ privilegeChangePassword() ? '' : 'd-none' }}">
                     <button 
                     data-pc-animate="fade-in-scale"
                     type="button"
                     class="btn btn-info"
                     data-bs-toggle="modal"
-                    data-bs-target="#changePassword" style="width: 200px;" type="button" {{ in_array(1,session('privileges')) ? "" : "disabled" }}>Ganti Password</button>
+                    data-bs-target="#changePassword" style="width: 200px;" type="button">Ganti Password</button>
                 
                 </div>
                
@@ -51,7 +52,7 @@
                     <button 
                     data-pc-animate="fade-in-scale"
                     type="submit"
-                    class="btn btn-primary" style="width: 200px;" type="button" {{ in_array(2,session('privileges')) ? "" : "disabled" }}>Update Data</button>
+                    class="btn btn-primary" style="width: 200px;" type="button" {{ privilegeEditUserData() ? '' : 'd-none' }}>Update Data</button>
                 
                 </div>
               </div>
@@ -61,5 +62,5 @@
       </div>
    
 
-<livewire:modal-change-password/>
+
 </div>

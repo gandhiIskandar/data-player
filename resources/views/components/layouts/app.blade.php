@@ -14,6 +14,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
+    <style>
+
+        </style>
 
 
     <!-- [Favicon] icon -->
@@ -57,13 +60,7 @@
     </div> --}}
     <!-- [ Pre-loader ] End -->
 
-    @php
-
-        $priv = session('privileges') ?? [];
-
-        //solusi sementara privilege
-
-    @endphp
+    
     <!-- [ Sidebar Menu ] start -->
     @include('components.partials.navbar')
 
@@ -74,6 +71,7 @@
 
     <!-- [ Main Content ] start -->
     <div class="pc-container">
+        
         <div class="pc-content">
             <!-- [ breadcrumb ] start -->
             <div class="page-header">
@@ -84,14 +82,14 @@
                                 <h5 class="mb-0">{{ $title ?? 'Page Title' }}</h5>
                             </div>
                         </div>
-                        <div class="col-sm-auto">
+                        {{-- <div class="col-sm-auto">
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="../navigation/index.html"><i
                                             class="ph-duotone ph-house"></i></a></li>
                                 <li class="breadcrumb-item"><a href="javascript: void(0)">Dashboard</a></li>
                                 <li class="breadcrumb-item" aria-current="page">{{ $title ?? 'Page Title' }}</li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -107,6 +105,8 @@
     <!-- [ Main Content ] end -->
     <x-partials.footer />
     <x-partials.ui-settings />
+
+    <livewire:modal-change-password/>
 
     <!-- [Page Specific JS] start -->
     <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>

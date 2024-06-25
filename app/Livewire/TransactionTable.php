@@ -64,7 +64,7 @@ class TransactionTable extends Component
         return 'Rp '.number_format($amount, 0, ',', '.');
     }
 
-    #[On('transactionCreated')]
+    #[On('reloadTransaction')]
     public function test($transaction)
     {
         $this->getData();

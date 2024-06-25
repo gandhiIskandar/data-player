@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Khususon;
 
+use Livewire\Component;
 use App\Models\Task;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
-use Livewire\Component;
 
 #[Title('Dashboard')]
 
-class Dashboard extends Component
+class Index extends Component
 {
+
     public $totalUsersToday;
 
     public $totalTransaksi;
@@ -25,36 +26,16 @@ class Dashboard extends Component
     public $transactions;
 
 
-    public function mount(){
-        if(!privilegeViewDashboard()){
-            return abort(403,"Akses Dilarang");
-        }
-    }
-
-    #[On('transactionCreated')]
+    
     public function render()
     {
-
-        $this->getTransactionStats();
+        $this->getStat();
         $this->getTodoList();
-
-        return view('livewire.dashboard');
+        return view('livewire.khususon.index');
     }
 
-    // public function getMemberStats()
-    // {
-
-    //         // Mendapatkan tanggal hari ini
-    //         $today = Carbon::today();
-
-    //         // Query untuk menghitung total pengguna yang dibuat hari ini
-    //         $this->totalUsersToday = DB::table('members')
-    //             ->whereDate('created_at', $today)
-    //             ->count();
-
-    // }
-
-    public function getTransactionStats()
+    #[\Livewire\Attributes\On('reloadTransaction')]
+    public function getStat()
     {
 
         $totals = DB::table('transactions')
@@ -70,10 +51,8 @@ class Dashboard extends Component
 
         $this->transactions = Transaction::with(['member', 'type'])->whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc')->get();
 
-        //$this->totalTransaksi['totalWd'] = $totalWd;
-
+  
     }
-
     public function getTodoList()
     {
 
@@ -88,4 +67,6 @@ class Dashboard extends Component
         Task::whereIn('id', $this->finishedTask)->update(['is_completed' => 1]);
 
     }
+
+
 }

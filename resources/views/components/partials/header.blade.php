@@ -1,4 +1,5 @@
 <header   class="pc-header">
+    
     <div class="header-wrapper"> <!-- [Mobile Media Block] start -->
         <div class="me-auto pc-mob-drp">
             <ul class="list-unstyled">
@@ -83,6 +84,7 @@
                                 <span>Logout</span>
                             </span>
                         </button>
+                        </form>
                     </div>
                 </li>
                 <li class="dropdown pc-h-item">
@@ -298,21 +300,31 @@
                                                     class="wid-50 rounded-circle" />
                                             </div>
                                             <div class="flex-grow-1 mx-3">
-                                                <h5 class="mb-0">Carson Darrin</h5>
+                                                <h5 class="mb-0">{{ session('user_data')->name }}</h5>
                                                 <a class="link-primary"
-                                                    href="mailto:carson.darrin@company.io">carson.darrin@company.io</a>
+                                                    href="#">{{ session('user_data')->email }}</a>
                                             </div>
                                             <span class="badge bg-primary">PRO</span>
                                         </div>
                                     </li>
                                     <li class="list-group-item">
-                                        <a href="#" class="dropdown-item">
+                                        <button  data-pc-animate="fade-in-scale"
+                                        type="button"
+                                    
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#changePassword" class="dropdown-item">
                                             <span class="d-flex align-items-center">
                                                 <i class="ph-duotone ph-key"></i>
                                                 <span>Change password</span>
                                             </span>
+                                        </button>
+                                        <a href="/account_setting" class="dropdown-item">
+                                            <span class="d-flex align-items-center">
+                                                <i class="ph-duotone ph-user-circle"></i>
+                                                <span>Edit profile</span>
+                                            </span>
                                         </a>
-                                        <a href="#" class="dropdown-item">
+                                        {{-- <a href="#" class="dropdown-item">
                                             <span class="d-flex align-items-center">
                                                 <i class="ph-duotone ph-envelope-simple"></i>
                                                 <span>Recently mail</span>
@@ -325,15 +337,18 @@
                                                 <img src="../assets/images/user/avatar-3.jpg" alt="user-image"
                                                     class="avtar" />
                                             </div>
-                                        </a>
-                                        <a href="#" class="dropdown-item">
+                                        </a> --}}
+                                        <form action="/logout" method="POST">
+                                            @csrf
+                                        <button type="submit" class="dropdown-item">
                                             <span class="d-flex align-items-center">
-                                                <i class="ph-duotone ph-calendar-blank"></i>
-                                                <span>Schedule meetings</span>
+                                                <i class="ph-duotone ph-power"></i>
+                                                <span>Logout</span>
                                             </span>
-                                        </a>
+                                        </button>
+                                    </form>
                                     </li>
-                                    <li class="list-group-item">
+                                    {{-- <li class="list-group-item">
                                         <a href="#" class="dropdown-item">
                                             <span class="d-flex align-items-center">
                                                 <i class="ph-duotone ph-heart"></i>
@@ -382,12 +397,7 @@
                                         </div>
                                     </li>
                                     <li class="list-group-item">
-                                        <a href="#" class="dropdown-item">
-                                            <span class="d-flex align-items-center">
-                                                <i class="ph-duotone ph-user-circle"></i>
-                                                <span>Edit profile</span>
-                                            </span>
-                                        </a>
+                                        
                                         <a href="#" class="dropdown-item">
                                             <span class="d-flex align-items-center">
                                                 <i class="ph-duotone ph-star text-warning"></i>
@@ -416,16 +426,8 @@
                                                 <span>Add account</span>
                                             </span>
                                         </a>
-                                        <form action="/logout" method="POST">
-                                            @csrf
-                                        <button type="submit" class="dropdown-item">
-                                            <span class="d-flex align-items-center">
-                                                <i class="ph-duotone ph-power"></i>
-                                                <span>Logout</span>
-                                            </span>
-                                        </button>
-                                    </form>
-                                    </li>
+                                       
+                                    </li> --}}
                                 </ul>
                             </div>
                         </div>

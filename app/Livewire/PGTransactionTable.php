@@ -38,16 +38,16 @@ final class PGTransactionTable extends PowerGridComponent
 
     public function datasource(): ?Builder
     {
-        if (in_array(8, session('privileges'))) // jika ada privileges untuk lihat wd
+        if (in_array(4, session('privileges')) && in_array(8, session('privileges')))
         {
-            return Transaction::query()->with(['type', 'member'])->where('type_id', 1); // 1 adalah type_id dari withdraw
+            return Transaction::query()->with(['type', 'member'])->latest(); 
 
         } elseif (in_array(4, session('privileges'))) {
-            return Transaction::query()->with(['type', 'member'])->where('type_id', 2); // 1 adalah type_id dari withdraw
+            return Transaction::query()->with(['type', 'member'])->where('type_id', 2)->latest(); // 2 adalah type_id dari deposit
 
-        } elseif (in_array(4, session('privileges')) && in_array(8, session('privileges'))) {
+        } elseif (in_array(8, session('privileges'))) {
 
-            return Transaction::query()->with(['type', 'member']);
+            return Transaction::query()->with(['type', 'member'])->where('type_id', 1)->latest(); // 1 adalah type_id dari withdraw
         } else{
             return null;
         }
@@ -58,7 +58,7 @@ final class PGTransactionTable extends PowerGridComponent
         return [];
     }
 
-    #[\Livewire\Attributes\On('reloadPowerGridTransaction')]
+    #[\Livewire\Attributes\On('reloadTransaction')]
     public function reloadData()
     {
 
@@ -97,7 +97,7 @@ final class PGTransactionTable extends PowerGridComponent
             //     ->sortable()
             //     ->searchable(),
 
-         Column::action('Action'),
+         Column::action('Action')->hidden(isHidden: !privilegeEditTransaction()&&!privilegeRemoveTransaction(), isForceHidden: true),
         ];
     }
 
@@ -149,16 +149,16 @@ final class PGTransactionTable extends PowerGridComponent
             // Hide button edit for ID 1
             Rule::button('remove')
             ->when(
-                fn() => !in_array(11, session('privileges')) && !in_array(7, session('privileges')) 
-               )
-                ->disable(),
+                fn() => !privilegeRemoveTransaction()) 
+               
+                ->hide(),
 
 
                 Rule::button('edit')
                 ->when(
-                    fn() => !in_array(6, session('privileges')) && !in_array(10, session('privileges')) 
-                    )
-                     ->disable(),
+                    fn() => !privilegeEditTransaction()) 
+                    
+                     ->hide(),
 
                      
         ];

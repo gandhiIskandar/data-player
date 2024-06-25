@@ -37,11 +37,11 @@
                         <select class="form-select" wire:model.live='form.type' id="exampleFormControlSelect1" required>
                             <option value="">Pilih Jenis Transaksi</option>
                         
-                                <option value=1 class="{{ in_array(9, session('privileges')) ? "" : "d-none" }}">Withdraw</option>
+                                <option value=1 class="{{ privilegeAddWithdraw() ? "" : "d-none" }}">Withdraw</option>
                                 {{-- jika user baru maka belum bisa wd --}}
                             
                             <option value=2
-                            class="{{ in_array(5, session('privileges')) ? "" : "d-none" }}">Deposit</option>
+                            class="{{ privilegeAddDeposit() ? "" : "d-none" }}">Deposit</option>
 
                         </select>
                     </div>

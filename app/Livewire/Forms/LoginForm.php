@@ -23,9 +23,9 @@ class LoginForm extends Form
 
             $user = Auth::user();
 
-            $user = User::with(['privileges','role'])->find($user->id);
- $privileges = $user->privileges->pluck('id')->toArray();
-           
+            $user = User::with(['privileges', 'role'])->find($user->id);
+            $privileges = $user->privileges->pluck('id')->toArray();
+
 
 
 
@@ -33,7 +33,7 @@ class LoginForm extends Form
             session()->put('user_data', $user);
             session()->put('privileges', $privileges);
 
-            
+
 
             switch ($user->role_id) {
                 case 1: // customer service
@@ -49,9 +49,11 @@ class LoginForm extends Form
                     return redirect()->intended('/dashboard');
                     break;
             }
+        }else{
+            flash("Email atau Password Salah","alert-danger");
         }
-        throw ValidationException::withMessages([
-            'email' => 'Email atau Password Anda Salah',
-        ]);
+        // throw ValidationException::withMessages([
+        //     'email' => 'Email atau Password Anda Salah',
+        // ]);
     }
 }

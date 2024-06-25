@@ -87,7 +87,7 @@ final class PGCashBookTable extends PowerGridComponent
             //     ->sortable()
             //     ->searchable(),
 
-            Column::action('Action'),
+            Column::action('Action')->hidden(isHidden: !privilegeEditCashBook() && !privilegeRemoveCashBook(), isForceHidden: true),
         ];
     }
 
@@ -139,12 +139,12 @@ final class PGCashBookTable extends PowerGridComponent
        return [
             // Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn() => !in_array(18,session('privileges')))
-                ->disable(),
+                ->when(fn() => !privilegeEditCashBook())
+                ->hide(),
 
                 Rule::button('remove')
-                ->when(fn() => !in_array(19,session('privileges')))
-                ->disable()
+                ->when(fn() => !privilegeRemoveCashBook())
+                ->hide()
         ];
     }
     

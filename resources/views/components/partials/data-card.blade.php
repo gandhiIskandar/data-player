@@ -1,6 +1,6 @@
 @props(['data', 'date', 'icon', 'color','currency'=>false])
 
-<div class="col-xxl-3 col-md-6">
+<div class="col-md-6">
     <div class="card">
       <div class="card-body">
         <div class="d-flex align-items-center">

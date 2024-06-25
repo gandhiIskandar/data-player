@@ -22,7 +22,7 @@ Route::get('/', \App\Livewire\Login::class)->name('login')->middleware('guest');
 // });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', \App\Livewire\Dashboard::class)->name('dashboard');
+    Route::get('/dashboard', \App\Livewire\Khususon\Index::class)->name('dashboard');
     Route::get('/transactions', \App\Livewire\Transactions::class)->name('transactions');
     Route::get('/members', \App\Livewire\MemberLiveWire::class)->name('members');
     Route::get('/cashbooks', \App\Livewire\Cashbooks::class)->name('cashbooks');
