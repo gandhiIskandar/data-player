@@ -30,6 +30,25 @@
                             <input type="text" class="form-control" wire:model.live="form.phone_number"
                                 id="exampleInputEmail1" placeholder="Masukan Nomor Handphone" required />
                         </div>
+
+                        
+                        
+                        <label class="form-label" for="norek">Rekening Member</label>
+                            <div class="input-group mb-3">
+                                <select class="form-select" wire:model.live='form.astaga' id="accountGebleg" style="max-width: 120px !important;" required>
+                                    
+                                    @foreach ($accounts as $account)
+                                    <option value={{ $account->id }} {{ $loop->iteration == 1 ? 'selected' : '' }}>{{ $account->name }}</option>
+                                        
+                                    @endforeach
+                                    
+        
+                                </select>
+
+                                <input type="text" id="norek" wire:model='form.account_number' class="form-control"
+                                aria-label="Amount (to the nearest dollar)" required />
+                            </div>
+                       
                     @endif
 
                     <div class="mb-3">
@@ -45,6 +64,18 @@
 
                         </select>
                     </div>
+                    @if($form->type == 2)
+                    <div class="mb-3">
+                        <label class="form-label" for="exampleFormControlSelect1">Deposit Rekening</label>
+                        <select class="form-select" wire:model='form.account_id' id="exampleFormControlSelect1" required>
+                            @foreach ($accounts as $account)
+                            <option value={{ $account->id }} {{ $loop->iteration == 1 ? 'selected' : '' }}>{{ $account->name }}</option>
+                                
+                            @endforeach
+
+                        </select>
+                    </div>
+                    @endif
                     <label class="form-label" for="amount">Jumlah</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Rp</span>

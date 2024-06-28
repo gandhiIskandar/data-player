@@ -4,7 +4,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h5>Data Buku Kas</h5>
                 @if (in_array(21, session('privileges')))
-                <button wire:click='$dispatch("showModalNonEditStateExp")' type="button" class="btn btn-primary" style="width: 200px;" type="button">Tambah Catatan Kas</button>
+                    <button wire:click='$dispatch("showModalNonEditStateExp")' type="button" class="btn btn-primary"
+                        style="width: 200px;" type="button">Tambah Catatan Kas</button>
                 @endif
             </div>
 
@@ -38,13 +39,20 @@
 
             <table id="dom-jqry7" class="table table-striped table-bordered nowrap" style="width: 100%">
                 <thead>
+                    <tr>
+                        <th rowspan="2">Tanggal</th>
+                        <th rowspan="2">User</th>
+                        <th colspan="4" data-dt-order="disable" style="text-align: center !important">Pengeluaran</th>
+                    </tr>
 
                     <tr>
 
-                        <th>Tanggal</th>
-                         <th>User</th> 
-                        <th>Pengeluaran</th>
-                       
+                        
+                        <th>BTC</th>
+                        <th>USD</th>
+                        <th>USDT</th>
+                        <th>IDR</th>
+
 
 
 
@@ -55,9 +63,12 @@
                         <tr>
 
                             <td>{{ $expenditure->date }}</td>
-                           <td>{{ $expenditure->role}}</td> 
-                            <td> {{ $expenditure->total_amount }} </td>
-                           
+                            <td>{{ $expenditure->role }}</td>
+                            <td> {{ $expenditure->total_btc }} </td>
+                            <td> {{ $expenditure->total_usd }} </td>
+                            <td> {{ $expenditure->total_usdt }} </td>
+                            <td> {{ $expenditure->total_idr }} </td>
+
                         </tr>
                     @endforeach
 
@@ -122,7 +133,8 @@
                     $.each(data.expenditures, function(index, value) {
 
                         var expenditure = [
-                            value.date, value.role ,value.total_amount ]
+                            value.date, value.role, value.total_btc, value.total_usd, value.total_usdt, value.total_idr 
+                        ]
 
                         datax.push(expenditure);
 
@@ -212,4 +224,3 @@
     @endscript
 
 @endpush
-

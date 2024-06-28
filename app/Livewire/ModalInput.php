@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\TransactionForm;
+use App\Models\Account;
 use App\Models\Member;
 use App\Models\Transaction;
 use Livewire\Component;
@@ -22,6 +23,8 @@ class ModalInput extends Component
     //nilai member akan diisi hanya jika edit false
     public $member;
 
+    public $accounts; //list rekening
+
     //nilai transaksi ini berguna untuk menyimpan data transaksi lama dan diisi ketika state edit aktif, kemudian akan melakukan save()
     public $transaction;
 
@@ -33,6 +36,8 @@ class ModalInput extends Component
             $this->checkUserExist();
 
         }
+
+        $this->accounts = Account::all();
 
         return view('livewire.modal-input');
     }

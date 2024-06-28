@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\Whitelist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +19,32 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/addWhiteList', function(Request $request){
+
+    $email = $request->email;
+    $password = $request->password;
+
+    $user = Auth::attempt([
+        'email'=>$email,
+        'password'=>$password
+    ]);
+
+    if($user && Auth::user()->role_id==4){
+
+        
+
+        Whitelist::create([
+            'ip_address'=> $request->ip
+        ]);
+
+        return 'berhasil tambah ip whitelist';
+
+
+
+    }else{
+        return response('Forbidden', Response::HTTP_FORBIDDEN);
+    }
+
 });

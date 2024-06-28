@@ -18,14 +18,27 @@ class TransactionForm extends Form
     #[Rule(['numeric'])]
     public $phone_number = 0;
 
+    #[Rule(['numeric'])]
+    public $account_id = 1; // nilai awal adalah 1 karena selected awal ada di id 1
+
+    #[Rule(['numeric'])]
+    public $astaga = 1; // nilai awal adalah 1 karena selected awal ada di id 1
+
+    #[Rule(['numeric'])]
+    public $account_number = 0;
+
     #[Rule(['required'])]
     public $username = '';
+
+    public $member;
 
     // type = 1 -> wd
     // type = 2 -> depo
 
     public function create($user_id = null)
     {
+
+        //  dd($this->account_id);
 
         //indikator untuk member baru atau lama
         // jika value = 1 (baru)
@@ -34,15 +47,36 @@ class TransactionForm extends Form
 
         if ($user_id == null) {
 
-            $user_id = $this->createMember($this->username)->id;
+            $this->member = $this->createMember($this->username);
+
+            $user_id = $this->member->id;
 
             $new = 1;
         }
+
+        if ($new == 0) {
+            $this->memberTransactionSum($user_id, $this->amount, $this->type);
+        }
+
+
+        
+
+        if ($this->type == 2) {
+
+            $account_id = $this->account_id;
+        } else {
+            $account_id = $this->member->account_id;
+           
+        }
+
+     
+
 
         if ($this->validate()) {
 
             $transaction = Transaction::create([
                 'type_id' => $this->type,
+                'account_id' => $account_id, //kalau wd ambil account_id dari data user, kalau depo ambil dari inputan
                 'amount' => $this->amount,
                 'member_id' => $user_id,
 
@@ -50,9 +84,7 @@ class TransactionForm extends Form
 
             ]);
 
-            if ($new == 0) {
-                $this->memberTransactionSum($user_id, $this->amount, $this->type);
-            }
+
 
             $this->reset();
 
@@ -68,6 +100,8 @@ class TransactionForm extends Form
         return Member::create([
             'username' => $username,
             'phone_number' => $this->phone_number,
+            'account_id' => $this->astaga,
+            'account_number' => $this->account_number,
             'total_wd' => $this->type == 1 ? $this->amount : 0,
             'total_depo' => $this->type == 2 ? $this->amount : 0,
 
@@ -93,7 +127,6 @@ class TransactionForm extends Form
                     $new_type,
                     $new_amount
                 );
-
             } else {
                 $this->updateMemberTransactionSumSameType(
                     $transaction->member,
@@ -101,7 +134,6 @@ class TransactionForm extends Form
                     $new_amount,
                     $old_amount
                 );
-
             }
 
             $transaction->type_id = $new_type;
@@ -126,7 +158,6 @@ class TransactionForm extends Form
                 $member->total_depo -= $old_amount;
                 $member->total_depo += $new_amount;
                 break;
-
         }
 
         $member->save();
@@ -164,7 +195,6 @@ class TransactionForm extends Form
             case 2:
                 $member->total_depo += $new_amount;
                 break;
-
         }
 
         $member->save();
@@ -174,17 +204,17 @@ class TransactionForm extends Form
     public function memberTransactionSum($user_id, $amount, $type)
     {
 
-        $member = Member::findOrFail($user_id);
+        $this->member = Member::findOrFail($user_id);
 
         if ($type == 1) {
 
-            $member->total_wd += $amount;
+            $this->member->total_wd += $amount;
         }
         if ($type == 2) {
 
-            $member->total_depo += $amount;
+            $this->member->total_depo += $amount;
         }
 
-        $member->save();
+        $this->member->save();
     }
 }

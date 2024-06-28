@@ -16,6 +16,7 @@ use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use Illuminate\Support\Facades\Route;
 
 final class PGTransactionTable extends PowerGridComponent
 {
@@ -40,14 +41,14 @@ final class PGTransactionTable extends PowerGridComponent
     {
         if (in_array(4, session('privileges')) && in_array(8, session('privileges')))
         {
-            return Transaction::query()->with(['type', 'member'])->latest(); 
+            return Transaction::query()->with(['type', 'member', 'account'])->latest(); 
 
         } elseif (in_array(4, session('privileges'))) {
-            return Transaction::query()->with(['type', 'member'])->where('type_id', 2)->latest(); // 2 adalah type_id dari deposit
+            return Transaction::query()->with(['type', 'member', 'account'])->where('type_id', 2)->latest(); // 2 adalah type_id dari deposit
 
         } elseif (in_array(8, session('privileges'))) {
 
-            return Transaction::query()->with(['type', 'member'])->where('type_id', 1)->latest(); // 1 adalah type_id dari withdraw
+            return Transaction::query()->with(['type', 'member', 'account'])->where('type_id', 1)->latest(); // 1 adalah type_id dari withdraw
         } else{
             return null;
         }
@@ -74,6 +75,7 @@ final class PGTransactionTable extends PowerGridComponent
             ->add('amount', fn ($transaction) => $this->toRupiah($transaction->amount))
             ->add('member_id', fn ($transaction) => $transaction->member->username ?? 'Member tidak ada')
             ->add('new', fn ($transaction) => $transaction->new == 1 ? 'Ya' : 'Tidak')
+            ->add('account_id', fn ($transaction) => $transaction->account->name ?? 'null')
             ->add('created_at_formatted', fn ($transaction) => Carbon::parse($transaction->created_at)->translatedFormat('d F Y'));
     }
 
@@ -83,6 +85,10 @@ final class PGTransactionTable extends PowerGridComponent
             Column::make('Username', 'member_id'),
             Column::make('Jenis Transaksi', 'type_id'),
             Column::make('Amount', 'amount')
+                ->sortable()
+                ->searchable(),
+
+                Column::make('Rekening', 'account_id')
                 ->sortable()
                 ->searchable(),
 
@@ -97,7 +103,7 @@ final class PGTransactionTable extends PowerGridComponent
             //     ->sortable()
             //     ->searchable(),
 
-         Column::action('Action')->hidden(isHidden: !privilegeEditTransaction()&&!privilegeRemoveTransaction(), isForceHidden: true),
+         Column::action('Action')->hidden(isHidden: !privilegeEditTransaction()&&!privilegeRemoveTransaction()|| Route::currentRouteName() === 'dashboard', isForceHidden: true ),
         ];
     }
 

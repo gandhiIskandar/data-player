@@ -14,6 +14,7 @@ class Expenditure extends Model
         'amount',
         'detail',
         'account_id',
+        'currency_id'
     ];
 
     public function user()
@@ -24,5 +25,9 @@ class Expenditure extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    public function currency(){
+        return $this->belongsTo(Currency::class);
     }
 }

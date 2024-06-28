@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Expenditure;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Rule;
 use Livewire\Form;
@@ -18,25 +19,38 @@ class ExpForm extends Form
     #[Rule(['required'])]
     public $account_id = '';
 
+    #[Rule(['required'])]
+    public $currency_id = '';
+
     public function create()
     {
-        if ($this->validate()) {
 
-            $user = Auth::user();
 
-            $expenditure = Expenditure::create([
-                'user_id' => $user->id,
-                'detail' => $this->detail,
-                'amount' => $this->amount,
-                'account_id' => $this->account_id,
+        $this->amount = changeToDot($this->amount);
+    
 
-            ]);
-            $this->reset();
+            if ($this->validate()) {
 
-            flash('Berhasil Tambah Catatan Pengeluaran', 'alert-success');
+                $user = Auth::user();
 
-            return $expenditure;
-        }
+                $expenditure = Expenditure::create([
+                    'user_id' => $user->id,
+                    'detail' => $this->detail,
+                    'amount' => $this->amount ,
+                    'account_id' => $this->account_id,
+                    'currency_id' => $this->currency_id
+
+                ]);
+                $this->reset();
+
+                flash('Berhasil Tambah Catatan Pengeluaran', 'alert-success');
+
+                // dd($expenditure);
+
+
+                return $expenditure;
+            }
+       
     }
 
     public function update($expenditure)
@@ -48,13 +62,13 @@ class ExpForm extends Form
             //user id akan tetap sama dan tidak bisa diubah
 
             $expenditure->detail = $this->detail;
-            $expenditure->amount = $this->amount;
+            $expenditure->amount = changeToDot($this->amount);
             $expenditure->account_id = $this->account_id;
+            $expenditure->currency_id = $this->currency_id;
 
             $expenditure->save();
 
             flash('Berhasil Edit Catatan Pengeluaran', 'alert-success');
         }
-
     }
 }

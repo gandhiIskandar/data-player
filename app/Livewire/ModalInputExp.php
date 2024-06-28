@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\ExpForm;
 use App\Models\Account;
+use App\Models\Currency;
 use App\Models\Expenditure;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -17,9 +18,11 @@ class ModalInputExp extends Component
     public $expenditure;
 
     public $accounts; // untuk pilih rekening
+    public $currencies; // untuk pilih rekening
 
     public function mount()
     {
+        $this->currencies = Currency::all();
         $this->accounts = Account::all();
     }
 
@@ -30,7 +33,11 @@ class ModalInputExp extends Component
 
     public function proceedExp()
     {
-        if (! $this->edit) {
+
+
+        if (!$this->edit) {
+            
+        
             $this->insertExp();
         } else {
             $this->updateExp();

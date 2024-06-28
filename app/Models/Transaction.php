@@ -13,6 +13,7 @@ class Transaction extends Model
         'type_id',
         'amount',
         'member_id',
+        'account_id',
         'new',
         'created_at',
     ];
@@ -25,5 +26,10 @@ class Transaction extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }

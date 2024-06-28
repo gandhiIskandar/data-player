@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Account;
+use App\Models\Currency;
 use App\Models\Expenditure;
 use App\Models\Member;
 use App\Models\Privilege;
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->generateUserandRole();
         $this->generateAccount();
         $this->generateType();
+        $this->generateCurrencies();
 
         Member::factory(20)->create();
         Transaction::factory(30)->create();
@@ -60,6 +62,7 @@ class DatabaseSeeder extends Seeder
                 'email' => str_replace(' ', '', $role) . '@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => $iteration,
+                
             ]);
 
             $user->privileges()->sync([2,3,4]);
@@ -90,6 +93,18 @@ class DatabaseSeeder extends Seeder
                 'name' => $type,
             ]);
         }
+    }
+
+    public function generateCurrencies(){
+        $currencies = ['BTC', 'USD', 'USDT', 'IDR'];
+
+        foreach ($currencies as $currency) {
+            Currency::create([
+                'name' => $currency
+            ]);
+        }
+
+
     }
 
     public function generatePrivileges()

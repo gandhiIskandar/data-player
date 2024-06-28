@@ -37,6 +37,7 @@ class Dashboard extends Component
 
         $this->getTransactionStats();
         $this->getTodoList();
+        dd($this->tasks);
 
         return view('livewire.dashboard');
     }
@@ -79,7 +80,9 @@ class Dashboard extends Component
 
         $user = session('user_data');
 
-        $this->tasks = Task::where('user_id', $user->id)->get();
+        $this->tasks = Task::where('user_id', $user->id)->where('is_completed', 0)->get();
+
+     
     }
 
     public function updateTask()

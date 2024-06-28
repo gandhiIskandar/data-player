@@ -33,17 +33,14 @@ class RecapExpTable extends Component
     public function render()
     {
         $this->getData();
-        //  dd($this->expenditures);
+
+       // dd($this->expenditures);
+       
 
         return view('livewire.recap-exp-table');
     }
 
-    public function toRupiah($amount)
-    {
-
-        return 'Rp '.number_format($amount, 0, ',', '.');
-    }
-
+   
     #[On('expCreated')]
     public function refreshTable()
     {
@@ -67,14 +64,19 @@ class RecapExpTable extends Component
 
         $user = Auth::user();
 
-        return Expenditure::whereHas('user', function ($query) use ($user) {
-            $query->whereHas('role', function ($query) use ($user) {
-                $query->where('role_id', $user->role_id);
-            });
-        })->select(
+        return Expenditure::
+        // whereHas('user', function ($query) use ($user) {
+        //     $query->whereHas('role', function ($query) use ($user) {
+        //         $query->where('role_id', $user->role_id);
+        //     });
+        // })-> (Pengkondisian query nested)
+        select(
 
             DB::raw($timeCostum),
-            DB::raw('CAST(SUM(amount) AS SIGNED) as total_amount'),
+            DB::raw('SUM(CASE WHEN currency_id = 1 THEN amount ELSE 0 END) as total_btc'),
+            DB::raw('SUM(CASE WHEN currency_id = 2 THEN amount ELSE 0 END) as total_usd'),
+            DB::raw('SUM(CASE WHEN currency_id = 3 THEN amount ELSE 0 END) as total_usdt'),
+            DB::raw('CAST(SUM(CASE WHEN currency_id = 4 THEN amount ELSE 0 END) AS SIGNED) as total_idr'),
 
             //jika role_id = 2 maka akan masukan Marketing di column role(column role adalah column buatan sendiri dan tidak ada di tabel) selain dari itu maka akan cetak admin
             $user->role_id == 2 ? DB::raw('"Marketing" as role') : DB::raw('"Admin" as role ')
@@ -93,6 +95,9 @@ class RecapExpTable extends Component
 
                 $this->expenditures = $this->getDataQuery('DATE(created_at) as date')->whereDate('created_at', $currentDate)->latest()->get();
                 $this->remapExpDaily();
+
+             
+
             } else {
 
                 $query = 'DATE(created_at) as date';
@@ -173,7 +178,10 @@ class RecapExpTable extends Component
 
             $value->date = $formatBulanTahun;
 
-            $value->total_amount = $this->toRupiah($value->total_amount);
+            $value->total_idr = toRupiah($value->total_idr);
+            $value->total_btc = changeToComa($value->total_btc);
+            $value->total_usd = changeToComa($value->total_usd);
+            $value->total_usdt = changeToComa($value->total_usdt);
         });
     }
 
@@ -183,7 +191,10 @@ class RecapExpTable extends Component
         $this->expenditures->map(function ($value) {
 
             $value->date = Carbon::parse($value->date)->timezone('Asia/Jakarta')->translatedFormat('d F Y');
-            $value->total_amount = $this->toRupiah($value->total_amount);
+            $value->total_idr = toRupiah($value->total_idr);
+            $value->total_btc = changeToComa($value->total_btc);
+            $value->total_usd = changeToComa($value->total_usd);
+            $value->total_usdt = changeToComa($value->total_usdt);
         });
     }
 }

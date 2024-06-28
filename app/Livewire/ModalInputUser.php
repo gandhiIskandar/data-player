@@ -86,7 +86,8 @@ class ModalInputUser extends Component
 
 
     public function proceedUser()
-    {
+{
+
         if (! $this->edit) {
             $this->insertUser();
         } else {

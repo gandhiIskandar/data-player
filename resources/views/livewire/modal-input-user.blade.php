@@ -217,8 +217,8 @@
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
                                         value={{ $privilege->id }} wire:model='form.privileges' />
-                                    <label class="form-check-label"
-                                        for="customCheckinl31"  style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
                                 </div>
                             @endforeach
 
@@ -234,8 +234,8 @@
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
                                         value={{ $privilege->id }} wire:model='form.privileges' />
-                                    <label class="form-check-label"
-                                        for="customCheckinl31"  style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
                                 </div>
                             @endforeach
 
@@ -251,8 +251,8 @@
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
                                         value={{ $privilege->id }} wire:model='form.privileges' />
-                                    <label class="form-check-label"
-                                        for="customCheckinl31"  style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
                                 </div>
                             @endforeach
 
@@ -268,8 +268,8 @@
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
                                         value={{ $privilege->id }} wire:model='form.privileges' />
-                                    <label class="form-check-label"
-                                        for="customCheckinl31"  style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
                                 </div>
                             @endforeach
 
@@ -283,6 +283,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
             </div>
         </div>
     </div>

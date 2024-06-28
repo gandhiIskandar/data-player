@@ -14,24 +14,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', \App\Livewire\Login::class)->name('login')->middleware('guest');
+Route::middleware('whitelist')->group(function () {
 
-// Route::middleware(['customer.service'])->group(function () {
+    Route::get('/', \App\Livewire\Login::class)->name('login')->middleware('guest');
 
-   
-// });
-
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', \App\Livewire\Khususon\Index::class)->name('dashboard');
-    Route::get('/transactions', \App\Livewire\Transactions::class)->name('transactions');
-    Route::get('/members', \App\Livewire\MemberLiveWire::class)->name('members');
-    Route::get('/cashbooks', \App\Livewire\Cashbooks::class)->name('cashbooks');
-    Route::post('/logout', LogoutController::class)->name('logout');
-    Route::get('/account_setting', \App\Livewire\AccountSetting::class)->name('account-setting');
-    Route::get('/expenditures', \App\Livewire\Expenditures::class)->name('expenditures');
+    // Route::middleware(['customer.service'])->group(function () {
 
 
+    // });
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/dashboard', \App\Livewire\Khususon\Index::class)->name('dashboard');
+        Route::get('/transactions', \App\Livewire\Transactions::class)->name('transactions');
+        Route::get('/members', \App\Livewire\MemberLiveWire::class)->name('members');
+        Route::get('/cashbooks', \App\Livewire\Cashbooks::class)->name('cashbooks');
+        Route::post('/logout', LogoutController::class)->name('logout');
+        Route::get('/account_setting', \App\Livewire\AccountSetting::class)->name('account-setting');
+        Route::get('/expenditures', \App\Livewire\Expenditures::class)->name('expenditures');
+    });
+
+    Route::get('/users', \App\Livewire\ListUser::class)->name('users')->middleware(['super.admin']);
 });
-
- Route::get('/users',\App\Livewire\ListUser::class)->name('users')->middleware(['super.admin']);
-

@@ -41,11 +41,11 @@ final class PGExpenditureTable extends PowerGridComponent
 
         $user = Auth::user();
 
-        return Expenditure::query()->with(['user.role', 'account'])->whereHas('user', function ($query) use ($user) {
+        return Expenditure::query()->with(['user.role', 'account','currency'])->whereHas('user', function ($query) use ($user) {
             $query->whereHas('role', function ($query) use ($user) {
                 $query->where('role_id', $user->role_id);
             });
-        });
+        })->latest();
 
         //ambil data pengeluaran berdasarkan role_id tetapi role_id ada di dalam user, jadi harus menggunakan whereHas
     }
@@ -69,7 +69,8 @@ final class PGExpenditureTable extends PowerGridComponent
         return PowerGrid::fields()
             ->add('id')
             ->add('user_id', fn ($expenditure) => $expenditure->user->name)
-            ->add('amount', fn ($expenditure) => $this->toRupiah($expenditure->amount))
+            ->add('amount', fn ($expenditure) =>$expenditure->currency->name == 'IDR' ? toRupiah($expenditure->amount) : changeToComa($expenditure->amount))
+            ->add('currency_id', fn ($expenditure) => $expenditure->currency->name)
             ->add('detail')
             ->add('account_id', fn ($expenditure) => $expenditure->account->name)
             ->add('created_at_formatted', fn ($expenditure) => Carbon::parse($expenditure->created_at)->translatedFormat('d F Y'));
@@ -83,6 +84,7 @@ final class PGExpenditureTable extends PowerGridComponent
             Column::make('Jumlah', 'amount')
                 ->sortable()
                 ->searchable(),
+                Column::make('Mata Uang', 'currency_id'),
 
             Column::make('Detail', 'detail')
                 ->sortable()
@@ -138,12 +140,7 @@ final class PGExpenditureTable extends PowerGridComponent
         ];
     }
 
-    public function toRupiah($amount)
-    {
-
-        return 'Rp '.number_format($amount, 0, ',', '.');
-    }
-
+  
     
     public function actionRules($row): array
     {

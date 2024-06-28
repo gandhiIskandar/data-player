@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique()->index();
             $table->string('phone_number');
+            $table->string('account_number');
+            $table->foreignId('account_id');
             $table->integer('total_wd');
             $table->integer('total_depo');
             $table->timestamps();

@@ -1,5 +1,32 @@
 <?php
 
+if(!function_exists('toRupiah')){
+    function toRupiah($amount)
+    {
+
+        return number_format($amount, 0, ',', '.');
+    }
+
+}
+
+if(!function_exists('changeToComa')){
+    function changeToComa($amount)
+    {
+
+        return str_replace('.', ',', $amount);
+    }
+
+}
+
+if(!function_exists('changeToDot')){
+    function changeToDot($amount)
+    {
+
+        return str_replace(',', '.', $amount);
+    }
+
+}
+
 
 
 if( !function_exists('privilegeViewTransaction')){

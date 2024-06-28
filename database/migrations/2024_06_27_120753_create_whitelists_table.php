@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('whitelists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('type_id')->index();
-            $table->foreignId('member_id');
-            $table->foreignId('account_id');
-            $table->boolean('new');
-            $table->integer('amount');
+            $table->string('ip_address');
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('whitelists');
     }
 };

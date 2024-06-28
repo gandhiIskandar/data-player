@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'customer.service' => \App\Http\Middleware\CustomerService::class,
         'admin.or.marketing' => \App\Http\Middleware\Admin::class,
         'super.admin' => \App\Http\Middleware\SuperAdmin::class,
+        'whitelist' => \App\Http\Middleware\WhitelistIP::class,
     ];
 }

@@ -34,7 +34,7 @@
         <!-- [Mobile Media Block end] -->
         <div class="ms-auto">
             <ul class="list-unstyled">
-                <li class="dropdown pc-h-item">
+                {{-- <li class="dropdown pc-h-item">
                     <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" aria-expanded="false">
                         <i class="ph-duotone ph-sun-dim"></i>
@@ -53,30 +53,35 @@
                             <span>Default</span>
                         </a>
                     </div>
-                </li>
+                </li> --}}
+                @can('superAdmin')
                 <li class="dropdown pc-h-item">
                     <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="ph-duotone ph-diamonds-four"></i>
+                        <i class="ph-duotone ph-gear"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end pc-h-dropdown">
-                        <a href="#!" class="dropdown-item">
-                            <i class="ph-duotone ph-user"></i>
-                            <span>My Account</span>
+                        <a href="/users" class="dropdown-item">
+                            <i class="ph-duotone ph-users"></i>
+                            <span>Users Setting</span>
                         </a>
-                        <a href="#!" class="dropdown-item">
-                            <i class="ph-duotone ph-gear"></i>
-                            <span>Settings</span>
-                        </a>
-                        <a href="#!" class="dropdown-item">
+                        <button  data-pc-animate="fade-in-scale"
+                        type="button"
+                    
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalWhitelist" class="dropdown-item" class="dropdown-item">
+                            <i class="ph-duotone ph-sliders"></i>
+                            <span>Whitelist IP Address</span>
+                        </button>
+                        {{-- <a href="#!" class="dropdown-item">
                             <i class="ph-duotone ph-lifebuoy"></i>
                             <span>Support</span>
                         </a>
                         <a href="#!" class="dropdown-item">
                             <i class="ph-duotone ph-lock-key"></i>
                             <span>Lock Screen</span>
-                        </a>
-                        <form action="/logout" method="POST">
+                        </a> --}}
+                        {{-- <form action="/logout" method="POST">
                             @csrf
                         <button type="submit" class="dropdown-item">
                             <span class="d-flex align-items-center">
@@ -84,10 +89,11 @@
                                 <span>Logout</span>
                             </span>
                         </button>
-                        </form>
+                        </form> --}}
                     </div>
                 </li>
-                <li class="dropdown pc-h-item">
+                @endcan
+                {{-- <li class="dropdown pc-h-item">
                     <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown"
                         href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <i class="ph-duotone ph-bell"></i>
@@ -278,7 +284,7 @@
                             </div>
                         </div>
                     </div>
-                </li>
+                </li> --}}
                 <li class="dropdown pc-h-item header-user-profile">
                     <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown"
                         href="#" role="button" aria-haspopup="false" data-bs-auto-close="outside"

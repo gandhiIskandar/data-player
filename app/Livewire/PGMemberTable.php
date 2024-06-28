@@ -21,7 +21,7 @@ final class PGMemberTable extends PowerGridComponent
 
     public function setUp(): array
     {
-        $this->showCheckBox();
+        // $this->showCheckBox();
 
         return [
             Exportable::make('export')
@@ -36,7 +36,7 @@ final class PGMemberTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return Member::query();
+        return Member::query()->with('account');
     }
 
     public function relationSearch(): array
@@ -51,6 +51,8 @@ final class PGMemberTable extends PowerGridComponent
             ->add('username')
             ->add('total_wd', fn ($member) => $this->toRupiah($member->total_wd))
             ->add('phone_number')
+            ->add('account_number')
+            ->add('account_id', fn ($member) => $member->account->name ?? "null")
             ->add('total_depo', fn ($member) => $this->toRupiah($member->total_depo))
             ->add('depo_wd', fn ($member) => $this->toRupiah($member->total_depo - $member->total_wd));
     }
@@ -62,23 +64,30 @@ final class PGMemberTable extends PowerGridComponent
             Column::make('Username', 'username')
                 ->sortable()
                 ->searchable(),
+            Column::make('Phone number', 'phone_number')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Nomor Rekening', 'account_number')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Rekening', 'account_id')
+                ->sortable()
+                ->searchable(),
+            Column::make('Total Depo', 'total_depo')
+                ->sortable()
+                ->searchable(),
 
             Column::make('Total Withdraw', 'total_wd')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Phone number', 'phone_number')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Total depo', 'total_depo')
-                ->sortable()
-                ->searchable(),
 
             Column::make('Depo - Withdraw', 'depo_wd'),
 
-        Column::action('Action')->hidden(isHidden: !privilegeEditMember()&&!privilegeRemoveMember(), isForceHidden: true)
-            
+            Column::action('Action')->hidden(isHidden: !privilegeEditMember() && !privilegeRemoveMember(), isForceHidden: true)
+
         ];
     }
 
@@ -115,27 +124,27 @@ final class PGMemberTable extends PowerGridComponent
         $member->delete();
     }
 
-    
-
-   public  function actions(Member $row): array
-        {
 
 
-            return [
-                Button::add('edit')
-                    ->slot('Edit')
-                    ->id()
-                    ->class('btn btn-primary')
-                    ->dispatch('showEditModal', ['member_id' => $row->id]),
-    
-                Button::add('remove')
-                    ->slot('Hapus')
-                    ->id()
-                    ->class('btn btn-danger')
-                    ->dispatch('confirmRemoveMember', ['member' => $row]),
-            ];
-        }
-    
+    public  function actions(Member $row): array
+    {
+
+
+        return [
+            Button::add('edit')
+                ->slot('Edit')
+                ->id()
+                ->class('btn btn-primary')
+                ->dispatch('showEditModal', ['member_id' => $row->id]),
+
+            Button::add('remove')
+                ->slot('Hapus')
+                ->id()
+                ->class('btn btn-danger')
+                ->dispatch('confirmRemoveMember', ['member' => $row]),
+        ];
+    }
+
 
     public function toRupiah($amount)
     {

@@ -23,6 +23,7 @@ class TransactionFactory extends Factory
             'type_id' => random_int(1, 2),
             'amount' => fake()->numberBetween(10000, 35000),
             'member_id' => fake()->numberBetween(1, 20),
+            'account_id' => fake()->numberBetween(1, 4),
             'new' => fake()->boolean(40),
             'created_at' => fake()->dateTimeInInterval('-1 week', '+3 days'),
 

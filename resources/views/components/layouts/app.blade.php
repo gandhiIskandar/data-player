@@ -107,6 +107,7 @@
     <x-partials.ui-settings />
 
     <livewire:modal-change-password/>
+    <livewire:whitelist.modal-whitelist/>
 
     <!-- [Page Specific JS] start -->
     <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>

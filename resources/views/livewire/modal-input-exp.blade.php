@@ -30,8 +30,16 @@
                     </div>
                     <label class="form-label" for="amount">Jumlah</label>
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Rp</span>
-                        <input type="number" id="amount" wire:model='form.amount' class="form-control"
+                        <select class="form-select" style="max-width: 100px" wire:model='form.currency_id' id="exampleFormControlSelect2" required>
+                           
+                            @foreach ($currencies as $currency)
+                            <option value={{ $currency->id }} {{ $loop->iteration == 1 ? 'selected' : '' }} >{{ $currency->name }}</option>
+                                
+                            @endforeach
+                            
+
+                        </select>
+                        <input type="text" id="amount" wire:model='form.amount' class="form-control"
                             aria-label="Amount (to the nearest dollar)" required />
 
                     </div>

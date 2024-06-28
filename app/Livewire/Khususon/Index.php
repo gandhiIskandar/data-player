@@ -7,7 +7,6 @@ use App\Models\Task;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 
 #[Title('Dashboard')]
@@ -29,6 +28,7 @@ class Index extends Component
     
     public function render()
     {
+      
         $this->getStat();
         $this->getTodoList();
         return view('livewire.khususon.index');
@@ -58,13 +58,15 @@ class Index extends Component
 
         $user = session('user_data');
 
-        $this->tasks = Task::where('user_id', $user->id)->get();
+        $this->tasks = Task::where('user_id', $user->id)->where('is_completed', 0)->get();
     }
 
     public function updateTask()
     {
 
         Task::whereIn('id', $this->finishedTask)->update(['is_completed' => 1]);
+
+        $this->finishedTask = [];
 
     }
 

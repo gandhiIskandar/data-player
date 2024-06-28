@@ -50,7 +50,7 @@ class ModalInputTask extends Component
 
         if ($task == null) {
 
-           dd($task_id);
+         
 
             flash("Terjadi Kesalahan", "alert-danger");
             return null;
