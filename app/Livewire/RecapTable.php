@@ -64,7 +64,7 @@ class RecapTable extends Component
     public function getDataQuery($timeCostum)
     {
 
-        return Transaction::select(
+        return Transaction::where('website_id', session('website_id'))->select(
 
             DB::raw($timeCostum),
             DB::raw('CAST(SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) AS SIGNED) as total_withdraw'),

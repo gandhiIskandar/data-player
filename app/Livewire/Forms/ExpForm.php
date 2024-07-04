@@ -38,7 +38,8 @@ class ExpForm extends Form
                     'detail' => $this->detail,
                     'amount' => $this->amount ,
                     'account_id' => $this->account_id,
-                    'currency_id' => $this->currency_id
+                    'currency_id' => $this->currency_id,
+                    'website_id' => session('website_id')
 
                 ]);
                 $this->reset();

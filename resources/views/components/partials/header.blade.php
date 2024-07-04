@@ -1,5 +1,5 @@
-<header   class="pc-header">
-    
+<header class="pc-header">
+
     <div class="header-wrapper"> <!-- [Mobile Media Block] start -->
         <div class="me-auto pc-mob-drp">
             <ul class="list-unstyled">
@@ -54,7 +54,13 @@
                         </a>
                     </div>
                 </li> --}}
-                @can('superAdmin')
+                <li class="pc-h-item">
+                    
+
+                     <livewire:website.option/>
+                        
+                </li>
+
                 <li class="dropdown pc-h-item">
                     <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" aria-expanded="false">
@@ -65,14 +71,31 @@
                             <i class="ph-duotone ph-users"></i>
                             <span>Users Setting</span>
                         </a>
-                        <button  data-pc-animate="fade-in-scale"
-                        type="button"
-                    
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalWhitelist" class="dropdown-item" class="dropdown-item">
-                            <i class="ph-duotone ph-sliders"></i>
-                            <span>Whitelist IP Address</span>
+                        @can('superAdmin')
+                            <button data-pc-animate="fade-in-scale" type="button" data-bs-toggle="modal"
+                                data-bs-target="#modalWhitelist" class="dropdown-item" class="dropdown-item">
+                                <i class="ph-duotone ph-sliders"></i>
+                                <span>Whitelist IP Address</span>
+                            </button>
+                        @endcan
+
+                        <button data-pc-animate="fade-in-scale" type="button" data-bs-toggle="modal"
+                            data-bs-target="#modalAccount" class="dropdown-item" class="dropdown-item">
+                            <i class="ph-duotone ph-bank"></i>
+                            <span>Rekening</span>
                         </button>
+
+                        <button data-pc-animate="fade-in-scale" type="button" data-bs-toggle="modal"
+                            data-bs-target="#modalWebsite" class="dropdown-item" class="dropdown-item">
+                            <i class="ph-duotone ph-globe"></i>
+                            <span>Situs</span>
+                        </button>
+
+                        <button data-pc-animate="fade-in-scale" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvas_pc_layout" class="dropdown-item" class="dropdown-item">
+                        <i class="ph-duotone ph-paint-brush"></i>
+                        <span>UI Setting</span>
+                    </button>
                         {{-- <a href="#!" class="dropdown-item">
                             <i class="ph-duotone ph-lifebuoy"></i>
                             <span>Support</span>
@@ -92,7 +115,7 @@
                         </form> --}}
                     </div>
                 </li>
-                @endcan
+
                 {{-- <li class="dropdown pc-h-item">
                     <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown"
                         href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -286,10 +309,9 @@
                     </div>
                 </li> --}}
                 <li class="dropdown pc-h-item header-user-profile">
-                    <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown"
-                        href="#" role="button" aria-haspopup="false" data-bs-auto-close="outside"
-                        aria-expanded="false">
-                        <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+                    <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
+                        role="button" aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
+                        <img src="{{ asset('storage/'.$userNav->profile_image) }}" style="height: 40px; width:40px; object-fit:cover;" alt="user-image" class="user-avtar" />
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header d-flex align-items-center justify-content-between">
@@ -314,11 +336,8 @@
                                         </div>
                                     </li>
                                     <li class="list-group-item">
-                                        <button  data-pc-animate="fade-in-scale"
-                                        type="button"
-                                    
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#changePassword" class="dropdown-item">
+                                        <button data-pc-animate="fade-in-scale" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#changePassword" class="dropdown-item">
                                             <span class="d-flex align-items-center">
                                                 <i class="ph-duotone ph-key"></i>
                                                 <span>Change password</span>
@@ -346,13 +365,13 @@
                                         </a> --}}
                                         <form action="/logout" method="POST">
                                             @csrf
-                                        <button type="submit" class="dropdown-item">
-                                            <span class="d-flex align-items-center">
-                                                <i class="ph-duotone ph-power"></i>
-                                                <span>Logout</span>
-                                            </span>
-                                        </button>
-                                    </form>
+                                            <button type="submit" class="dropdown-item">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="ph-duotone ph-power"></i>
+                                                    <span>Logout</span>
+                                                </span>
+                                            </button>
+                                        </form>
                                     </li>
                                     {{-- <li class="list-group-item">
                                         <a href="#" class="dropdown-item">
@@ -443,3 +462,6 @@
         </div>
     </div>
 </header>
+
+
+

@@ -79,7 +79,7 @@ class TransactionForm extends Form
                 'account_id' => $account_id, //kalau wd ambil account_id dari data user, kalau depo ambil dari inputan
                 'amount' => $this->amount,
                 'member_id' => $user_id,
-
+                'website_id' => session('website_id'),
                 'new' => $new,
 
             ]);
@@ -104,6 +104,7 @@ class TransactionForm extends Form
             'account_number' => $this->account_number,
             'total_wd' => $this->type == 1 ? $this->amount : 0,
             'total_depo' => $this->type == 2 ? $this->amount : 0,
+            'website_id' => session('website_id')
 
         ]);
     }

@@ -28,11 +28,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5>Log Transaksi</h5>
+                        <h5>Log Pengeluaran</h5>
                         @if (privilegeAddExpenditure())
                             <button wire:click='$dispatch("showModalNonEditStateExp")' type="button"
-                                class="btn btn-primary" style="width: 200px;" type="button">Tambah Catatan
-                                Pengeluaran</button>
+                                class="btn btn-primary" style="width: 200px;" type="button">Tambah Pengeluaran</button>
                         @endif
                     </div>
 

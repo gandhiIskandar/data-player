@@ -14,7 +14,8 @@ class Expenditure extends Model
         'amount',
         'detail',
         'account_id',
-        'currency_id'
+        'currency_id',
+        'website_id'
     ];
 
     public function user()
@@ -25,6 +26,10 @@ class Expenditure extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    public function website(){
+        return $this->belongsTo(Website::class);
     }
 
     public function currency(){

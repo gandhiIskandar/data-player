@@ -14,11 +14,16 @@ class CashBook extends Model
         'amount',
         'detail',
         'user_id',
+        'website_id'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function website(){
+        return $this->belongsTo(Website::class);
     }
 
     public function type()

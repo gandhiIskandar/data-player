@@ -27,9 +27,11 @@ class LoginForm extends Form
             $privileges = $user->privileges->pluck('id')->toArray();
 
 
+        
 
 
             session()->regenerate();
+            session()->put('website_id', 1);
             session()->put('user_data', $user);
             session()->put('privileges', $privileges);
 

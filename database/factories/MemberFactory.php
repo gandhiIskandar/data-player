@@ -20,6 +20,7 @@ class MemberFactory extends Factory
             'username' => fake()->unique()->userName(),
             'phone_number' => fake()->phoneNumber(),
             'account_id' => fake()->numberBetween(1,4),
+            'website_id' => fake()->numberBetween(1,4),
             'account_number' => '123456789',
             'total_wd' => fake()->numberBetween(10000, 200000),
             'total_depo' => fake()->numberBetween(10000, 200000),

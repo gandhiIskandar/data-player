@@ -22,6 +22,7 @@ class ExpenditureFactory extends Factory
             'amount' => fake()->numberBetween(60000, 100000),
             'detail' => fake()->sentence(4),
             'account_id' => fake()->numberBetween(1, 5),
+            'website_id' => fake()->numberBetween(1, 4),
             'currency_id' => fake()->numberBetween(1, 4),
 
         ];

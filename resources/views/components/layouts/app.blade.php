@@ -9,6 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+
+    
+
+
     @stack('css')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -16,7 +20,7 @@
 
     <style>
 
-        </style>
+    </style>
 
 
     <!-- [Favicon] icon -->
@@ -60,7 +64,11 @@
     </div> --}}
     <!-- [ Pre-loader ] End -->
 
-    
+    @php
+    $userNav = session('user_data');   
+   @endphp
+
+
     <!-- [ Sidebar Menu ] start -->
     @include('components.partials.navbar')
 
@@ -71,7 +79,7 @@
 
     <!-- [ Main Content ] start -->
     <div class="pc-container">
-        
+
         <div class="pc-content">
             <!-- [ breadcrumb ] start -->
             <div class="page-header">
@@ -106,8 +114,10 @@
     <x-partials.footer />
     <x-partials.ui-settings />
 
-    <livewire:modal-change-password/>
-    <livewire:whitelist.modal-whitelist/>
+    <livewire:modal-change-password />
+    <livewire:whitelist.modal-whitelist />
+    <livewire:account.modal-account />
+    <livewire:website.modal-website />
 
     <!-- [Page Specific JS] start -->
     <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
@@ -116,6 +126,7 @@
 
     <!-- Required Js -->
     <script src="{{ asset('assets/js/plugins/popper.min.js') }}"></script>
+
     <script src="{{ asset('assets/js/plugins/simplebar.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/fonts/custom-font.js') }}"></script>
@@ -138,19 +149,21 @@
 
     @stack('script')
 
+    
+
     <script>
-        layout_change('light');
+        layout_change(getCookie('layout') != "" ? getCookie('layout') : "light");
     </script>
 
     <script>
-        layout_sidebar_change('dark');
+        layout_sidebar_change(getCookie('sidebar') != "" ? getCookie('sidebar') :'dark');
     </script>
 
     <script>
-        layout_header_change('dark');
+        layout_header_change(getCookie('header') != "" ? getCookie('header') :'dark');
     </script>
 
-    <script>
+    {{-- <script>
         change_box_container('false');
     </script>
 
@@ -160,11 +173,13 @@
 
     <script>
         layout_rtl_change('false');
-    </script>
+    </script> --}}
 
-    <script>
-        preset_change('preset-1');
-    </script>
+<script>
+    preset_change(getCookie('preset-color') != "" ? getCookie('preset-color') :'preset-1');
+</script>
+
+   
 
     @livewireScripts
 

@@ -15,6 +15,7 @@ use App\Models\Task;
 use App\Models\Transaction;
 use App\Models\Type;
 use App\Models\User;
+use App\Models\Website;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->generatePrivileges();
+        $this->generateWebsite();
         $this->generateUserandRole();
         $this->generateAccount();
         $this->generateType();
@@ -105,6 +107,16 @@ class DatabaseSeeder extends Seeder
         }
 
 
+    }
+
+    public function generateWebsite(){
+        $websites = ['GPS TOTO','JAPRI SLOT', 'JPHK88', 'HKS188'];
+
+        foreach($websites as $website){
+            Website::create([
+                'name' => $website
+            ]);
+        }
     }
 
     public function generatePrivileges()

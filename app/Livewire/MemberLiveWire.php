@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
+#[\Livewire\Attributes\Title('Members')]
 class MemberLiveWire extends Component
 {
 

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('type_id');
             $table->foreignId('user_id');
+            $table->foreignId('website_id');
             $table->integer('amount');
             $table->string('detail');
             $table->timestamps();

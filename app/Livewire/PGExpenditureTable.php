@@ -41,7 +41,7 @@ final class PGExpenditureTable extends PowerGridComponent
 
         $user = Auth::user();
 
-        return Expenditure::query()->with(['user.role', 'account','currency'])->whereHas('user', function ($query) use ($user) {
+        return Expenditure::query()->where('website_id', session('website_id'))->with(['user.role', 'account','currency'])->whereHas('user', function ($query) use ($user) {
             $query->whereHas('role', function ($query) use ($user) {
                 $query->where('role_id', $user->role_id);
             });

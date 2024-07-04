@@ -36,7 +36,7 @@ final class PGMemberTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return Member::query()->with('account');
+        return Member::query()->with('account')->where('website_id', session('website_id'));
     }
 
     public function relationSearch(): array

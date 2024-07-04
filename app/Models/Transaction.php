@@ -16,6 +16,7 @@ class Transaction extends Model
         'account_id',
         'new',
         'created_at',
+        'website_id'
     ];
 
     public function type()
@@ -26,6 +27,10 @@ class Transaction extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function website(){
+        return $this->belongsTo(Website::class);
     }
 
     public function account()

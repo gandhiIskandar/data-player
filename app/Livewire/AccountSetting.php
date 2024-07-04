@@ -6,9 +6,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\Attributes\Validate;
 
 class AccountSetting extends Component
 {
+    use WithFileUploads;
     public $user;
 
     #[Rule(['required'])]
@@ -17,18 +20,24 @@ class AccountSetting extends Component
     #[Rule(['required'])]
     public $name;
 
+    #[Validate('image|max:1024')]
+    public $photo;
+
+    public $oldImagesName;
+
     public $role;
 
+   
     public function mount()
     {
 
-        $user = Auth::user();
 
-        $this->user = User::with('role')->find($user->id);
+        $this->user = session('user_data');
 
         $this->email = $this->user->email;
         $this->name = $this->user->name;
         $this->role = $this->user->role->name;
+        $this->oldImagesName = $this->user->profile_image_name;
 
     }
 
@@ -37,18 +46,39 @@ class AccountSetting extends Component
         return view('livewire.account-setting');
     }
 
+    
+
     public function updateDataUser()
     {
+
+        
+
+    
 
         if ($this->validate()) {
             $this->user->email = $this->email;
             $this->user->name = $this->name;
 
-            $this->user->save();
+            if($this->photo){
+
+                $ext = $this->photo->getClientOriginalExtension();
+
+               $this->user->profile_image = $this->photo->storeAs(path: 'profile_images', name:  $this->user->id.".".$ext );
+
+            }
+           
+
+
+             $this->user->save();
+
+            session()->put('user_data', $this->user );
 
             flash('Update Data Berhasil', 'alert-success');
 
         }
 
     }
+
+  
+    
 }

@@ -1,6 +1,6 @@
-@props(['data', 'date', 'icon', 'color','currency'=>false])
+@props(['data', 'date', 'icon', 'color','currency'=>false, 'width'=>'col-md-6', 'isImage'=>false] )
 
-<div class="col-md-6">
+<div class="{{ $width }}">
     <div class="card">
       <div class="card-body">
         <div class="d-flex align-items-center">
@@ -14,8 +14,12 @@
             <p class="mb-0 text-sm">{{ $date }}</p>
           </div>
           <div class="flex-shrink-0">
-            <div class="avtar avtar-l {{ $color }} rounded-circle">
-              <i class="{{ $icon }} f-28"></i>
+             <div class="avtar avtar-l {{ $color }} rounded-circle">
+              @if($isImage)
+              <img src="{{ $icon }}" width="28px" height="28px" alt="">
+              @else
+            <i class="{{ $icon }} f-28"></i> 
+            @endif
             </div>
           </div>
         </div>

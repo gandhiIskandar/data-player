@@ -64,7 +64,7 @@ class RecapExpTable extends Component
 
         $user = Auth::user();
 
-        return Expenditure::
+        return Expenditure::where('website_id', session('website_id'))->
         // whereHas('user', function ($query) use ($user) {
         //     $query->whereHas('role', function ($query) use ($user) {
         //         $query->where('role_id', $user->role_id);

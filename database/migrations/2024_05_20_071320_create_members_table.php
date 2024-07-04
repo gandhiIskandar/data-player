@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('account_number');
             $table->foreignId('account_id');
+            $table->foreignId('website_id');
             $table->integer('total_wd');
             $table->integer('total_depo');
             $table->timestamps();

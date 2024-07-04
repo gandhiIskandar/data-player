@@ -8,17 +8,19 @@
             </a>
         </div>
 
+      
+
         <div class="card pc-user-card">
             <div class="card-body">
                 <div class="nav-user-image">
                     <a data-bs-toggle="collapse" href="#navuserlink">
-                        <img src="../assets/images/user/avatar-1.jpg" alt="user-image"
-                            class="user-avtar rounded-circle" />
+                        <img src="{{ asset('storage/'. $userNav->profile_image) }}" alt="user-image"
+                            class="user-avtar rounded-circle" style="object-fit:cover; height:100px; width:100px;" />
                     </a>
                 </div>
                 <div class="pc-user-collpsed collapse" id="navuserlink">
-                    <h4 class="mb-0">Jonh Smith</h4>
-                    <span>Administrator</span>
+                    <h4 class="mb-0">{{ $userNav->name }}</h4>
+                    <span>{{ $userNav->role->name }}</span>
                     <ul>
                         <li><a class="pc-user-links" href="/account_setting">
                                 <i class="ph-duotone ph-user"></i>

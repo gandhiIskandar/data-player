@@ -22,15 +22,18 @@ final class PGTransactionTable extends PowerGridComponent
 {
     use WithExport;
 
+
     public function setUp(): array
     {
-        $this->showCheckBox();
+        // $this->showCheckBox();
 
         return [
             Exportable::make('export')
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()->showSearchInput(),
+            Header::make()
+            ->showSearchInput()
+            ->showToggleColumns(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
@@ -39,17 +42,15 @@ final class PGTransactionTable extends PowerGridComponent
 
     public function datasource(): ?Builder
     {
-        if (in_array(4, session('privileges')) && in_array(8, session('privileges')))
-        {
-            return Transaction::query()->with(['type', 'member', 'account'])->latest(); 
-
+        if (in_array(4, session('privileges')) && in_array(8, session('privileges'))) {
+            return Transaction::query()->with(['type', 'member', 'account'])->where('website_id', session('website_id'))->latest();
         } elseif (in_array(4, session('privileges'))) {
-            return Transaction::query()->with(['type', 'member', 'account'])->where('type_id', 2)->latest(); // 2 adalah type_id dari deposit
+            return Transaction::query()->with(['type', 'member', 'account'])->where('type_id', 2)->where('website_id', session('website_id'))->latest(); // 2 adalah type_id dari deposit
 
         } elseif (in_array(8, session('privileges'))) {
 
-            return Transaction::query()->with(['type', 'member', 'account'])->where('type_id', 1)->latest(); // 1 adalah type_id dari withdraw
-        } else{
+            return Transaction::query()->with(['type', 'member', 'account'])->where('type_id', 1)->where('website_id', session('website_id'))->latest(); // 1 adalah type_id dari withdraw
+        } else {
             return null;
         }
     }
@@ -88,7 +89,7 @@ final class PGTransactionTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-                Column::make('Rekening', 'account_id')
+            Column::make('Rekening', 'account_id')
                 ->sortable()
                 ->searchable(),
 
@@ -103,7 +104,7 @@ final class PGTransactionTable extends PowerGridComponent
             //     ->sortable()
             //     ->searchable(),
 
-         Column::action('Action')->hidden(isHidden: !privilegeEditTransaction()&&!privilegeRemoveTransaction()|| Route::currentRouteName() === 'dashboard', isForceHidden: true ),
+            Column::action('Action')->hidden(isHidden: !privilegeEditTransaction() && !privilegeRemoveTransaction() || Route::currentRouteName() === 'dashboard', isForceHidden: true),
         ];
     }
 
@@ -123,7 +124,7 @@ final class PGTransactionTable extends PowerGridComponent
     public function actions(Transaction $row): array
     {
 
-      
+
 
         return [
             Button::add('edit')
@@ -136,8 +137,7 @@ final class PGTransactionTable extends PowerGridComponent
                 ->slot('Hapus')
                 ->id()
                 ->class('btn btn-danger')
-                ->dispatch('deleteTransactionConfirm', ['transaction' => $row])
-                ,
+                ->dispatch('deleteTransactionConfirm', ['transaction' => $row]),
         ];
     }
 
@@ -146,28 +146,29 @@ final class PGTransactionTable extends PowerGridComponent
 
         return 'Rp ' . number_format($amount, 0, ',', '.');
     }
-    
+
     public function actionRules($row): array
     {
 
-      
-       return [
+
+        return [
             // Hide button edit for ID 1
             Rule::button('remove')
-            ->when(
-                fn() => !privilegeRemoveTransaction()) 
-               
+                ->when(
+                    fn () => !privilegeRemoveTransaction()
+                )
+
                 ->hide(),
 
 
-                Rule::button('edit')
+            Rule::button('edit')
                 ->when(
-                    fn() => !privilegeEditTransaction()) 
-                    
-                     ->hide(),
+                    fn () => !privilegeEditTransaction()
+                )
 
-                     
+                ->hide(),
+
+
         ];
     }
-    
 }

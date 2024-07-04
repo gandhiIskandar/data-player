@@ -26,6 +26,7 @@ class CashBookForm extends Form
                 'detail' => $this->detail,
                 'amount' => $this->amount,
                 'type_id' => $this->type_id,
+                'website_id'=> session('website_id')
             ]);
             $this->reset();
 

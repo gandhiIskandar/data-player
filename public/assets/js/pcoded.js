@@ -150,6 +150,37 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// Mengatur cookie
+function setCookie(namaCookie, nilai, hariKadaluarsa) {
+  var tanggal = new Date();
+  tanggal.setTime(tanggal.getTime() + (hariKadaluarsa * 24 * 60 * 60 * 1000));
+  var kadaluarsa = "expires=" + tanggal.toUTCString();
+  document.cookie = namaCookie + "=" + nilai + ";" + kadaluarsa + ";path=/";
+}
+
+// Mendapatkan cookie
+function getCookie(namaCookie) {
+  var nama = namaCookie + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(nama) == 0) {
+      return c.substring(nama.length, c.length);
+    }
+  }
+  return "";
+}
+
+// Menghapus cookie
+function hapusCookie(namaCookie) {
+  document.cookie = namaCookie + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+}
+
+
 // Menu click start
 function add_scroller() {
   menu_click();
@@ -165,7 +196,7 @@ function menu_click() {
   var vw = window.innerWidth;
   var elem = document.querySelectorAll('.pc-navbar li');
   for (var j = 0; j < elem.length; j++) {
-    elem[j].removeEventListener('click', function () {});
+    elem[j].removeEventListener('click', function () { });
   }
 
   var elem = document.querySelectorAll('.pc-navbar li:not(.pc-trigger) .pc-submenu');
@@ -317,13 +348,13 @@ for (var t = 0; t < tc.length; t++) {
       setTimeout(function () {
         try {
           prod_like.parentNode.querySelector('.pc-like').remove();
-        } catch (error) {}
+        } catch (error) { }
       }, 3000);
     } else {
       prod_like = event.target;
       try {
         prod_like.parentNode.querySelector('.pc-like').remove();
-      } catch (error) {}
+      } catch (error) { }
     }
   });
 }
@@ -374,12 +405,22 @@ document.addEventListener('DOMContentLoaded', function () {
     var preset_color = document.querySelectorAll('.preset-color > a');
     for (var h = 0; h < preset_color.length; h++) {
       var c = preset_color[h];
+
+
       c.addEventListener('click', function (event) {
         var targetElement = event.target;
         if (targetElement.tagName == 'SPAN') {
           targetElement = targetElement.parentNode;
         }
         var temp = targetElement.getAttribute('data-value');
+
+
+
+
+
+        //save cookienya
+        setCookie('preset-color', temp, 7);
+
         preset_change(temp);
       });
     }
@@ -452,7 +493,11 @@ function preset_change(value) {
   document.getElementsByTagName('body')[0].setAttribute('data-pc-preset', value);
   var control = document.querySelector('.pct-offcanvas');
   if (control) {
-    document.querySelector('.preset-color > a.active').classList.remove('active');
+    var alreadyActive = document.querySelector('.preset-color > a.active');
+
+    if (alreadyActive) {
+      alreadyActive.classList.remove('active');
+    }
     document.querySelector(".preset-color > a[data-value='" + value + "']").classList.add('active');
   }
 }

@@ -27,7 +27,7 @@
                     </div>
                     <label class="form-label" for="amount">Jumlah</label>
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Rp</span>
+                        <span class="input-group-text">BATH</span>
                         <input type="number" id="amount" wire:model='form.amount' class="form-control"
                             aria-label="Amount (to the nearest dollar)" required />
 

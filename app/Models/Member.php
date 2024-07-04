@@ -18,11 +18,16 @@ class Member extends Model
         'account_id',
         'phone_number',
         'total_depo',
+        'website_id'
     ];
 
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function website(){
+        return $this->belongsTo(Website::class);
     }
 
     public function account() //account = rekening

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Models\Website;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
@@ -42,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
 
             session()->put('privileges', $user->privileges->pluck('id')->toArray());
 
-
+           
             }
             
         });

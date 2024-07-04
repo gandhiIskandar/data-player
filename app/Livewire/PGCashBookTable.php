@@ -38,7 +38,7 @@ final class PGCashBookTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return CashBook::query()->with(['type', 'user']);
+        return CashBook::query()->with(['type', 'user'])->where('website_id', session('website_id'));
     }
 
     public function relationSearch(): array
@@ -60,7 +60,7 @@ final class PGCashBookTable extends PowerGridComponent
         return PowerGrid::fields()
             ->add('id')
             ->add('type_id', fn ($cashBook) => $cashBook->type->name)
-            ->add('amount', fn ($cashBook) => $this->toRupiah($cashBook->amount))
+            ->add('amount', fn ($cashBook) => toBaht($cashBook->amount))
             ->add('detail')
             ->add('user_id', fn ($cashBook) => $cashBook->user->name)
             ->add('created_at_formatted', fn ($cashBook) => Carbon::parse($cashBook->created_at)->translatedFormat('d F Y'));
@@ -127,11 +127,7 @@ final class PGCashBookTable extends PowerGridComponent
         ];
     }
 
-    public function toRupiah($amount)
-    {
-
-        return 'Rp '.number_format($amount, 0, ',', '.');
-    }
+   
 
     
     public function actionRules($row): array

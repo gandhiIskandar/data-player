@@ -63,7 +63,7 @@ class RecapCashbookTable extends Component
     public function getDataQuery($timeCostum)
     {
 
-        return CashBook::select(
+        return CashBook::where('website_id',session('website_id'))->select(
 
             //type_id 3 = pengeluaran
             //type_id 4 = pemasukan
@@ -170,9 +170,9 @@ class RecapCashbookTable extends Component
 
             $value->date = $formatBulanTahun;
 
-            $value->pkp = $this->toRupiah($value->total_pemasukan - $value->total_pengeluaran);
-            $value->total_pemasukan = $this->toRupiah($value->total_pemasukan);
-            $value->total_pengeluaran = $this->toRupiah($value->total_pengeluaran);
+            $value->pkp = toBaht($value->total_pemasukan - $value->total_pengeluaran);
+            $value->total_pemasukan = toBaht($value->total_pemasukan);
+            $value->total_pengeluaran = toBaht($value->total_pengeluaran);
 
         });
     }
@@ -184,9 +184,9 @@ class RecapCashbookTable extends Component
 
             $value->date = Carbon::parse($value->date)->timezone('Asia/Jakarta')->translatedFormat('d F Y');
 
-            $value->pkp = $this->toRupiah($value->total_pemasukan - $value->total_pengeluaran);
-            $value->total_pemasukan = $this->toRupiah($value->total_pemasukan);
-            $value->total_pengeluaran = $this->toRupiah($value->total_pengeluaran);
+            $value->pkp = toBaht($value->total_pemasukan - $value->total_pengeluaran);
+            $value->total_pemasukan = toBaht($value->total_pemasukan);
+            $value->total_pengeluaran = toBaht($value->total_pengeluaran);
         });
     }
 }
