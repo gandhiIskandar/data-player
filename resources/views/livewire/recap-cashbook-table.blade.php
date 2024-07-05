@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h5>Data Buku Kas</h5>
+                <h5>Data Recap Cashbook</h5>
                 @if (in_array(17, session('privileges')))
                 <button wire:click='$dispatch("showModalNonEditStateCashBook")' type="button" class="btn btn-primary" style="width: 200px;" type="button">Tambah Catatan Kas</button>
                 @endif

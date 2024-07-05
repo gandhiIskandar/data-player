@@ -3,7 +3,10 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\Title;
 
+
+#[Title('Cashbook')]
 class Cashbooks extends Component
 {
     public $jenisTabel = 1;

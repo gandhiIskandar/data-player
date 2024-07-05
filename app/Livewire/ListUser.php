@@ -4,7 +4,8 @@ namespace App\Livewire;
 
 
 use Livewire\Component;
-
+use Livewire\Attributes\Title;
+#[Title('Users')]
 class ListUser extends Component
 {
 

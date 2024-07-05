@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5>Log Transaksi</h5>
+                        <h5>Log Cashbook</h5>
 
                         @if (privilegeAddCashBook())
                             <button wire:click='$dispatch("showModalNonEditStateCashBook")' type="button"

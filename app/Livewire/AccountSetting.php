@@ -2,13 +2,15 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Rule;
+
 use Livewire\Component;
+use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 
+
+#[Title('Profile Data')]
 class AccountSetting extends Component
 {
     use WithFileUploads;

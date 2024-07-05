@@ -38,10 +38,10 @@ class DatabaseSeeder extends Seeder
         $this->generateType();
         $this->generateCurrencies();
 
-        Member::factory(20)->create();
-        Transaction::factory(30)->create();
-        Expenditure::factory(15)->create();
-        Task::factory(25)->create();
+        // Member::factory(20)->create();
+        // Transaction::factory(30)->create();
+        // Expenditure::factory(15)->create();
+        // Task::factory(25)->create();
     }
 
     public function generateUserandRole()
