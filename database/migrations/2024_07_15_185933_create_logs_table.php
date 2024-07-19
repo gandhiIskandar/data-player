@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('logs', function (Blueprint $table) {
             $table->id();
+            $table->string('username');
+            $table->string('ip');
+            $table->string('activity');
+            $table->string('deskripsi');
+            $table->foreignId('member_id')->nullable();
             $table->foreignId('website_id')->nullable();
-            $table->string('number')->default("Belum Setting");
-            $table->string('under_name')->default("Belum Setting");
-            $table->integer('balance')->default(0);
-            $table->foreignId('bank_id');
+            $table->foreignId('user_id')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('logs');
     }
 };

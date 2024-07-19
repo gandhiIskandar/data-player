@@ -19,6 +19,11 @@ class SuperAdmin
 
         $user = Auth::user();
 
+        
+        if (! $user) {
+            return redirect('/');
+        }
+
         if($user->role_id != 4){
             abort(404);
         }

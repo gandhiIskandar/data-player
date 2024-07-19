@@ -3,6 +3,8 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Member;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\Transaction;
 use Livewire\Attributes\Rule;
 use Livewire\Form;
@@ -12,14 +14,17 @@ class TransactionForm extends Form
     #[Rule(['required', 'numeric'])]
     public $type = 0;
 
-    #[Rule(['required', 'numeric'])]
+    #[Rule(['required'])]
     public $amount = 0;
 
     #[Rule(['numeric'])]
     public $phone_number = 0;
 
     #[Rule(['numeric'])]
-    public $account_id = 1; // nilai awal adalah 1 karena selected awal ada di id 1
+    public $member_account = 1; // nilai awal adalah 1 karena selected awal ada di id 1
+
+    #[Rule(['numeric'])]
+    public $admin_account = 1; // nilai awal adalah 1 karena selected awal ada di id 1
 
     #[Rule(['numeric'])]
     public $astaga = 1; // nilai awal adalah 1 karena selected awal ada di id 1
@@ -31,6 +36,8 @@ class TransactionForm extends Form
     public $username = '';
 
     public $member;
+
+
 
     // type = 1 -> wd
     // type = 2 -> depo
@@ -61,9 +68,9 @@ class TransactionForm extends Form
 
         
 
-        if ($this->type == 2) {
+        if ($this->type == 2) {// jika tipenya adalah deposit
 
-            $account_id = $this->account_id;
+            $from_account= $this->member_account;
         } else {
             $account_id = $this->member->account_id;
            
@@ -83,6 +90,15 @@ class TransactionForm extends Form
                 'new' => $new,
 
             ]);
+
+           // dd(request());
+            $admin = Auth::user();
+
+           // $this->logform->store($user->name, $ip, $activity, $target, $deskripsi);
+
+            $formattedAmount = toRupiah($this->amount, true);
+
+            insertLog($admin->name, request()->ip(), "Insert Transaksi",$user_id, $this->type == 1 ? "Witdraw $formattedAmount" : "Deposit $formattedAmount", 0);
 
 
 
@@ -136,6 +152,13 @@ class TransactionForm extends Form
                     $old_amount
                 );
             }
+
+            $admin = Auth::user();
+    
+            $formattedOldAmount = toRupiah($old_amount, true);
+            $formattedNewAmount = toRupiah($new_amount, true);
+            
+            insertLog($admin->name, request()->ip(), "Update Transaksi",$transaction->member_id, $transaction->type_id == 1 ? "Witdraw from $formattedOldAmount to $formattedNewAmount" : "Deposit from $formattedOldAmount to $formattedNewAmount ", 0);
 
             $transaction->type_id = $new_type;
             $transaction->amount = $new_amount;

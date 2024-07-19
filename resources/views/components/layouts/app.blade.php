@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 
-    
+
 
 
     @stack('css')
@@ -27,7 +27,8 @@
     <!-- [Favicon] icon -->
     <link rel="icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon" />
     <!-- [Google Font : Public Sans] icon -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
 
     <!-- [Tabler Icons] https://tablericons.com -->
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}" />
@@ -66,8 +67,8 @@
     <!-- [ Pre-loader ] End -->
 
     @php
-    $userNav = session('user_data');   
-   @endphp
+        $userNav = session('user_data');
+    @endphp
 
 
     <!-- [ Sidebar Menu ] start -->
@@ -117,7 +118,7 @@
 
     <livewire:modal-change-password />
     <livewire:whitelist.modal-whitelist />
-    <livewire:account.modal-account />
+    
     <livewire:website.modal-website />
 
     <!-- [Page Specific JS] start -->
@@ -135,6 +136,7 @@
     <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.6.0/dist/autoNumeric.min.js"></script>
     {{-- data table --}}
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
@@ -150,18 +152,18 @@
 
     @stack('script')
 
-    
+
 
     <script>
         layout_change(getCookie('layout') != "" ? getCookie('layout') : "light");
     </script>
 
     <script>
-        layout_sidebar_change(getCookie('sidebar') != "" ? getCookie('sidebar') :'dark');
+        layout_sidebar_change(getCookie('sidebar') != "" ? getCookie('sidebar') : 'dark');
     </script>
 
     <script>
-        layout_header_change(getCookie('header') != "" ? getCookie('header') :'dark');
+        layout_header_change(getCookie('header') != "" ? getCookie('header') : 'dark');
     </script>
 
     {{-- <script>
@@ -176,11 +178,24 @@
         layout_rtl_change('false');
     </script> --}}
 
-<script>
-    preset_change(getCookie('preset-color') != "" ? getCookie('preset-color') :'preset-1');
-</script>
+    <script>
+        preset_change(getCookie('preset-color') != "" ? getCookie('preset-color') : 'preset-1');
+    </script>
 
-   
+    <script>
+        $(document).ready(function() {
+            new AutoNumeric('.input-currency', {
+                digitGroupSeparator: '.',
+                decimalCharacter: ',',
+                decimalPlaces: 0
+              //  unformatOnSubmit: true
+                // currencySymbol: ' Rp',
+                // currencySymbolPlacement: 's',
+            });
+        });
+    </script>
+
+
 
     @livewireScripts
 

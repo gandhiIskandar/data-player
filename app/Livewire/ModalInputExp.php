@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Livewire\Forms\ExpForm;
 use App\Models\Account;
 use App\Models\Currency;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Expenditure;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -33,7 +34,7 @@ class ModalInputExp extends Component
 
     public function proceedExp()
     {
-
+            $this->form->amount = str_replace('.','',$this->form->amount);
 
         if (!$this->edit) {
             
@@ -84,8 +85,12 @@ class ModalInputExp extends Component
         //inisiasi nilai form agar sesuai dengan data yang mau diedit
 
         $this->form->detail = $this->expenditure->detail;
-        $this->form->amount = $this->expenditure->amount;
+        $this->form->amount = strval(intval($this->expenditure->amount));
         $this->form->account_id = $this->expenditure->account_id;
+        $this->form->currency_id = $this->expenditure->currency_id;
+
+    
+
         //end inisiasi
 
         $this->dispatch('showModalExpJS');
@@ -96,7 +101,7 @@ class ModalInputExp extends Component
 
         $this->form->update($this->expenditure);
 
-        flash('Data pengeluaran berhasil diubah', 'alert-success');
+      //  flash('Data pengeluaran berhasil diubah', 'alert-success');
 
         $this->dispatch('reloadPowerGridExp');
 
@@ -114,9 +119,20 @@ class ModalInputExp extends Component
     public function removeExp($expenditure_id)
     {
 
-        $expenditure = Expenditure::where('id', $expenditure_id)->first();
+        $expenditure = Expenditure::with(['currency'])->where('id', $expenditure_id)->first();
 
         $expenditure->delete();
+
+        $currency = $expenditure->currency->name;
+
+        $formattedAmount = $currency." ".number_format($expenditure->amount,0 ,',','.');
+          
+         $admin = Auth::user();
+
+         insertLog($admin->name, request()->ip(), "Hapus Pengeluaran", "-", $expenditure->detail." $formattedAmount" , 2);
+
+
+
 
         $this->dispatch('reloadPowerGridExp');
 

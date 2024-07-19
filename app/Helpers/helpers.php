@@ -8,6 +8,61 @@ if (!function_exists('toBaht')) {
     }
 }
 
+
+
+if (!function_exists('updateSaldoRekening')) {
+
+
+    function updateSaldoRekening($account_id, $balance, $ket)
+    {
+
+        $account = App\Models\Account::find($account_id);
+
+        if ($ket == "tambah") {
+            $account->balance += $balance;
+        }else{
+            $account->balance -= $balance;
+        }
+
+        $account->save();
+    }
+}
+
+if (!function_exists('insertLog')) {
+
+    function insertLog($username, $ip, $activity, $target, $deskripsi, $key)
+    {
+
+
+
+        $data = [
+            'username' => $username,
+            'ip' => $ip,
+            'website_id' => session('website_id'),
+            'activity' => $activity,
+            'deskripsi' => $deskripsi
+
+        ];
+
+
+        //key 0 :member, key 1 :user, key 2 : keterangan tambahan
+
+
+        if ($key == 0) {
+            $data['member_id'] = $target;
+        } elseif ($key == 1) {
+            $data['user_id'] = $target;
+        } else {
+            $data['keterangan'] = $target;
+        }
+
+
+        App\Models\Log::create($data);
+    }
+}
+
+
+
 if (!function_exists('toRupiah')) {
     function toRupiah($amount, $prefix =  false)
     {

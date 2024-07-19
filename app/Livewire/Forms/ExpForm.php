@@ -10,8 +10,8 @@ use Livewire\Form;
 
 class ExpForm extends Form
 {
-    #[Rule(['required', 'numeric'])]
-    public $amount = 0;
+    #[Rule(['required'])]
+    public $amount;
 
     #[Rule(['required'])]
     public $detail = '';
@@ -27,37 +27,48 @@ class ExpForm extends Form
 
 
         $this->amount = changeToDot($this->amount);
-    
-
-            if ($this->validate()) {
-
-                $user = Auth::user();
-
-                $expenditure = Expenditure::create([
-                    'user_id' => $user->id,
-                    'detail' => $this->detail,
-                    'amount' => $this->amount ,
-                    'account_id' => $this->account_id,
-                    'currency_id' => $this->currency_id,
-                    'website_id' => session('website_id')
-
-                ]);
-                $this->reset();
-
-                flash('Berhasil Tambah Catatan Pengeluaran', 'alert-success');
-
-                // dd($expenditure);
 
 
-                return $expenditure;
-            }
-       
+        if ($this->validate()) {
+
+            $user = Auth::user();
+
+            $expenditure = Expenditure::create([
+                'user_id' => $user->id,
+                'detail' => $this->detail,
+                'amount' => $this->amount,
+                'account_id' => $this->account_id,
+                'currency_id' => $this->currency_id,
+                'website_id' => session('website_id')
+
+            ]);
+            $this->reset();
+
+            flash('Berhasil Tambah Catatan Pengeluaran', 'alert-success');
+
+            // dd($expenditure);
+
+            //          $admin = Auth::user();
+
+            $currency = $expenditure->currency->name;
+
+            $formattedAmount = $currency . " " . number_format($expenditure->amount, 0, ',', '.');
+
+            insertLog($user->name, request()->ip(), "Insert Pengeluaran", "-", "$expenditure->detail $formattedAmount", 2);
+
+
+            return $expenditure;
+        }
     }
 
     public function update($expenditure)
     {
 
         //TODO nanti buatkan pengecekan bahwa yang berhak mengedit adalah user yang membuat kas itu sendiri
+        $currency = $expenditure->currency->name;
+
+        $formattedOldAmount = $currency . " " . number_format($expenditure->amount, 0, ',', '.');
+
 
         if ($this->validate()) {
             //user id akan tetap sama dan tidak bisa diubah
@@ -67,7 +78,14 @@ class ExpForm extends Form
             $expenditure->account_id = $this->account_id;
             $expenditure->currency_id = $this->currency_id;
 
+            
             $expenditure->save();
+              $admin = Auth::user();
+
+
+            $formattedNewAmount = $currency . " " . number_format($expenditure->amount, 0, ',', '.');
+
+            insertLog($admin->name, request()->ip(), "Update Pengeluaran", $expenditure->detail, "From $formattedOldAmount to $formattedNewAmount", 2);
 
             flash('Berhasil Edit Catatan Pengeluaran', 'alert-success');
         }

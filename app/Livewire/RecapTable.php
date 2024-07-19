@@ -175,7 +175,7 @@ class RecapTable extends Component
 
             $value->date = $formatBulanTahun;
 
-            $value->dkw = $this->toRupiah($value->total_deposit - $value->total_withdraw);
+          $value->dkw = $value->total_deposit - $value->total_withdraw;
             $value->total_redeposit = $this->toRupiah($value->total_redeposit);
             $value->total_new_deposit = $this->toRupiah($value->total_new_deposit);
             $value->total_deposit = $this->toRupiah($value->total_deposit);
@@ -189,7 +189,7 @@ class RecapTable extends Component
         $this->transactions->map(function ($value) {
 
             $value->date = Carbon::parse($value->date)->timezone('Asia/Jakarta')->translatedFormat('d F Y');
-            $value->dkw = $this->toRupiah($value->total_deposit - $value->total_withdraw);
+            $value->dkw = $value->total_deposit - $value->total_withdraw;
             $value->total_redeposit = $this->toRupiah($value->total_redeposit);
             $value->total_new_deposit = $this->toRupiah($value->total_new_deposit);
             $value->total_deposit = $this->toRupiah($value->total_deposit);

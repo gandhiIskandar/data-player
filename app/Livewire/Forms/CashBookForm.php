@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Models\CashBook;
 use Livewire\Attributes\Rule;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Form;
 
 class CashBookForm extends Form
@@ -11,7 +12,7 @@ class CashBookForm extends Form
     #[Rule(['required', 'numeric'])]
     public $type_id = '';
 
-    #[Rule(['required', 'numeric'])]
+    #[Rule(['required'])]
     public $amount = 0;
 
     #[Rule(['required'])]
@@ -30,6 +31,11 @@ class CashBookForm extends Form
             ]);
             $this->reset();
 
+            $admin = Auth()->user();
+            $formattedAmount = toBaht($cashbook->amount);
+
+            insertLog($admin->name, request()->ip(), "Tambah Catatan Kas",$cashbook->type->name, "$cashbook->detail $formattedAmount",2 );
+
             flash('Berhasil Tambah Catatan Kas', 'alert-success');
 
             return $cashbook;
@@ -45,9 +51,16 @@ class CashBookForm extends Form
         if ($this->validate()) {
             //user id akan tetap sama dan tidak bisa diubah
 
+            $formattedOldAmount = toBaht($cashBook->amount);
+
             $cashBook->detail = $this->detail;
             $cashBook->amount = $this->amount;
             $cashBook->type_id = $this->type_id;
+
+            $admin = Auth()->user();
+            $formattedNewAmount = toBaht($cashBook->amount);
+
+            insertLog($admin->name, request()->ip(), "Update Catatan Kas",$cashBook->type->name, "$cashBook->detail from $formattedOldAmount to $formattedNewAmount",2);
 
             $cashBook->save();
         }

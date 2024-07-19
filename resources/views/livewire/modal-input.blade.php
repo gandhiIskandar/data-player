@@ -48,7 +48,9 @@
                                 <input type="text" id="norek" wire:model='form.account_number' class="form-control"
                                 aria-label="Amount (to the nearest dollar)" required />
                             </div>
-                       
+
+                            <hr style="border-top: 2px solid black;">
+
                     @endif
 
                     <div class="mb-3">
@@ -64,22 +66,36 @@
 
                         </select>
                     </div>
-                    @if($form->type == 2)
+                    @if($form->type !=0)
                     <div class="mb-3">
-                        <label class="form-label" for="exampleFormControlSelect1">Deposit Rekening</label>
+                        
+                        <label class="form-label" for="exampleFormControlSelect1">{{ $form->type==2 ? "Dari Rekening (Member)" : "Ke Rekening (Member)" }}</label>
                         <select class="form-select" wire:model='form.account_id' id="exampleFormControlSelect1" required>
-                            @foreach ($accounts as $account)
-                            <option value={{ $account->id }} {{ $loop->iteration == 1 ? 'selected' : '' }}>{{ $account->name }}</option>
+                            @foreach ($banks as $bank)
+                            <option value={{ $bank->id }} {{ $loop->iteration == 1 ? 'selected' : '' }}>{{ $bank->name}}</option>
                                 
                             @endforeach
 
                         </select>
                     </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="exampleFormControlSelect1">{{ $form->type==2 ? "Rekening Tujuan (Admin)" : "Dari Rekening (Admin)"  }}</label>
+                        <select class="form-select" wire:model='form.account_id' id="exampleFormControlSelect1" required>
+                            @foreach ($accounts as $account)
+                            <option value={{ $account->id }} {{ $loop->iteration == 1 ? 'selected' : '' }}>{{ $account->bank->name." - ".$account->under_name }}</option>
+                                
+                            @endforeach
+
+                        </select>
+                    </div>
+
                     @endif
+                    
                     <label class="form-label" for="amount">Jumlah</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Rp</span>
-                        <input type="number" id="amount" wire:model='form.amount' class="form-control"
+                        <input type="text" id="amount" wire:model='form.amount' class="form-control input-currency"
                             aria-label="Amount (to the nearest dollar)" required />
 
                     </div>

@@ -42,7 +42,7 @@
 
                         <th rowspan="2" width="5%" style="font-size: 10px;">No</th>
                         <th rowspan="2" style="font-size: 10px;">Tanggal</th>
-                        <th style="font-size: 10px; text-align:center !important" data-dt-order="disable"
+                        <th style="font-size: 10px; text-align:center !important;" data-dt-order="disable"
                             colspan="2">Total Deposit</th>
                         <th colspan="2" style="font-size: 10px;  text-align:center !important  "
                             data-dt-order="disable">Total New Deposit</th>
@@ -55,15 +55,15 @@
                     </tr>
                     <tr>
 
-                        <th style="font-size: 10px;">Form Deposit</th>
-                        <th style="font-size: 10px;">Jumlah Deposit</th>
-                        <th style="font-size: 10px;">Form New Deposit</th>
-                        <th style="font-size: 10px;">Jumlah New Deposit</th>
-                        <th style="font-size: 10px;">Form Re-deposit</th>
-                        <th style="font-size: 10px;">Jumlah Re-deposit</th>
-                        <th style="font-size: 10px;">Form Withdraw</th>
-                        <th style="font-size: 10px;">Jumlah Withdraw</th>
-                        <th style="font-size: 10px;">Jumlah Deposit-Withdraw</th>
+                        <th style="font-size: 10px;">Form </th>
+                        <th style="font-size: 10px;">Jumlah </th>
+                        <th style="font-size: 10px;">Form </th>
+                        <th style="font-size: 10px;">Jumlah </th>
+                        <th style="font-size: 10px;">Form</th>
+                        <th style="font-size: 10px;">Jumlah</th>
+                        <th style="font-size: 10px;">Form</th>
+                        <th style="font-size: 10px;">Jumlah</th>
+                        <th style="font-size: 10px;">Jumlah</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,14 +72,14 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $transaction->date }}</td>
                             <td>{{ $transaction->forms_deposit }}</td>
-                            <td>{{ $transaction->total_deposit }}</td>
+                            <td class="text-success">{{ $transaction->total_deposit }}</td>
                             <td>{{ $transaction->forms_new_deposit }}</td>
-                            <td>{{ $transaction->total_new_deposit }}</td>
+                            <td class="text-success">{{ $transaction->total_new_deposit }}</td>
                             <td>{{ $transaction->forms_redeposit }}</td>
-                            <td>{{ $transaction->total_redeposit }}</td>
+                            <td class="text-success">{{ $transaction->total_redeposit }}</td>
                             <td>{{ $transaction->forms_withdraw }}</td>
-                            <td>{{ $transaction->total_withdraw }}</td>
-                            <td>{{ $transaction->dkw }}</td>
+                            <td class="text-danger">{{ $transaction->total_withdraw }}</td>
+                            <td class={{ $transaction->dkw >= 0 ? 'text-success' : 'text-danger' }}>{{ toRupiah($transaction->dkw, true) }}</td>
 
                         </tr>
                     @endforeach

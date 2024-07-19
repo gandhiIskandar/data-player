@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\TransactionForm;
 use App\Models\Account;
+use App\Models\Bank;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Member;
 use App\Models\Transaction;
 use Livewire\Component;
@@ -23,7 +25,8 @@ class ModalInput extends Component
     //nilai member akan diisi hanya jika edit false
     public $member;
 
-    public $accounts; //list rekening
+    public $accounts; //list rekening admin
+    public $banks;
 
     //nilai transaksi ini berguna untuk menyimpan data transaksi lama dan diisi ketika state edit aktif, kemudian akan melakukan save()
     public $transaction;
@@ -36,8 +39,9 @@ class ModalInput extends Component
             $this->checkUserExist();
 
         }
+        $this->banks = Bank::all();
 
-        $this->accounts = Account::all();
+        $this->accounts = Account::with('bank')->get();
 
         return view('livewire.modal-input');
     }
@@ -59,6 +63,11 @@ class ModalInput extends Component
 
     public function procedTransaction()
     {
+
+        //hilankan titik pada angka
+
+        $this->form->amount = str_replace('.','',$this->form->amount);
+
         if (! $this->edit) {
             $this->insertTransaction();
         } else {
@@ -73,7 +82,9 @@ class ModalInput extends Component
 
         $this->edit = true; //aktifkan state edit
 
-        $this->transaction = Transaction::find($transaction_id);
+        $this->transaction = Transaction::with(['member'])->find($transaction_id);
+
+       // dd($this->transaction);
 
         $this->exist = 1; //set 1 karena member sudah ada
 
@@ -127,6 +138,14 @@ class ModalInput extends Component
         $transaction->delete();
 
         $this->reduceSumMember($transaction->member, $transaction->type_id, $transaction->amount);
+
+        $admin = Auth::user();
+
+        $formattedAmount = toRupiah($transaction->amount, true);
+
+        insertLog($admin->name, request()->ip(), "Hapus Transaksi",$transaction->member_id, $transaction->type_id == 1 ? "Hapus Withdraw $formattedAmount" : "Hapus Deposit $formattedAmount" , 0);
+
+        
 
         $this->dispatch('reloadTransaction');
 

@@ -4,18 +4,20 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Account;
-use App\Models\Currency;
-use App\Models\Expenditure;
-use App\Models\Member;
-use App\Models\Privilege;
-use App\Models\PrivilegeType;
+use App\Models\Bank;
 use App\Models\Role;
 use App\Models\Task;
-use App\Models\Transaction;
 use App\Models\Type;
 use App\Models\User;
+use App\Models\Member;
+use App\Models\Account;
 use App\Models\Website;
+use App\Models\Currency;
+use App\Models\Privilege;
+use App\Models\Expenditure;
+use App\Models\Transaction;
+use App\Models\PrivilegeType;
+use App\Models\Whitelist;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -37,6 +39,8 @@ class DatabaseSeeder extends Seeder
         $this->generateAccount();
         $this->generateType();
         $this->generateCurrencies();
+
+        Whitelist::create(['ip_address'=>'127.0.0.1']);
 
         // Member::factory(20)->create();
         // Transaction::factory(30)->create();
@@ -75,10 +79,13 @@ class DatabaseSeeder extends Seeder
 
     public function generateAccount()
     {
-        $accounts = ['BCA', 'BRI', 'Mandiri', 'Sinarmas', 'BNI'];
+        $accounts = ['BCA', 'BRI', 'Mandiri', 'BSI', 'BNI', 'CIMB','Danamon','Permata','BJB', 'PANIN'
+        ,'OCBC','DKI','SUMUT', 'NEO', 'JAGO', 'SeaBank','Jenius','DANA','OVO','ShopeePay','GOPAY',
+        'LinkAja', 'Sakuku', 'AstraPay'
+    ];
 
         foreach ($accounts as $account) {
-            Account::factory()->create([
+            Bank::create([
 
                 'name' => $account,
 

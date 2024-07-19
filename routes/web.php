@@ -32,6 +32,8 @@ Route::middleware('whitelist')->group(function () {
         Route::get('/account_setting', \App\Livewire\AccountSetting::class)->name('account-setting');
         Route::get('/expenditures', \App\Livewire\Expenditures::class)->name('expenditures');
     });
-
+    Route::get('/log', \App\Livewire\Log\Index::class)->name('log')->middleware(['super.admin']);
+    Route::get('/rekening', \App\Livewire\Account\Index::class)->name('rekening')->middleware(['super.admin']);
+    
     Route::get('/users', \App\Livewire\ListUser::class)->name('users')->middleware(['super.admin']);
 });

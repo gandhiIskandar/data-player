@@ -115,6 +115,14 @@
                             <span class="pc-mtext">Users</span>
                         </a>
                     </li>
+                    <li class="pc-item {{ request()->is('log') ? 'active' : '' }}">
+                        <a href="/log" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ph-duotone ph-activity"></i>
+                            </span>
+                            <span class="pc-mtext">Log</span>
+                        </a>
+                    </li>
                 @endcan
 
                 @if (privilegeChangePassword() || privilegeEditUserData())

@@ -13,10 +13,12 @@ class Transaction extends Model
         'type_id',
         'amount',
         'member_id',
-        'account_id',
+        'from_account',
+        'to_account',
         'new',
         'created_at',
-        'website_id'
+        'website_id',
+        'user_id',
     ];
 
     public function type()
@@ -33,8 +35,11 @@ class Transaction extends Model
         return $this->belongsTo(Website::class);
     }
 
-    public function account()
-    {
-        return $this->belongsTo(Account::class);
+    public function from_account(){
+        return $this->belongsTo(Account::class,'from_account');
+    }
+
+    public function to_account(){
+        return $this->belongsTo(Account::class, 'to_account');
     }
 }

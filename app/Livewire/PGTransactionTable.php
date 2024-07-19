@@ -73,7 +73,7 @@ final class PGTransactionTable extends PowerGridComponent
         return PowerGrid::fields()
 
             ->add('type_id', fn ($transaction) => $transaction->type->name)
-            ->add('amount', fn ($transaction) => $this->toRupiah($transaction->amount))
+            ->add('amount', fn ($transaction) => $transaction->type_id == 1 ? "<p class='text-danger m-0 text-center'>".$this->toRupiah($transaction->amount)."</p>" : "<p class='text-success m-0 text-center'>". $this->toRupiah($transaction->amount) ."</p>" )
             ->add('member_id', fn ($transaction) => $transaction->member->username ?? 'Member tidak ada')
             ->add('new', fn ($transaction) => $transaction->new == 1 ? 'Ya' : 'Tidak')
             ->add('account_id', fn ($transaction) => $transaction->account->name ?? 'null')
@@ -82,12 +82,16 @@ final class PGTransactionTable extends PowerGridComponent
 
     public function columns(): array
     {
+
+        
         return [
             Column::make('Username', 'member_id'),
             Column::make('Jenis Transaksi', 'type_id'),
             Column::make('Amount', 'amount')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                
+                ->bodyAttribute( ),
 
             Column::make('Rekening', 'account_id')
                 ->sortable()

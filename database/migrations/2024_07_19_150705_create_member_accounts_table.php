@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('member_accounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('website_id')->nullable();
-            $table->string('number')->default("Belum Setting");
-            $table->string('under_name')->default("Belum Setting");
-            $table->integer('balance')->default(0);
+            $table->foreignId('member_id');
             $table->foreignId('bank_id');
+            $table->string('number');
+            $table->string('under_name');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('member_accounts');
     }
 };

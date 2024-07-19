@@ -39,7 +39,7 @@
                             
 
                         </select>
-                        <input type="text" id="amount" wire:model='form.amount' class="form-control"
+                        <input type="text" id="amount" wire:model='form.amount' class="form-control input-currency"
                             aria-label="Amount (to the nearest dollar)" required />
 
                     </div>
