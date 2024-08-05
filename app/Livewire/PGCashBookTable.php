@@ -9,13 +9,13 @@ use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
 use PowerComponents\LivewirePowerGrid\Facades\Filter;
+use PowerComponents\LivewirePowerGrid\Facades\Rule;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
-use PowerComponents\LivewirePowerGrid\Facades\Rule;
 
 final class PGCashBookTable extends PowerGridComponent
 {
@@ -38,7 +38,7 @@ final class PGCashBookTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return CashBook::query()->with(['type', 'user'])->where('website_id', session('website_id'));
+        return CashBook::query()->with(['type', 'user']);
     }
 
     public function relationSearch(): array
@@ -70,24 +70,24 @@ final class PGCashBookTable extends PowerGridComponent
     {
         return [
             Column::make('Id', 'id'),
-            Column::make('Type', 'type_id'),
+            Column::make('Type', 'type_id')->hidden(isHidden: ! privilegeViewTypeCash(), isForceHidden: false),
             Column::make('Jumlah', 'amount')
                 ->sortable()
-                ->searchable(),
+                ->searchable()->hidden(isHidden: ! privilegeViewAmountCash(), isForceHidden: false),
 
             Column::make('Detail', 'detail')
                 ->sortable()
-                ->searchable(),
+                ->searchable()->hidden(isHidden: ! privilegeViewDetailCash(), isForceHidden: false),
 
-            Column::make('User', 'user_id'),
+            Column::make('User', 'user_id')->hidden(isHidden: ! privilegeViewUserCash(), isForceHidden: false),
             Column::make('Tanggal', 'created_at_formatted', 'created_at')
-                ->sortable(),
+                ->sortable()->hidden(isHidden: ! privilegeViewDateCash(), isForceHidden: false),
 
             // Column::make('Created at', 'created_at')
             //     ->sortable()
             //     ->searchable(),
 
-            Column::action('Action')->hidden(isHidden: !privilegeEditCashBook() && !privilegeRemoveCashBook(), isForceHidden: true),
+            Column::action('Action')->hidden(isHidden: ! privilegeEditCashBook() && ! privilegeRemoveCashBook(), isForceHidden: true),
         ];
     }
 
@@ -95,7 +95,7 @@ final class PGCashBookTable extends PowerGridComponent
     {
         return [
 
-            Filter::datetimepicker('created_at_formatted', 'created_at')
+            Filter::datetimepicker('created_at','created_at_formatted')
                 ->params([
 
                     'timezone' => 'Asia/Jakarta',
@@ -127,21 +127,17 @@ final class PGCashBookTable extends PowerGridComponent
         ];
     }
 
-   
-
-    
     public function actionRules($row): array
     {
-       return [
+        return [
             // Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn() => !privilegeEditCashBook())
+                ->when(fn () => ! privilegeEditCashBook())
                 ->hide(),
 
-                Rule::button('remove')
-                ->when(fn() => !privilegeRemoveCashBook())
-                ->hide()
+            Rule::button('remove')
+                ->when(fn () => ! privilegeRemoveCashBook())
+                ->hide(),
         ];
     }
-    
 }

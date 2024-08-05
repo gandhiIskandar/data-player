@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('account_id');
             $table->foreignId('currency_id');
             $table->foreignId('website_id');
-            $table->float('amount',15,5);
+            $table->float('amount', 15, 5);
             $table->string('detail');
             $table->timestamps();
         });

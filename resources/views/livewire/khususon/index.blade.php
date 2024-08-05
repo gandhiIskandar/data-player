@@ -54,7 +54,7 @@
     </div>
 
 
-
+@if(privilegeViewTransaction() && session('website_id') != 5 && session('website_id') != 6 )
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
@@ -64,21 +64,23 @@
 
 
 
-                    @if (privilegeAddTransaction())
+                     @if (privilegeAddTransaction())
                         <button data-pc-animate="fade-in-scale" type="button" class="btn btn-primary"
                             data-bs-toggle="modal" data-bs-target="#animateModal" style="width: 200px;"
                             type="button">Tambah Transaksi</button>
-                    @endif
+                    @endif 
                 </div>
             </div>
             <div class="card-body">
 
 
-                <livewire:p-g-transaction-table />
+              <livewire:p-g-transaction-table /> 
 
             </div>
         </div>
     </div>
+    @else
+    @endif
 
     <livewire:modal-input />
 </div>

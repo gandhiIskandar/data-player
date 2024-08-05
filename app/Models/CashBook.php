@@ -14,7 +14,7 @@ class CashBook extends Model
         'amount',
         'detail',
         'user_id',
-        'website_id'
+        'website_id',
     ];
 
     public function user()
@@ -22,7 +22,8 @@ class CashBook extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function website(){
+    public function website()
+    {
         return $this->belongsTo(Website::class);
     }
 

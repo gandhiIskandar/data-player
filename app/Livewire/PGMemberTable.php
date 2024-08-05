@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
-use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Facades\Rule;
+use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
@@ -36,7 +36,7 @@ final class PGMemberTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return Member::query()->with('account')->where('website_id', session('website_id'));
+        return Member::query()->where('website_id', session('website_id'));
     }
 
     public function relationSearch(): array
@@ -51,8 +51,7 @@ final class PGMemberTable extends PowerGridComponent
             ->add('username')
             ->add('total_wd', fn ($member) => $this->toRupiah($member->total_wd))
             ->add('phone_number')
-            ->add('account_number')
-            ->add('account_id', fn ($member) => $member->account->name ?? "null")
+
             ->add('total_depo', fn ($member) => $this->toRupiah($member->total_depo))
             ->add('depo_wd', fn ($member) => $this->toRupiah($member->total_depo - $member->total_wd));
     }
@@ -63,30 +62,22 @@ final class PGMemberTable extends PowerGridComponent
             Column::make('Id', 'id'),
             Column::make('Username', 'username')
                 ->sortable()
-                ->searchable(),
-            Column::make('Phone number', 'phone_number')
-                ->sortable()
-                ->searchable(),
+                ->searchable()->hidden(isHidden: ! privilegeViewUsernameMember(), isForceHidden: true),
+            // Column::make('Phone number', 'phone_number')
+            //     ->sortable()
+            //     ->searchable(),
 
-            Column::make('Nomor Rekening', 'account_number')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Rekening', 'account_id')
-                ->sortable()
-                ->searchable(),
             Column::make('Total Depo', 'total_depo')
                 ->sortable()
-                ->searchable(),
+                ->searchable()->hidden(isHidden: ! privilegeViewTotalDepoMember(), isForceHidden: true),
 
             Column::make('Total Withdraw', 'total_wd')
                 ->sortable()
-                ->searchable(),
+                ->searchable()->hidden(isHidden: ! privilegeViewTotalWithdrawMember(), isForceHidden: true),
 
+            Column::make('Depo - Withdraw', 'depo_wd')->hidden(isHidden: ! privilegeViewSumMember(), isForceHidden: true),
 
-            Column::make('Depo - Withdraw', 'depo_wd'),
-
-            Column::action('Action')->hidden(isHidden: !privilegeEditMember() && !privilegeRemoveMember(), isForceHidden: true)
+            Column::action('Action')->hidden(isHidden: ! privilegeEditMember() && ! privilegeRemoveMember(), isForceHidden: true),
 
         ];
     }
@@ -124,11 +115,8 @@ final class PGMemberTable extends PowerGridComponent
         $member->delete();
     }
 
-
-
-    public  function actions(Member $row): array
+    public function actions(Member $row): array
     {
-
 
         return [
             Button::add('edit')
@@ -145,25 +133,23 @@ final class PGMemberTable extends PowerGridComponent
         ];
     }
 
-
     public function toRupiah($amount)
     {
 
-        return 'Rp ' . number_format($amount, 0, ',', '.');
+        return 'Rp '.number_format($amount, 0, ',', '.');
     }
-
 
     public function actionRules($row): array
     {
         return [
             // Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn () => !privilegeEditMember())
+                ->when(fn () => ! privilegeEditMember())
                 ->hide(),
 
             Rule::button('remove')
-                ->when(fn () => !privilegeRemoveMember())
-                ->hide()
+                ->when(fn () => ! privilegeRemoveMember())
+                ->hide(),
         ];
     }
 }

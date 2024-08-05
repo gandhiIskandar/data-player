@@ -34,13 +34,11 @@ class RecapExpTable extends Component
     {
         $this->getData();
 
-       // dd($this->expenditures);
-       
+        // dd($this->expenditures);
 
         return view('livewire.recap-exp-table');
     }
 
-   
     #[On('expCreated')]
     public function refreshTable()
     {
@@ -65,11 +63,11 @@ class RecapExpTable extends Component
         $user = Auth::user();
 
         return Expenditure::where('website_id', session('website_id'))->
-        // whereHas('user', function ($query) use ($user) {
-        //     $query->whereHas('role', function ($query) use ($user) {
-        //         $query->where('role_id', $user->role_id);
-        //     });
-        // })-> (Pengkondisian query nested)
+         whereHas('user', function ($query) use ($user) {
+             $query->whereHas('role', function ($query) use ($user) {
+                $query->where('role_id', $user->role_id);
+            });
+         })->
         select(
 
             DB::raw($timeCostum),
@@ -95,8 +93,6 @@ class RecapExpTable extends Component
 
                 $this->expenditures = $this->getDataQuery('DATE(created_at) as date')->whereDate('created_at', $currentDate)->latest()->get();
                 $this->remapExpDaily();
-
-             
 
             } else {
 

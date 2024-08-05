@@ -6,11 +6,11 @@
     @endforeach
 </select>
 
-@script
+{{-- @script
     <script>
 
         $wire.on('refreshJS', ()=>{
             location.reload(true);
         });
     </script>
-@endscript
+@endscript --}}

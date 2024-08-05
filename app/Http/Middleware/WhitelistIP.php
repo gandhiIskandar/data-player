@@ -19,14 +19,12 @@ class WhitelistIP
 
         $whitelistedIps = Whitelist::pluck('ip_address')->toArray();
 
-      //  dd($request->ip());
-        if (!in_array($request->ip(), $whitelistedIps)) {
-
+        //  dd($request->ip());
+        if (! in_array($request->ip(), $whitelistedIps)) {
 
             // Jika IP tidak ada dalam whitelist, kembalikan respon dengan status 403 Forbidden
             return response('Forbidden', Response::HTTP_FORBIDDEN);
         }
-
 
         return $next($request);
     }

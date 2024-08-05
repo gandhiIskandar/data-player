@@ -15,13 +15,26 @@
                             placeholder="Masukan Keterangan" required />
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label" for="exampleFormControlSelect1">Website</label>
+                        <select class="form-select" wire:model.live='selectedWebsite' id="exampleFormControlSelect1" required>
+                            <option value="" selected>Pilih Website</option>
+                            @foreach ($websites as $website)
+                            <option value={{ $website->id }}>{{ $website->name }}</option>
+                                
+                            @endforeach
+                            
+
+                        </select>
+                    </div>
+
 
                     <div class="mb-3">
                         <label class="form-label" for="exampleFormControlSelect1">Rekening</label>
                         <select class="form-select" wire:model='form.account_id' id="exampleFormControlSelect1" required>
-                            <option value="">Pilih Rekening</option>
+                            <option value="" selected>Pilih Rekening</option>
                             @foreach ($accounts as $account)
-                            <option value={{ $account->id }}>{{ $account->name }}</option>
+                            <option value={{ $account->id }}>{{ $account->bank->name." - ".$account->under_name }}</option>
                                 
                             @endforeach
                             

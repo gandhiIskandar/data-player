@@ -16,17 +16,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('type_id')->index();
             $table->foreignId('member_id');
-            $table->unsignedBigInteger('from_account')->nullable();
-            $table->unsignedBigInteger('to_account')->nullable();
+            $table->foreignId('bank_id')->nullable();
+            $table->foreignId('member_account_id')->nullable();
+            $table->foreignId('account_id');
             $table->foreignId('website_id');
             $table->boolean('new');
             $table->integer('amount');
             $table->timestamps();
 
-
-             // Menambahkan foreign key constraints
-             $table->foreign('from_account')->references('id')->on('accounts')->onDelete('set null');
-             $table->foreign('to_account')->references('id')->on('accounts')->onDelete('set null');
         });
     }
 

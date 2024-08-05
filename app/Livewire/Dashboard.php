@@ -24,10 +24,10 @@ class Dashboard extends Component
 
     public $transactions;
 
-
-    public function mount(){
-        if(!privilegeViewDashboard()){
-            return abort(403,"Akses Dilarang");
+    public function mount()
+    {
+        if (! privilegeViewDashboard()) {
+            return abort(403, 'Akses Dilarang');
         }
     }
 
@@ -82,7 +82,6 @@ class Dashboard extends Component
 
         $this->tasks = Task::where('user_id', $user->id)->where('is_completed', 0)->get();
 
-     
     }
 
     public function updateTask()

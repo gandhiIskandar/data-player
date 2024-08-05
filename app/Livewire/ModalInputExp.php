@@ -4,10 +4,11 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\ExpForm;
 use App\Models\Account;
+use App\Models\Website;
 use App\Models\Currency;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Expenditure;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ModalInputExp extends Component
@@ -16,29 +17,52 @@ class ModalInputExp extends Component
 
     public $edit;
 
+    public $websites;
+
+    public $selectedWebsite;
+
     public $expenditure;
 
-    public $accounts; // untuk pilih rekening
+    public $accounts=[]; // untuk pilih rekening
+
     public $currencies; // untuk pilih rekening
 
     public function mount()
     {
+        $userData = session('user_data');
+
         $this->currencies = Currency::all();
-        $this->accounts = Account::all();
+
+        if($userData->role->name == 'Super Admin'){
+
+            $this->websites= Website::whereNotIn('id',[6])->get();
+
+        }else{
+            $this->websites= Website::whereNotIn('id',[5,6])->get();
+
+        }
+        
+       
+        //$this->accounts = Account::with('bank')->get();
     }
 
     public function render()
     {
+        if($this->selectedWebsite != ''){
+
+            $this->accounts = Account::with('bank')->where('website_id',$this->selectedWebsite)->get();
+
+        }
+
         return view('livewire.modal-input-exp');
     }
 
     public function proceedExp()
     {
-            $this->form->amount = str_replace('.','',$this->form->amount);
+        $this->form->amount = str_replace('.', '', $this->form->amount);
 
-        if (!$this->edit) {
-            
-        
+        if (! $this->edit) {
+
             $this->insertExp();
         } else {
             $this->updateExp();
@@ -59,6 +83,9 @@ class ModalInputExp extends Component
     #[\Livewire\Attributes\On('showModalNonEditStateExp')]
     public function showModalNonEditState()
     {
+
+        
+
         $this->form->reset();
 
         $this->edit = false;
@@ -89,8 +116,6 @@ class ModalInputExp extends Component
         $this->form->account_id = $this->expenditure->account_id;
         $this->form->currency_id = $this->expenditure->currency_id;
 
-    
-
         //end inisiasi
 
         $this->dispatch('showModalExpJS');
@@ -101,7 +126,7 @@ class ModalInputExp extends Component
 
         $this->form->update($this->expenditure);
 
-      //  flash('Data pengeluaran berhasil diubah', 'alert-success');
+        //  flash('Data pengeluaran berhasil diubah', 'alert-success');
 
         $this->dispatch('reloadPowerGridExp');
 
@@ -125,14 +150,11 @@ class ModalInputExp extends Component
 
         $currency = $expenditure->currency->name;
 
-        $formattedAmount = $currency." ".number_format($expenditure->amount,0 ,',','.');
-          
-         $admin = Auth::user();
+        $formattedAmount = $currency.' '.number_format($expenditure->amount, 0, ',', '.');
 
-         insertLog($admin->name, request()->ip(), "Hapus Pengeluaran", "-", $expenditure->detail." $formattedAmount" , 2);
+        $admin = Auth::user();
 
-
-
+        insertLog($admin->name, request()->ip(), 'Hapus Pengeluaran', '-', $expenditure->detail." $formattedAmount", 2);
 
         $this->dispatch('reloadPowerGridExp');
 

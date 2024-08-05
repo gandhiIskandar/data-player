@@ -5,8 +5,8 @@ namespace App\Livewire;
 use App\Livewire\Forms\CashBookForm;
 use App\Models\CashBook;
 use Carbon\Carbon;
-use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class ModalInputKas extends Component
 {
@@ -23,7 +23,7 @@ class ModalInputKas extends Component
 
     public function proceedCashBook()
     {
-        $this->form->amount = str_replace('.','',$this->form->amount);
+        $this->form->amount = str_replace('.', '', $this->form->amount);
 
         if (! $this->edit) {
             $this->insertCashBook();
@@ -96,12 +96,11 @@ class ModalInputKas extends Component
 
         $cashBook = CashBook::where('id', $cashbook_id)->first();
 
-        $cashBook->delete(); 
+        $cashBook->delete();
 
-    
         $admin = Auth::user();
 
-        insertLog($admin->name, request()->ip(), "Hapus Catatan Kas",$cashBook->type->name, $cashBook->detail." ".toBaht($cashBook->amount) , 2);
+        insertLog($admin->name, request()->ip(), 'Hapus Catatan Kas', $cashBook->type->name, $cashBook->detail.' '.toBaht($cashBook->amount), 2);
 
         $this->dispatch('reloadPowerGridCashBooks');
 

@@ -63,7 +63,7 @@ class RecapCashbookTable extends Component
     public function getDataQuery($timeCostum)
     {
 
-        return CashBook::where('website_id',session('website_id'))->select(
+        return CashBook::where('website_id', session('website_id'))->select(
 
             //type_id 3 = pengeluaran
             //type_id 4 = pemasukan

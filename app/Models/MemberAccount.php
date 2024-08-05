@@ -9,13 +9,15 @@ class MemberAccount extends Model
 {
     use HasFactory;
 
-    protected $fillable=['member_id','bank_id','number','under_name'];
+    protected $fillable = ['member_id', 'bank_id', 'number', 'under_name'];
 
-    public function member(){
+    public function member()
+    {
         return $this->belongsTo(Member::class);
     }
 
-    public function bank(){
+    public function bank()
+    {
         return $this->belongsTo(Bank::class);
     }
 }

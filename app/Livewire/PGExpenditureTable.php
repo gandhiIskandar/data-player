@@ -10,13 +10,13 @@ use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
 use PowerComponents\LivewirePowerGrid\Facades\Filter;
+use PowerComponents\LivewirePowerGrid\Facades\Rule;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
-use PowerComponents\LivewirePowerGrid\Facades\Rule;
 
 final class PGExpenditureTable extends PowerGridComponent
 {
@@ -41,7 +41,7 @@ final class PGExpenditureTable extends PowerGridComponent
 
         $user = Auth::user();
 
-        return Expenditure::query()->where('website_id', session('website_id'))->with(['user.role', 'account','currency'])->whereHas('user', function ($query) use ($user) {
+        return Expenditure::query()->where('website_id', session('website_id'))->with(['user.role', 'account.bank', 'currency'])->whereHas('user', function ($query) use ($user) {
             $query->whereHas('role', function ($query) use ($user) {
                 $query->where('role_id', $user->role_id);
             });
@@ -69,10 +69,10 @@ final class PGExpenditureTable extends PowerGridComponent
         return PowerGrid::fields()
             ->add('id')
             ->add('user_id', fn ($expenditure) => $expenditure->user->name)
-            ->add('amount', fn ($expenditure) =>$expenditure->currency->name == 'IDR' ? toRupiah($expenditure->amount) : changeToComa($expenditure->amount))
+            ->add('amount', fn ($expenditure) => $expenditure->currency->name == 'IDR' ? toRupiah($expenditure->amount) : changeToComa($expenditure->amount))
             ->add('currency_id', fn ($expenditure) => $expenditure->currency->name)
             ->add('detail')
-            ->add('account_id', fn ($expenditure) => $expenditure->account->name)
+            ->add('account_id', fn ($expenditure) => $expenditure->account->bank->name." - ".$expenditure->account->under_name)
             ->add('created_at_formatted', fn ($expenditure) => Carbon::parse($expenditure->created_at)->translatedFormat('d F Y'));
     }
 
@@ -80,25 +80,25 @@ final class PGExpenditureTable extends PowerGridComponent
     {
         return [
             Column::make('Id', 'id'),
-            Column::make('User', 'user_id'),
+            Column::make('User', 'user_id')->hidden(isHidden: ! privilegeViewUserExp(), isForceHidden: false),
             Column::make('Jumlah', 'amount')
                 ->sortable()
-                ->searchable(),
-                Column::make('Mata Uang', 'currency_id'),
+                ->searchable()->hidden(isHidden: ! privilegeViewAmountExp(), isForceHidden: false),
+            Column::make('Mata Uang', 'currency_id')->hidden(isHidden: ! privilegeViewCurrencyExp(), isForceHidden: false),
 
             Column::make('Detail', 'detail')
                 ->sortable()
-                ->searchable(),
+                ->searchable()->hidden(isHidden: ! privilegeViewDetailExp(), isForceHidden: false),
 
-            Column::make('Bank', 'account_id'),
+            Column::make('Bank', 'account_id')->hidden(isHidden: ! privilegeViewBankExp(), isForceHidden: false),
             Column::make('Tanggal', 'created_at_formatted', 'created_at')
-                ->sortable(),
+                ->sortable()->hidden(isHidden: ! privilegeViewDateExp(), isForceHidden: false),
 
             // Column::make('Created at', 'created_at')
             //     ->sortable()
             //     ->searchable(),
 
-            Column::action('Action')->hidden(isHidden: !privilegeEditExpenditure() && !privilegeRemoveExpenditure(), isForceHidden: true),
+            Column::action('Action')->hidden(isHidden: ! privilegeEditExpenditure() && ! privilegeRemoveExpenditure(), isForceHidden: true),
         ];
     }
 
@@ -107,7 +107,7 @@ final class PGExpenditureTable extends PowerGridComponent
 
         return [
 
-            Filter::datetimepicker('created_at_formatted', 'created_at')
+            Filter::datetimepicker('created_at', 'created_at_formatted')
                 ->params([
 
                     'timezone' => 'Asia/Jakarta',
@@ -140,20 +140,17 @@ final class PGExpenditureTable extends PowerGridComponent
         ];
     }
 
-  
-    
     public function actionRules($row): array
     {
-       return [
+        return [
             // Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn() => !privilegeEditExpenditure())
+                ->when(fn () => ! privilegeEditExpenditure())
                 ->hide(),
 
-                Rule::button('remove')
-                ->when(fn() => !privilegeRemoveExpenditure())
-                ->hide()
+            Rule::button('remove')
+                ->when(fn () => ! privilegeRemoveExpenditure())
+                ->hide(),
         ];
     }
-    
 }

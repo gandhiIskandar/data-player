@@ -2,16 +2,12 @@
 
 namespace App\Livewire\Forms;
 
-use Livewire\Attributes\Validate;
+use App\Models\User;
 use Livewire\Attributes\Rule;
 use Livewire\Form;
-use App\Models\User;
-
 
 class UserForm extends Form
 {
-   
-
     #[Rule(['required'])]
     public $privileges = [];
 
@@ -27,51 +23,47 @@ class UserForm extends Form
     //pengecekan manual saja untuk create
     public $password = '';
 
+    public function create()
+    {
+        if ($this->validate() && $this->password != '') {
+            $user = User::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'role_id' => $this->role_id,
+                'password' => bcrypt($this->password),
+            ]);
 
+            //TODO nanti gabungkan dari 5 array privileges ke dalam $privileges
 
+            $user->privileges()->attach($this->privileges);
 
-public function create(){
-    if($this->validate() && $this->password != ''){
-        $user = User::create([
-            "name" => $this->name,
-            "email" => $this->email,
-            "role_id" => $this->role_id,
-            "password" => bcrypt($this->password)
-        ]);
+            $this->reset();
 
-        //TODO nanti gabungkan dari 5 array privileges ke dalam $privileges
+            flash('Berhasil Tambah User', 'alert-success');
 
-        $user->privileges()->attach($this->privileges);
+            return $user;
 
-        $this->reset();
+        }
 
-        flash("Berhasil Tambah User", "alert-success");
-
-        return $user;
-
+        return null;
     }
 
-    return null;
-}
+    public function update($user)
+    {
+        if ($this->validate()) {
 
+            $user->name = $this->name;
+            $user->email = $this->email;
+            $user->role_id = $this->role_id;
+            $user->save();
 
+            //TODO nanti gabungkan dari 5 array privileges ke dalam $privileges
 
-public function update($user){
-    if($this->validate()){
+            //gunakan sync memastikan privileges hanya yang dipilih, agar tidak double input
+            $user->privileges()->sync($this->privileges);
 
-        $user->name = $this->name;
-        $user->email = $this->email;
-        $user->role_id = $this->role_id;
-        $user->save();
+            flash('Berhasil Update Data User', 'alert-success');
 
-        //TODO nanti gabungkan dari 5 array privileges ke dalam $privileges
-
-        //gunakan sync memastikan privileges hanya yang dipilih, agar tidak double input
-        $user->privileges()->sync($this->privileges);
-
-        flash("Berhasil Update Data User", "alert-success");
-
+        }
     }
-}
-    
 }

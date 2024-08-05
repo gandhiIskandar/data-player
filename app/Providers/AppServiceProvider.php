@@ -2,15 +2,13 @@
 
 namespace App\Providers;
 
-use Carbon\Carbon;
 use App\Models\User;
-use App\Models\Website;
-use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,19 +35,16 @@ class AppServiceProvider extends ServiceProvider
         //     URL::forceScheme('https');
         // }
 
-
-
         View::composer('*', function ($view) {
-            if(Auth::user()){
+            if (Auth::user()) {
 
                 $user = session('user_data');
-            $user = User::with('privileges')->find($user->id);
+                $user = User::with('privileges')->find($user->id);
 
-            session()->put('privileges', $user->privileges->pluck('id')->toArray());
+                session()->put('privileges', $user->privileges->pluck('id')->toArray());
 
-           
             }
-            
+
         });
     }
 }

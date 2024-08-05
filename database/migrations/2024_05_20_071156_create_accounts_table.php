@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('website_id')->nullable();
-            $table->string('number')->default("Belum Setting");
-            $table->string('under_name')->default("Belum Setting");
+            $table->string('number')->default('Belum Setting');
+            $table->string('under_name')->default('Belum Setting');
             $table->integer('balance')->default(0);
             $table->foreignId('bank_id');
             $table->timestamps();

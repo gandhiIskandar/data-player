@@ -3,17 +3,16 @@
 namespace App\Livewire\Account;
 
 use App\Models\Account;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
-use PowerComponents\LivewirePowerGrid\Facades\Filter;
+use PowerComponents\LivewirePowerGrid\Facades\Rule;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
 final class PGAccountTable extends PowerGridComponent
@@ -37,11 +36,12 @@ final class PGAccountTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return Account::query()->with(['website','bank']);
+        return Account::query()->with(['website', 'bank'])->where('website_id', session('website_id'));
     }
 
     #[\Livewire\Attributes\On('reloadPowerGridAccount')]
-    public function reloadData(){
+    public function reloadData()
+    {
 
         $this->fillData();
     }
@@ -55,12 +55,11 @@ final class PGAccountTable extends PowerGridComponent
     {
         return PowerGrid::fields()
             ->add('id')
-            ->add('bank_id',fn($account)=>$account->bank->name)
+            ->add('bank_id', fn ($account) => $account->bank->name)
             ->add('number')
             ->add('under_name')
-            ->add('balance', fn($account)=>toRupiah($account->balance, true))
-            ->add('website_id', fn($account)=>$account->website->name ?? "Belum Setting")
-            ;
+            ->add('balance', fn ($account) => toRupiah($account->balance, true))
+            ->add('website_id', fn ($account) => $account->website->name ?? 'Belum Setting');
     }
 
     public function columns(): array
@@ -69,26 +68,26 @@ final class PGAccountTable extends PowerGridComponent
             Column::make('Id', 'id'),
             Column::make('Bank', 'bank_id')
                 ->sortable()
-                ->searchable(),
+                ->searchable()->hidden(isHidden: ! privilegeViewBankAdminAccount(), isForceHidden: true),
 
             // Column::make('Created at', 'created_at_formatted', 'created_at')
             //     ->sortable(),
             Column::make('Website', 'website_id')
-                ->sortable(),
+                ->sortable()->hidden(isHidden: ! privilegeViewWebsiteAdminAccount(), isForceHidden: true),
             Column::make('Nomor Rekening', 'number')
-                ->sortable(),
+                ->sortable()->hidden(isHidden: ! privilegeViewNumberAdminAccount(), isForceHidden: true),
 
             Column::make('Nama', 'under_name')
-                ->sortable(),
+                ->sortable()->hidden(isHidden: ! privilegeViewNameAdminAccount(), isForceHidden: true),
 
             Column::make('Saldo', 'balance')
-                ->sortable(),
+                ->sortable()->hidden(isHidden: ! privilegeViewBalanceAdminAccount(), isForceHidden: true),
 
             // Column::make('Created at', 'created_at')
             //     ->sortable()
             //     ->searchable(),
 
-            Column::action('Action')
+            Column::action('Action')->hidden(isHidden: ! privilegeUpdateAdminAccount() && ! privilegeDeleteAdminAccount(), isForceHidden: true),
         ];
     }
 
@@ -100,7 +99,7 @@ final class PGAccountTable extends PowerGridComponent
     #[\Livewire\Attributes\On('edit')]
     public function edit($rowId): void
     {
-        $this->js('alert(' . $rowId . ')');
+        $this->js('alert('.$rowId.')');
     }
 
     public function actions(Account $row): array
@@ -112,11 +111,25 @@ final class PGAccountTable extends PowerGridComponent
                 ->class('btn btn-primary')
                 ->dispatch('showModalAccountEdit', ['account_id' => $row->id]),
 
-                Button::add('remove')
+            Button::add('remove')
                 ->slot('Hapus')
                 ->id()
                 ->class('btn btn-danger')
                 ->dispatch('deleteAccountConfirm', ['account' => $row]),
+        ];
+    }
+
+    public function actionRules($row): array
+    {
+        return [
+            // Hide button edit for ID 1
+            Rule::button('edit')
+                ->when(fn () => ! privilegeUpdateAdminAccount())
+                ->hide(),
+
+            Rule::button('remove')
+                ->when(fn () => ! privilegeDeleteAdminAccount())
+                ->hide(),
         ];
     }
 

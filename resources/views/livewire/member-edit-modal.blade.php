@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <x-partials.flash-message />
-                <form wire:submit='updateMemberData'>
+                <form wire:submit='procceedMember'>
 
                     <div class="mb-3">
                         <label class="form-label" for="exampleInputEmail1">Username</label>
@@ -21,16 +21,29 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="exampleInputEmail1">Nomor Handphone</label>
-                        <input type="text" class="form-control" wire:model.live="phone_number"
+                        <label class="form-label" for="exampleInputEmail1">Atas Nama Rekening</label>
+                        <input type="text" class="form-control" wire:model="under_name"
                             id="exampleInputEmail1" required />
-                        @if ($pn_exist == 1)
-                            <small id="emailHelp" class="form-text text-muted">Nomor Handphone tersedia</small>
-                        @elseif($pn_exist == 2)
-                            <small id="emailHelp" class="form-text text-muted">Nomor Handphone belum tersedia
-                            </small>
-                        @endif
+                        
                     </div>
+
+                    <label class="form-label" for="norek">Rekening Member</label>
+                    <div class="input-group mb-3">
+                        <select class="form-select" wire:model.live='bank_id' id="accounted"
+                            style="max-width: 120px !important;" required>
+
+                            @foreach ($banks as $bank)
+                                <option value={{ $bank->id }} {{ $loop->iteration == 1 ? 'selected' : '' }}>
+                                    {{ $bank->name }}</option>
+                            @endforeach
+
+
+                        </select>
+
+                        <input type="text" id="norek" wire:model='account_number' class="form-control"
+                            aria-label="Amount (to the nearest dollar)" required />
+                    </div>
+
 
 
 
@@ -39,7 +52,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary shadow-2">Save changes</button>
+                <button type="submit" class="btn btn-primary shadow-2" {{ $username_exist == 1 ? "disabled" : "" }}>Save changes</button>
             </div>
             </form>
         </div>

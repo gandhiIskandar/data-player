@@ -7,7 +7,7 @@
                 @if (privilegeAddTransaction())
                     <button data-pc-animate="fade-in-scale" type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#animateModal" style="width: 200px;" type="button">Tambah Transaksi</button>
-                   @endif
+                @endif
             </div>
             <div class="d-flex align-items-center">
 
@@ -42,12 +42,14 @@
 
                         <th rowspan="2" width="5%" style="font-size: 10px;">No</th>
                         <th rowspan="2" style="font-size: 10px;">Tanggal</th>
-                        <th style="font-size: 10px; text-align:center !important;" data-dt-order="disable"
-                            colspan="2">Total Deposit</th>
+
                         <th colspan="2" style="font-size: 10px;  text-align:center !important  "
                             data-dt-order="disable">Total New Deposit</th>
                         <th colspan="2" style="font-size: 10px;  text-align:center !important"
                             data-dt-order="disable">Total Re-deposit</th>
+
+                        <th style="font-size: 10px; text-align:center !important;" data-dt-order="disable"
+                            colspan="2">Total Deposit</th>
                         <th colspan="2" style="font-size: 10px;  text-align:center !important"
                             data-dt-order="disable">Total Withdraw</th>
                         <th style="font-size: 10px;  text-align:center !important" data-dt-order="disable">Deposit -
@@ -71,15 +73,17 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $transaction->date }}</td>
-                            <td>{{ $transaction->forms_deposit }}</td>
-                            <td class="text-success">{{ $transaction->total_deposit }}</td>
+                         
                             <td>{{ $transaction->forms_new_deposit }}</td>
                             <td class="text-success">{{ $transaction->total_new_deposit }}</td>
                             <td>{{ $transaction->forms_redeposit }}</td>
                             <td class="text-success">{{ $transaction->total_redeposit }}</td>
+                            <td>{{ $transaction->forms_deposit }}</td>
+                            <td class="text-success">{{ $transaction->total_deposit }}</td>
                             <td>{{ $transaction->forms_withdraw }}</td>
                             <td class="text-danger">{{ $transaction->total_withdraw }}</td>
-                            <td class={{ $transaction->dkw >= 0 ? 'text-success' : 'text-danger' }}>{{ toRupiah($transaction->dkw, true) }}</td>
+                            <td class={{ $transaction->dkw >= 0 ? 'text-success' : 'text-danger' }}>
+                                {{ toRupiah($transaction->dkw, true) }}</td>
 
                         </tr>
                     @endforeach

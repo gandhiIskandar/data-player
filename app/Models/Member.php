@@ -14,11 +14,8 @@ class Member extends Model
     protected $fillable = [
         'username',
         'total_wd',
-        'account_number',
-        'account_id',
-        'phone_number',
         'total_depo',
-        'website_id'
+        'website_id',
     ];
 
     public function transactions()
@@ -26,16 +23,15 @@ class Member extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    public function website(){
+    public function website()
+    {
         return $this->belongsTo(Website::class);
     }
 
-    public function account() //account = rekening
+    public function memberAccounts() //account = rekening
     {
-        
-        return $this->belongsTo(Account::class);
-        
+
+        return $this->hasMany(MemberAccount::class);
+
     }
-
-
 }

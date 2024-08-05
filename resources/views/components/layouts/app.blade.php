@@ -118,7 +118,7 @@
 
     <livewire:modal-change-password />
     <livewire:whitelist.modal-whitelist />
-    
+
     <livewire:website.modal-website />
 
     <!-- [Page Specific JS] start -->
@@ -184,14 +184,20 @@
 
     <script>
         $(document).ready(function() {
-            new AutoNumeric('.input-currency', {
-                digitGroupSeparator: '.',
-                decimalCharacter: ',',
-                decimalPlaces: 0
-              //  unformatOnSubmit: true
-                // currencySymbol: ' Rp',
-                // currencySymbolPlacement: 's',
-            });
+
+
+
+
+            if ($('.input-currency').length > 0) {
+                new AutoNumeric('.input-currency', {
+                    digitGroupSeparator: '.',
+                    decimalCharacter: ',',
+                    decimalPlaces: 0
+                    //  unformatOnSubmit: true
+                    // currencySymbol: ' Rp',
+                    // currencySymbolPlacement: 's',
+                });
+            }
         });
     </script>
 

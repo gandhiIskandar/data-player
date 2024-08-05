@@ -5,9 +5,9 @@ namespace App\Livewire;
 use App\Livewire\Forms\TransactionForm;
 use App\Models\Account;
 use App\Models\Bank;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Member;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ModalInput extends Component
@@ -26,6 +26,7 @@ class ModalInput extends Component
     public $member;
 
     public $accounts; //list rekening admin
+
     public $banks;
 
     //nilai transaksi ini berguna untuk menyimpan data transaksi lama dan diisi ketika state edit aktif, kemudian akan melakukan save()
@@ -49,7 +50,7 @@ class ModalInput extends Component
     public function checkUserExist()
     {
         if ($this->form->username != '') {
-            $this->member = Member::where('username', $this->form->username)->first();
+            $this->member = Member::with('memberAccounts.bank')->where('username', $this->form->username)->first();
 
             if ($this->member != null) {
                 $this->exist = 1;
@@ -66,7 +67,7 @@ class ModalInput extends Component
 
         //hilankan titik pada angka
 
-        $this->form->amount = str_replace('.','',$this->form->amount);
+        $this->form->amount = str_replace('.', '', $this->form->amount);
 
         if (! $this->edit) {
             $this->insertTransaction();
@@ -82,20 +83,22 @@ class ModalInput extends Component
 
         $this->edit = true; //aktifkan state edit
 
-        $this->transaction = Transaction::with(['member'])->find($transaction_id);
+        $this->transaction = Transaction::with(['member.memberAccounts'])->find($transaction_id);
 
-       // dd($this->transaction);
+        $this->member = $this->transaction->member;
+
+        // dd($this->transaction);
 
         $this->exist = 1; //set 1 karena member sudah ada
 
         //inisiasi nilai form agar sesuai dengan data yang mau diedit
 
-        $this->form->username = $this->transaction->member->username ?? 'Member Tidak Ada';
+        $this->form->username = $this->member->username ?? 'Member Tidak Ada';
         $this->form->amount = $this->transaction->amount;
         $this->form->type = $this->transaction->type_id;
         //end inisiasi
 
-        $this->dispatch('showModalTransactionJS');
+        $this->dispatch('showModalTransactionJS', amount: $this->transaction->amount);
     }
 
     public function updateTransaction()
@@ -143,9 +146,17 @@ class ModalInput extends Component
 
         $formattedAmount = toRupiah($transaction->amount, true);
 
-        insertLog($admin->name, request()->ip(), "Hapus Transaksi",$transaction->member_id, $transaction->type_id == 1 ? "Hapus Withdraw $formattedAmount" : "Hapus Deposit $formattedAmount" , 0);
+        insertLog($admin->name, request()->ip(), 'Hapus Transaksi', $transaction->member_id, $transaction->type_id == 1 ? "Hapus Withdraw $formattedAmount" : "Hapus Deposit $formattedAmount", 0);
 
-        
+        if ($transaction->type_id == 1) {
+
+            $ket = 'tambah';
+        } else {
+
+            $ket = 'kurang';
+        }
+
+        updateSaldoRekeningAdmin($transaction->account_id, $transaction->amount, $ket);
 
         $this->dispatch('reloadTransaction');
 

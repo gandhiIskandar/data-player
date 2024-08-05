@@ -24,22 +24,22 @@ class RedirectIfAuthenticated
                 $user = Auth::user();
                 $role_id = $user->role_id;
 
-                switch($role_id){
-                    case 1 :
+                switch ($role_id) {
+                    case 1:
                         return redirect(RouteServiceProvider::HOME_CS);
                         break;
-                    case 2 :
+                    case 2:
                         return redirect(RouteServiceProvider::HOME_MRK);
                         break;
-                    case 3 :
+                    case 3:
                         return redirect(RouteServiceProvider::HOME_MRK);
                         break;
-                    case 4 :
+                    case 4:
                         return redirect(RouteServiceProvider::HOME_CS);
                         break;
 
                 }
-                
+
             }
         }
 

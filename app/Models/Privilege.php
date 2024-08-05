@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Privilege extends Model
 {
     use HasFactory;
+
     protected $fillable = ['privilege_name'];
 
     public function users()
@@ -15,7 +16,8 @@ class Privilege extends Model
         return $this->belongsToMany(User::class, 'user_privileges');
     }
 
-    public function privilege_type(){
+    public function privilege_type()
+    {
         return $this->belongsTo(PrivilegeType::class);
     }
 }

@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Whitelist extends Model
 {
     use HasFactory;
+
     protected $fillable = ['ip_address'];
 }

@@ -10,14 +10,11 @@ use Livewire\Component;
 
 class ModalAccount extends Component
 {
-
-   
     public $account;
 
     public AccountForm $form;
 
     public $banks;
-    
 
     public $edit = false;
 
@@ -25,21 +22,20 @@ class ModalAccount extends Component
     {
         $this->banks = Bank::all();
 
-      //  $this->getAccounts();
+        //  $this->getAccounts();
         return view('livewire.account.modal-account');
     }
-   
 
+    public function proccedAccount()
+    {
 
-    public function proccedAccount(){
+        $this->form->balance = str_replace('.', '', $this->form->balance);
 
-         $this->form->balance = str_replace('.','',$this->form->balance);
+        //  dd("ttst");
 
-      //  dd("ttst");
-
-        if(!$this->edit){
+        if (! $this->edit) {
             $this->insertAccount();
-        }else{
+        } else {
             $this->updateAccount();
         }
 
@@ -61,9 +57,7 @@ class ModalAccount extends Component
 
         $admin = auth()->user();
 
-        insertLog($admin->name, request()->ip(), "Hapus Rekening",$account['under_name'], "Hapus Rekening ". $account['bank']['name'] , 2);
-
-        
+        insertLog($admin->name, request()->ip(), 'Hapus Rekening', $account['under_name'], 'Hapus Rekening '.$account['bank']['name'], 2);
 
         $this->dispatch('reloadPowerGridAccount');
 
@@ -81,37 +75,34 @@ class ModalAccount extends Component
 
         $this->form->bank_id = $this->account->bank_id;
         $this->form->balance = $this->account->balance;
-        
-        
+
         $this->form->number = $this->account->number;
-        
+
         $this->form->under_name = $this->account->under_name;
         //end inisiasi
 
         $this->dispatch('showModalAccountJS');
     }
 
-    public function updateAccount(){
+    public function updateAccount()
+    {
 
-        try{
+        try {
 
-        $this->form->update($this->account);
+            $this->form->update($this->account);
 
-        flash('Data rekening berhasil diubah', 'alert-success');
+            flash('Data rekening berhasil diubah', 'alert-success');
 
-        $this->dispatch('reloadPowerGridAccount');
-        }catch(Exception $e){
-           
+            $this->dispatch('reloadPowerGridAccount');
+        } catch (Exception $e) {
+
         }
-
 
     }
 
     #[\Livewire\Attributes\On('showModalNonEditStateAccount')]
     public function showModalNonEditState()
     {
-
-    
 
         $this->form->reset();
 
@@ -120,15 +111,12 @@ class ModalAccount extends Component
         $this->dispatch('showModalAccountJS');
     }
 
-
-
-    public function insertAccount(){
+    public function insertAccount()
+    {
 
         $this->form->insert();
 
         $this->dispatch('reloadPowerGridAccount');
 
     }
-
-  
 }

@@ -21,29 +21,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/addWhiteList', function(Request $request){
+Route::get('/addWhiteList', function (Request $request) {
 
     $email = $request->email;
     $password = $request->password;
 
     $user = Auth::attempt([
-        'email'=>$email,
-        'password'=>$password
+        'email' => $email,
+        'password' => $password,
     ]);
 
-    if($user && Auth::user()->role_id==4){
-
-        
+    if ($user && Auth::user()->role_id == 4) {
 
         Whitelist::create([
-            'ip_address'=> $request->ip
+            'ip_address' => $request->ip,
         ]);
 
         return 'berhasil tambah ip whitelist';
 
-
-
-    }else{
+    } else {
         return response('Forbidden', Response::HTTP_FORBIDDEN);
     }
 

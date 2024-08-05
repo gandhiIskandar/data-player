@@ -3,17 +3,15 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
-use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
 final class PGUserTable extends PowerGridComponent
@@ -22,7 +20,7 @@ final class PGUserTable extends PowerGridComponent
 
     public function setUp(): array
     {
-      //  $this->showCheckBox();
+        //  $this->showCheckBox();
 
         return [
             Exportable::make('export')
@@ -51,8 +49,8 @@ final class PGUserTable extends PowerGridComponent
             ->add('id')
             ->add('name')
             ->add('email')
-            ->add('role_id',fn($user)=>$user->role->name);
-           
+            ->add('role_id', fn ($user) => $user->role->name);
+
     }
 
     public function columns(): array
@@ -75,7 +73,7 @@ final class PGUserTable extends PowerGridComponent
             //     ->sortable()
             //     ->searchable(),
 
-            Column::action('Action')
+            Column::action('Action'),
         ];
     }
 
@@ -102,18 +100,17 @@ final class PGUserTable extends PowerGridComponent
                 ->class('btn btn-primary')
                 ->dispatch('showModalUserEdit', ['user_id' => $row->id]),
 
-                Button::add('task')
+            Button::add('task')
                 ->slot('Tugas')
                 ->id()
                 ->class('btn btn-info')
                 ->dispatch('showModalTask', ['user' => $row]),
 
-                Button::add('remove')
+            Button::add('remove')
                 ->slot('Hapus')
                 ->id()
                 ->class('btn btn-danger')
-                ->dispatch('removeConfirmUser', ['user_id' => $row->id])
-
+                ->dispatch('removeConfirmUser', ['user_id' => $row->id]),
 
         ];
     }

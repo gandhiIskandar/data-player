@@ -17,12 +17,24 @@
                     <tr>
 
                         <th>No</th>
+                        @if(privilegeViewDateLog())
                         <th>Tanggal</th>
+                        @endif
+                        @if(privilegeViewUsernameLog())
                         <th>Username</th>
+                        @endif
+                        @if(privilegeViewIpLog())
                         <th>IP</th>
+                        @endif
+                        @if(privilegeViewActivityLog())
                         <th>Activity</th>
+                        @endif
+                        @if(privilegeViewTargetLog())
                         <th>Target</th>
+                        @endif
+                        @if(privilegeViewDeskripsiLog())
                         <th>Deskripsi</th>
+                        @endif
 
 
 
@@ -33,10 +45,20 @@
                         <tr>
 
                             <td>{{ $loop->iteration }}</td>
+                            @if(privilegeViewDateLog())
                             <td> {{ $log->date }} </td>
+                            @endif
+                            @if(privilegeViewUsernameLog())
                             <td>{{ $log->username }}</td>
+                            @endif
+                            @if(privilegeViewIpLog())
                             <td>{{ $log->ip }}</td>
+                            @endif
+                            @if(privilegeViewActivityLog())
                             <td>{{ $log->activity }}</td>
+                            @endif
+
+                            @if(privilegeViewTargetLog())
                             @if($log->member_id !=null)
                             <td>{{ $log->member->username }}</td>
                             @elseif($log->user_id !=null)
@@ -46,7 +68,10 @@
                             @else
                             <td>-</td>
                             @endif
+                            @endif
+                            @if(privilegeViewDeskripsiLog())
                             <td>{{ $log->deskripsi }}</td>
+                            @endif
                         </tr>
                     @endforeach
 

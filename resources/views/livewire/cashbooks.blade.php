@@ -5,7 +5,7 @@
         <div class="col-md-12 mb-3">
             <select wire:model.live='jenisTabel' class="form-select rounded-3 form-select-sm w-auto">
                 <option value=2>Rekap</option>
-                <option selected value=1>Log</option>
+                <option selected value=1>Catatan</option>
             </select>
         </div>
     </div>

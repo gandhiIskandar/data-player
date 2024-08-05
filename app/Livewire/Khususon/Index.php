@@ -2,28 +2,25 @@
 
 namespace App\Livewire\Khususon;
 
-use Exception;
-use Carbon\Carbon;
 use App\Models\Task;
-use Livewire\Component;
 use App\Models\Transaction;
-
-use Illuminate\Support\Facades\Route;
-use Livewire\Attributes\Title;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Route;
+use Livewire\Attributes\Title;
+use Livewire\Component;
 
 #[Title('Dashboard')]
 
 class Index extends Component
 {
-
     public $totalUsersToday;
 
     public $totalTransaksi;
 
-    public $error=null;
+    public $error = null;
 
     public $tasks;
 
@@ -33,15 +30,12 @@ class Index extends Component
 
     public $currencyData;
 
-  
-//TODO KONFIGURASI BAGAIMANA CARANYA KETIKA SELECT BERUBAH MAKA AKAN REFRESH!! PAKAI JQUERY ONCHANGE, SEBELUM REFRESH KIRIM DISPATCH DLU KE FUNC PHP UNTUK SET SESSION 
-
+    //TODO KONFIGURASI BAGAIMANA CARANYA KETIKA SELECT BERUBAH MAKA AKAN REFRESH!! PAKAI JQUERY ONCHANGE, SEBELUM REFRESH KIRIM DISPATCH DLU KE FUNC PHP UNTUK SET SESSION
 
     public function render()
     {
 
-       // dd(Route::current());
-
+        // dd(Route::current());
 
         $this->getStat();
         $this->getTodoList();
@@ -67,6 +61,7 @@ class Index extends Component
 
         $this->transactions = Transaction::with(['member', 'type'])->whereDate('created_at', Carbon::today())->where('website_id', session('website_id'))->orderBy('created_at', 'desc')->get();
     }
+
     public function getTodoList()
     {
 
@@ -93,61 +88,56 @@ class Index extends Component
 
     public function proccessDataStats()
     {
-        
-try{
 
-        $listCoins = $this->getCryptoDataAPI();
+        try {
 
-        $btc = $listCoins[0];
-        $usdt = $listCoins[2];  
+            $listCoins = $this->getCryptoDataAPI();
 
+            $btc = $listCoins[0];
+            $usdt = $listCoins[2];
 
+            $usd_to_idr = $this->getCurrencyAPI('USD', 'IDR')['data']['IDR'];
 
-        $usd_to_idr =  $this->getCurrencyAPI('USD', 'IDR')['data']['IDR'];
+            $price_btc = $btc['price'] * $usd_to_idr; //usd dikalikan ke rupiah untuk mengetahui harga btc dan usdt
 
+            $price_usdt = $usdt['price'] * $usd_to_idr;
 
-        $price_btc = $btc['price'] * $usd_to_idr; //usd dikalikan ke rupiah untuk mengetahui harga btc dan usdt
+            $bath_to_idr = $this->getCurrencyAPI('THB', 'IDR')['data']['IDR'];
 
+            $data = [
+                (object) [
+                    'currency' => 'BTC',
+                    'price' => toRupiah(intval($price_btc), true),
+                    'isCrypto' => true,
+                    'src' => $btc['iconUrl'],
+                ],
+                (object) [
+                    'currency' => 'USDT',
+                    'price' => toRupiah(intval($price_usdt), true),
+                    'isCrypto' => true,
+                    'src' => $usdt['iconUrl'],
+                ],
+                (object) [
+                    'currency' => 'USD',
+                    'price' => toRupiah(intval($usd_to_idr), true),
+                    'isCrypto' => false,
+                    'src' => 'ph-duotone ph-currency-circle-dollar',
+                ],
+                (object) [
+                    'currency' => 'BATH',
+                    'price' => toRupiah(intval($bath_to_idr), true),
+                    'isCrypto' => false,
+                    'src' => 'ph-duotone ph-currency-btc',
+                ],
+            ];
 
+            $this->currencyData = collect($data);
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            $this->error = 'Terjadi kesalahan dalam pemanggilan API, Mohon periksa koneksi internet';
+        } catch (Exception $e) {
+            $this->error = 'Terjadi kesalahan dalam pemanggilan API';
 
-        $price_usdt = $usdt['price'] * $usd_to_idr;
-
-        $bath_to_idr = $this->getCurrencyAPI('THB', 'IDR')['data']['IDR'];
-
-        $data = [
-            (object)[
-                'currency' => 'BTC',
-                'price' => toRupiah(intval($price_btc), true),
-                'isCrypto' => true,
-                'src' => $btc['iconUrl']
-            ],
-            (object)[
-                'currency' => 'USDT',
-                'price' => toRupiah(intval($price_usdt), true),
-                'isCrypto' => true,
-                'src' => $usdt['iconUrl']
-            ],
-            (object)[
-                'currency' => 'USD',
-                'price' => toRupiah(intval($usd_to_idr), true),
-                'isCrypto' => false,
-                'src' => 'ph-duotone ph-currency-circle-dollar'
-            ],
-            (object)[
-                'currency' => 'BATH',
-                'price' => toRupiah(intval($bath_to_idr), true),
-                'isCrypto' => false,
-                'src' => 'ph-duotone ph-currency-btc'
-            ]
-        ];
-
-        $this->currencyData =  collect($data);
-    }catch (\Illuminate\Http\Client\ConnectionException $e) {
-        $this->error = "Terjadi kesalahan dalam pemanggilan API, Mohon periksa koneksi internet";
-    } catch (Exception $e) {
-        $this->error = "Terjadi kesalahan dalam pemanggilan API";
-        
-    }
+        }
     }
 
     public function getCryptoDataAPI()

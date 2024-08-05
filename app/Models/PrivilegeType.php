@@ -11,7 +11,8 @@ class PrivilegeType extends Model
 
     protected $fillable = ['name'];
 
-    public function privileges(){
+    public function privileges()
+    {
         return $this->hasMany(Privilege::class);
 
     }

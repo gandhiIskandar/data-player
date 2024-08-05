@@ -79,11 +79,11 @@
                             </button>
                         @endcan
 
-                        <button data-pc-animate="fade-in-scale" type="button" data-bs-toggle="modal"
+                        {{-- <button data-pc-animate="fade-in-scale" type="button" data-bs-toggle="modal"
                             data-bs-target="#modalAccount" class="dropdown-item" class="dropdown-item">
                             <i class="ph-duotone ph-bank"></i>
                             <span>Rekening</span>
-                        </button>
+                        </button> --}}
 
                         <button data-pc-animate="fade-in-scale" type="button" data-bs-toggle="modal"
                             data-bs-target="#modalWebsite" class="dropdown-item" class="dropdown-item">

@@ -213,7 +213,24 @@
                         <label class="col-lg-3 col-form-label">Service Level:</label>
                         <div class="col-lg-9">
 
-                            @foreach ($privileges->where('privilege_type_id', 2) as $privilege)
+                            @foreach ($privileges->where('privilege_type_id', 2)->where('name', '!=', 'null') as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
+                                        value={{ $privilege->id }} wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Lihat Transaksi:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 6) as $privilege)
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
                                         value={{ $privilege->id }} wire:model='form.privileges' />
@@ -244,13 +261,85 @@
                     </div>
 
                     <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Lihat Member:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 8) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
+                                        value={{ $privilege->id }} wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Log Level:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 11) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary"
+                                        id="customCheckinl31" value={{ $privilege->id }}
+                                        wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Lihat Log:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 7) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary"
+                                        id="customCheckinl31" value={{ $privilege->id }}
+                                        wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row align-items-center">
                         <label class="col-lg-3 col-form-label">Kas Level:</label>
                         <div class="col-lg-9">
 
                             @foreach ($privileges->where('privilege_type_id', 4) as $privilege)
                                 <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
-                                        value={{ $privilege->id }} wire:model='form.privileges' />
+                                    <input type="checkbox" class="form-check-input input-primary"
+                                        id="customCheckinl31" value={{ $privilege->id }}
+                                        wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Lihat Kas:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 9) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary"
+                                        id="customCheckinl31" value={{ $privilege->id }}
+                                        wire:model='form.privileges' />
                                     <label class="form-check-label" for="customCheckinl31"
                                         style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
                                 </div>
@@ -266,6 +355,59 @@
 
                             @foreach ($privileges->where('privilege_type_id', 5) as $privilege)
                                 <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary"
+                                        id="customCheckinl31" value={{ $privilege->id }}
+                                        wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Pengeluaran Level:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 10) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary"
+                                        id="customCheckinl31" value={{ $privilege->id }}
+                                        wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Rekening Member Level:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 13) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary"
+                                        id="customCheckinl31" value={{ $privilege->id }}
+                                        wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Rekening Admin Level:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 12) as $privilege)
+                                <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
                                         value={{ $privilege->id }} wire:model='form.privileges' />
                                     <label class="form-check-label" for="customCheckinl31"
@@ -276,6 +418,93 @@
 
                         </div>
                     </div>
+
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Lihat Rekening Admin:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 14) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
+                                        value={{ $privilege->id }} wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">TT Atas Level:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 15) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
+                                        value={{ $privilege->id }} wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Lihat TT Atas:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 17) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
+                                        value={{ $privilege->id }} wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Pinjam Atas Level:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 16) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
+                                        value={{ $privilege->id }} wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
+                    
+                    <div class="mb-3 row align-items-center">
+                        <label class="col-lg-3 col-form-label">Lihat Pinjam Atas:</label>
+                        <div class="col-lg-9">
+
+                            @foreach ($privileges->where('privilege_type_id', 18) as $privilege)
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl31"
+                                        value={{ $privilege->id }} wire:model='form.privileges' />
+                                    <label class="form-check-label" for="customCheckinl31"
+                                        style=" pointer-events: none; cursor: default;">{{ $privilege->name }}</label>
+                                </div>
+                            @endforeach
+
+
+                        </div>
+                    </div>
+
 
 
 

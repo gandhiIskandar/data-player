@@ -14,12 +14,9 @@ return new class extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->string('username')->unique()->index();
-            $table->string('phone_number');
-            $table->string('account_number');
-            $table->foreignId('account_id');
             $table->foreignId('website_id');
-            $table->integer('total_wd');
-            $table->integer('total_depo');
+            $table->integer('total_wd')->default(0);
+            $table->integer('total_depo')->default(0);
             $table->timestamps();
         });
     }

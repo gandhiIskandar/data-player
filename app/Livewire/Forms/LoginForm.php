@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Rule;
 use Livewire\Form;
-use App\Models\User;
 
 class LoginForm extends Form
 {
@@ -26,16 +26,10 @@ class LoginForm extends Form
             $user = User::with(['privileges', 'role'])->find($user->id);
             $privileges = $user->privileges->pluck('id')->toArray();
 
-
-        
-
-
             session()->regenerate();
             session()->put('website_id', 1);
             session()->put('user_data', $user);
             session()->put('privileges', $privileges);
-
-
 
             switch ($user->role_id) {
                 case 1: // customer service
@@ -51,8 +45,8 @@ class LoginForm extends Form
                     return redirect()->intended('/dashboard');
                     break;
             }
-        }else{
-            flash("Email atau Password Salah","alert-danger");
+        } else {
+            flash('Email atau Password Salah', 'alert-danger');
         }
         // throw ValidationException::withMessages([
         //     'email' => 'Email atau Password Anda Salah',

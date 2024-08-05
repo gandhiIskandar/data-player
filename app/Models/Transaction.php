@@ -13,8 +13,9 @@ class Transaction extends Model
         'type_id',
         'amount',
         'member_id',
-        'from_account',
-        'to_account',
+        'bank_id', //bank digunakan untuk rekening member dengan tujuan deposit
+        'member_account_id',
+        'account_id',
         'new',
         'created_at',
         'website_id',
@@ -31,15 +32,23 @@ class Transaction extends Model
         return $this->belongsTo(Member::class);
     }
 
-    public function website(){
+    public function website()
+    {
         return $this->belongsTo(Website::class);
     }
 
-    public function from_account(){
-        return $this->belongsTo(Account::class,'from_account');
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 
-    public function to_account(){
-        return $this->belongsTo(Account::class, 'to_account');
+    public function memberAccount()
+    {
+        return $this->belongsTo(MemberAccount::class);
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
     }
 }

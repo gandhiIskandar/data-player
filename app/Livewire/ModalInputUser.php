@@ -3,14 +3,13 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\UserForm;
-use App\Models\User;
-use Livewire\Component;
 use App\Models\Privilege;
 use App\Models\Role;
+use App\Models\User;
+use Livewire\Component;
 
 class ModalInputUser extends Component
 {
-
     public UserForm $form;
 
     public $edit;
@@ -20,12 +19,12 @@ class ModalInputUser extends Component
     public function render()
     {
 
-        
-
         $privileges = Privilege::all();
         $roles = Role::all();
-        return view('livewire.modal-input-user',compact(['privileges','roles']));
+
+        return view('livewire.modal-input-user', compact(['privileges', 'roles']));
     }
+
     //fungsi inisiasi data user untuk edit
     #[\Livewire\Attributes\On('showModalUserEdit')]
     public function showModalInputEditState($user_id)
@@ -37,17 +36,13 @@ class ModalInputUser extends Component
 
         $privilegesUser = $this->user->privileges;
 
-      
-        
-
         //inisiasi nilai form agar sesuai dengan data yang mau diedit
 
         $this->form->name = $this->user->name;
         $this->form->email = $this->user->email;
         $this->form->role_id = $this->user->role_id;
-        
-     
-      $this->form->privileges = $privilegesUser->pluck('id');
+
+        $this->form->privileges = $privilegesUser->pluck('id');
 
         //end inisiasi
 
@@ -83,10 +78,8 @@ class ModalInputUser extends Component
 
     }
 
-
-
     public function proceedUser()
-{
+    {
 
         if (! $this->edit) {
             $this->insertUser();
@@ -105,18 +98,12 @@ class ModalInputUser extends Component
         $this->dispatch('reloadPowerGridUser');
 
     }
-    
+
     public function insertUser()
     {
 
-        $user = $this->form->create() ?? "null";
+        $user = $this->form->create() ?? 'null';
 
-      
         $this->dispatch('reloadPowerGridUser');
     }
-
-
-   
-
-    
 }
