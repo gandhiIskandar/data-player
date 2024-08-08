@@ -183,22 +183,22 @@
     </script>
 
     <script>
-        $(document).ready(function() {
+        // $(document).ready(function() {
 
 
 
 
-            if ($('.input-currency').length > 0) {
-                new AutoNumeric('.input-currency', {
-                    digitGroupSeparator: '.',
-                    decimalCharacter: ',',
-                    decimalPlaces: 0
-                    //  unformatOnSubmit: true
-                    // currencySymbol: ' Rp',
-                    // currencySymbolPlacement: 's',
-                });
-            }
-        });
+        //     if ($('.input-currency').length > 0) {
+        //         new AutoNumeric('.input-currency', {
+        //             digitGroupSeparator: '.',
+        //             decimalCharacter: ',',
+        //             decimalPlaces: 0
+        //             //  unformatOnSubmit: true
+        //             // currencySymbol: ' Rp',
+        //             // currencySymbolPlacement: 's',
+        //         });
+        //     }
+        // });
     </script>
 
 
