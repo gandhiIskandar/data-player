@@ -145,24 +145,7 @@
 
     @script
         <script>
-            // $(document).ready(function() {
-
-
-
-
-            //     if ($('#amount_input').length > 0) {
-            //         new AutoNumeric('#amount_input', {
-            //             digitGroupSeparator: '.',
-            //             decimalCharacter: ',',
-            //             decimalPlaces: 0,
-                        
-                       
-            //         });
-
-
-                    
-            //     }
-            // });
+       
             
             $wire.on('showModalTransactionJS', (data) => {
                 

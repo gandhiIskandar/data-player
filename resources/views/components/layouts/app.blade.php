@@ -136,7 +136,7 @@
     <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.6.0/dist/autoNumeric.min.js"></script>
+   
     {{-- data table --}}
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
@@ -180,25 +180,6 @@
 
     <script>
         preset_change(getCookie('preset-color') != "" ? getCookie('preset-color') : 'preset-1');
-    </script>
-
-    <script>
-        // $(document).ready(function() {
-
-
-
-
-        //     if ($('.input-currency').length > 0) {
-        //         new AutoNumeric('.input-currency', {
-        //             digitGroupSeparator: '.',
-        //             decimalCharacter: ',',
-        //             decimalPlaces: 0
-        //             //  unformatOnSubmit: true
-        //             // currencySymbol: ' Rp',
-        //             // currencySymbolPlacement: 's',
-        //         });
-        //     }
-        // });
     </script>
 
 
