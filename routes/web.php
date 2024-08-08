@@ -18,6 +18,10 @@ Route::middleware('whitelist')->group(function () {
 
     Route::get('/', \App\Livewire\Login::class)->name('login')->middleware('guest');
 
+    Route::get('/infoPHP', function(){
+        return view('info');
+    });
+
     // Route::middleware(['customer.service'])->group(function () {
 
     // });
