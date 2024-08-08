@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\Bank;
 use App\Models\Member;
 use App\Models\Transaction;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -35,10 +36,11 @@ class ModalInput extends Component
     public function render()
     {
 
-        if (! $this->edit) {
+
+
+        if (!$this->edit) {
 
             $this->checkUserExist();
-
         }
         $this->banks = Bank::all();
 
@@ -65,14 +67,19 @@ class ModalInput extends Component
     public function procedTransaction()
     {
 
-        //hilankan titik pada angka
 
-        $this->form->amount = str_replace('.', '', $this->form->amount);
+        try {
+            //hilankan titik pada angka
 
-        if (! $this->edit) {
-            $this->insertTransaction();
-        } else {
-            $this->updateTransaction();
+            $this->form->amount = str_replace('.', '', $this->form->amount);
+
+            if (!$this->edit) {
+                $this->insertTransaction();
+            } else {
+                $this->updateTransaction();
+            }
+        } catch (Exception $e) {
+            flash($e->getMessage(),'alert-danger');
         }
     }
 
@@ -109,17 +116,19 @@ class ModalInput extends Component
         flash('Data transaksi berhasil diubah', 'alert-success');
 
         $this->dispatch('reloadTransaction');
-
     }
 
     #[\Livewire\Attributes\On('showModalNonEditState')]
     public function showModalNonEditState()
     {
+
+
+
         $this->form->reset();
 
         $this->edit = false;
 
-        $this->dispatch('showModalTransactionJS');
+        $this->dispatch('showModalTransactionJS', amount: 0);
     }
 
     #[\Livewire\Attributes\On('deleteTransactionConfirm')]
@@ -127,7 +136,6 @@ class ModalInput extends Component
     {
 
         $this->dispatch('deleteTransactionConfirmJS', transaction: $transaction);
-
     }
 
     #[\Livewire\Attributes\On('removeTransaction')]
@@ -159,7 +167,6 @@ class ModalInput extends Component
         updateSaldoRekeningAdmin($transaction->account_id, $transaction->amount, $ket);
 
         $this->dispatch('reloadTransaction');
-
     }
 
     public function reduceSumMember($member, $type_id, $amount)
@@ -178,7 +185,6 @@ class ModalInput extends Component
         }
 
         $member->save();
-
     }
 
     public function insertTransaction()

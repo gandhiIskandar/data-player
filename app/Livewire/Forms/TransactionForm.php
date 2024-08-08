@@ -112,6 +112,8 @@ class TransactionForm extends Form
 
             $this->reset();
 
+            $this->amount = 0;
+
             flash('Berhasil Tambah Transaksi', 'alert-success');
 
             return $transaction;
