@@ -126,7 +126,7 @@
                     <div class="input-group mb-3">
                         <span class="input-group-text">Rp</span>
                         <input type="text" id="amount_input" wire:model='form.amount'
-                            class="form-control" aria-label="Amount (to the nearest dollar)" required />
+                            class="form-control input-currency" aria-label="Amount (to the nearest dollar)" required />
 
                     </div>
 
@@ -145,24 +145,24 @@
 
     @script
         <script>
-            $(document).ready(function() {
+            // $(document).ready(function() {
 
 
 
 
-                if ($('#amount_input').length > 0) {
-                    new AutoNumeric('#amount_input', {
-                        digitGroupSeparator: '.',
-                        decimalCharacter: ',',
-                        decimalPlaces: 0,
+            //     if ($('#amount_input').length > 0) {
+            //         new AutoNumeric('#amount_input', {
+            //             digitGroupSeparator: '.',
+            //             decimalCharacter: ',',
+            //             decimalPlaces: 0,
                         
                        
-                    });
+            //         });
 
 
                     
-                }
-            });
+            //     }
+            // });
             
             $wire.on('showModalTransactionJS', (data) => {
                 
